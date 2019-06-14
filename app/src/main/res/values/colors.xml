@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#F4C8A9</color>
+    <color name="colorPrimaryDark">#CF5006</color>
+    <color name="colorAccent">#00BCD4</color>
+    <color name="LidlColor">#FFFBB7</color>
+    <color name="BilkaColor">#DDE8B9</color>
+    <color name="RemaColor">#D18599</color>
+    <color name="NettoColor">#FFC6D9</color>
+    <color name="AldiColor">#C4DFED</color>
+</resources>

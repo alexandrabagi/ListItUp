@@ -1,0 +1,53 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    tools:context="com.bignerdranch.android.listitup.ListActivity"
+
+    android:weightSum="10"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp">
+
+    <TextView
+        android:id="@+id/no_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:text="No"
+        android:textColor="@android:color/holo_red_light"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/what_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:layout_margin="10dp"
+        android:padding="5dp"
+        android:textSize="18dp"
+        android:text="ItemName" />
+
+    <TextView
+        android:id="@+id/where_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:layout_margin="10dp"
+        android:textSize="18dp"
+        android:text="Shop"/>
+
+    <TextView
+        android:id="@+id/quantity_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:textSize="18dp"
+        android:text="Qty"/>
+
+</LinearLayout>

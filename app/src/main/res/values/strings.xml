@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">ListItUp</string>
+    <string name="my_lists_button">My Lists</string>
+    <string name="add_new_button">Add New</string>
+    <string name="item_name">Item</string>
+    <string name="shop_name">Shop</string>
+    <string name="quantity">Quantity</string>
+    <string name="ok">OK</string>
+    <string name="shop_of_item">Shop of item</string>
+    <string name="name_of_item">Name of item</string>
+    <string name="how_much_of_the_item">How much of the item</string>
+    <string name="bought">Bought!</string>
+    <string name="dialog_title">Please enter item and details:</string>
+    <string name="list_title1">My Shopping List</string>
+    <string name="list_title2">I have already bought all of these!</string>
+    <string name="show_map_button">Map</string>
+    <string name="visit_shop_online">Visit Shop online</string>
+    <string-array name="brew_array">
+        <item>Choose shop</item>
+        <item>Aldi</item>
+        <item>Bilka</item>
+        <item>Lidl</item>
+        <item>Netto</item>
+        <item>Rema1000</item>
+    </string-array>
+
+    <string name="title_activity_maps">Map</string>
+    <string name="default_info_title">Default Location</string>
+    <string name="default_info_snippet">No places found, because location permission is disabled.</string>
+    <string name="option_get_place">Get place</string>
+    <string name="pick_place">Choose a place</string>
+</resources>
