@@ -18,23 +18,15 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
+
 import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
-import com.daandtu.webscraper.WebScraper;
-
 import java.io.File;
 import java.util.List;
 import java.util.UUID;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 /*
 need to add database wherever stuff is red to retrieve an item
