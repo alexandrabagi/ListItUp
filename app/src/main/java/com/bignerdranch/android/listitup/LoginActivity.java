@@ -23,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInClient mSignInClient;
     private TextView mStatusTextView;
     private SignInButton mSignInButton;
+    private Button mMySignInButton;
 
     private static int RC_SIGN_IN = 9001;
     private static String TAG = "login";
@@ -43,12 +44,16 @@ public class LoginActivity extends AppCompatActivity {
              }
         );
 
+        mMySignInButton = findViewById(R.id.my_sign_in_button);
+
         GoogleSignInOptions options = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
 
         mSignInClient = GoogleSignIn.getClient(this, options);
+
+        getSupportActionBar().hide();
     }
 
     private void signIn() {

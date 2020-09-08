@@ -39,4 +39,6 @@
     <string name="sign_in">Sign In</string>
     <string name="sign_out">Sign Out</string>
     <string name="disconnect">Disconnect</string>
+    <string name="welcome">Welcome back!</string>
+    <string name="please_sing_in">Please sing in to continue</string>
 </resources>
