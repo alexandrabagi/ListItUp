@@ -8,4 +8,7 @@
     <color name="RemaColor">#D18599</color>
     <color name="NettoColor">#FFC6D9</color>
     <color name="AldiColor">#C4DFED</color>
+    <color name="Primary_500">#FF9800</color>
+    <color name="Secondary_500">#00BCD4</color>
+    <color name="white">#FFFFFF</color>
 </resources>

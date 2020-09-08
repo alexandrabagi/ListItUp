@@ -9,8 +9,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.FileProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +18,23 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+
+import com.daandtu.webscraper.WebScraper;
 
 import java.io.File;
 import java.util.List;
 import java.util.UUID;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 /*
 need to add database wherever stuff is red to retrieve an item
@@ -44,6 +53,8 @@ public class ItemFragment extends Fragment {
     private static final int REQUEST_PHOTO= 2;
     private Button goToShop;
     private Button showMap;
+
+    private View mScraperView;
 
     private static final String EXTRA_SHOP_NAME = "com.bignerdranch.android.listitup.shop_name";
 
@@ -88,25 +99,9 @@ public class ItemFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             Bundle savedInstanceState)  {
         View v = inflater.inflate(R.layout.fragment_item, container, false);
 
-        /*//static spinner experiment begin
-        Spinner staticSpinner = (Spinner) v.findViewById(R.id.static_spinner);
-
-        // Create an ArrayAdapter using the string array and a default spinner
-        ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter
-                .createFromResource(getContext(), R.array.brew_array,
-                        android.R.layout.simple_spinner_item);
-
-        // Specify the layout to use when the list of choices appears
-        staticAdapter
-                .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // Apply the adapter to the spinner
-        staticSpinner.setAdapter(staticAdapter);
-
-    // static spinner experiment end*/
 
         mWhat = (TextView) v.findViewById(R.id.item_name);
         mWhat.setText(mItem.getWhat());

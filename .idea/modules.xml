@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/GIT-ListItUp.iml" filepath="$PROJECT_DIR$/GIT-ListItUp.iml" group="ListItUp" />
       <module fileurl="file://$PROJECT_DIR$/ListItUp.iml" filepath="$PROJECT_DIR$/ListItUp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/ListItUp-app.iml" filepath="$PROJECT_DIR$/app/ListItUp-app.iml" group="ListItUp/app" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
