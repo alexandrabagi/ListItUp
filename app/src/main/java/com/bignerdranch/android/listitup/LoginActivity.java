@@ -22,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private GoogleSignInClient mSignInClient;
     private TextView mStatusTextView;
-    private SignInButton mSignInButton;
+//    private SignInButton mSignInButton;
     private Button mMySignInButton;
 
     private static int RC_SIGN_IN = 9001;
@@ -34,17 +34,23 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mStatusTextView = findViewById(R.id.status);
-        mSignInButton = findViewById(R.id.sign_in_button);
-        mSignInButton.setSize(SignInButton.SIZE_STANDARD);
-        mSignInButton.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(View v) {
-                     signIn();
-                 }
-             }
-        );
+//        mSignInButton = findViewById(R.id.sign_in_button);
+//        mSignInButton.setSize(SignInButton.SIZE_STANDARD);
+//        mSignInButton.setOnClickListener(new View.OnClickListener() {
+//                 @Override
+//                 public void onClick(View v) {
+//                     signIn();
+//                 }
+//             }
+//        );
 
         mMySignInButton = findViewById(R.id.my_sign_in_button);
+        mMySignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn();
+            }
+        });
 
         GoogleSignInOptions options = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -104,14 +110,14 @@ public class LoginActivity extends AppCompatActivity {
         if (account != null) {
             mStatusTextView.setText(getString(R.string.signed_in_fmt, account.getDisplayName()));
 
-            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+            findViewById(R.id.my_sign_in_button).setVisibility(View.GONE);
             Intent intent = new Intent(this, ListActivity.class);
             startActivity(intent);
             //findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
         } else {
             mStatusTextView.setText(R.string.signed_out);
 
-            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.my_sign_in_button).setVisibility(View.VISIBLE);
             //findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
         }
     }

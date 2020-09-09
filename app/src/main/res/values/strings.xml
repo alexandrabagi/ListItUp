@@ -41,4 +41,9 @@
     <string name="disconnect">Disconnect</string>
     <string name="welcome">Welcome back!</string>
     <string name="please_sing_in">Please sing in to continue</string>
+    <string name="simple_sign_in">SIGN IN</string>
+    <string name="google_sign_in">SIGN IN WITH GOOGLE</string>
+    <string name="forgot_pw_text">Forgot password?</string>
+    <string name="password_hint">Password</string>
+    <string name="email_hint">Email</string>
 </resources>

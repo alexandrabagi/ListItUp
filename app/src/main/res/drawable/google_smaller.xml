@@ -4,6 +4,7 @@
         android:drawable="@drawable/google_logo"
         android:width="20dp"
         android:height="20dp"
-       >
+        android:left="18dp"
+        android:right="0dp">
     </item>
 </layer-list>
