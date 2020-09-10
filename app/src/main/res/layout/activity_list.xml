@@ -7,17 +7,35 @@
     android:gravity="center"
     tools:context="com.bignerdranch.android.listitup.activities.ListActivity">
 
-    <!--<android.support.v7.widget.RecyclerView
-        android:id="@+id/singleList_recycler_view"
+    <!-- <com.google.android.material.tabs.TabLayout
+        android:id="@+id/my_tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="4" /> -->
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_text_buy" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_text_cart"
+            />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" /> -->
 
     <FrameLayout
         android:id="@+id/list_fragment_container"
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp" />
+
 
     <!--<TextView
         android:layout_width="match_parent"

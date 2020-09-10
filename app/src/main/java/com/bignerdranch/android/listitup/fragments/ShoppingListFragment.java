@@ -1,4 +1,4 @@
-package com.bignerdranch.android.listitup;
+package com.bignerdranch.android.listitup.fragments;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -14,18 +14,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bignerdranch.android.listitup.Item;
+import com.bignerdranch.android.listitup.ListDB;
+import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.activities.ItemPagerActivity;
 
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class ListFragment extends Fragment implements Observer {
+/**
+ * This fragment hosts "To Buy" and "In Cart" lists
+ */
+
+public class ShoppingListFragment extends Fragment implements Observer {
+
+//    public static final String ARG_OBJECT = "object";
+//    private TextView myText;
 
     private Button mAddNewButton;
 
@@ -34,8 +45,21 @@ public class ListFragment extends Fragment implements Observer {
     private RecyclerView mItemRecyclerView;
     private ListDB listDB;
     private List<Item> mItems;
-    
 
+//    @Nullable
+//    @Override
+//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+//                             @Nullable Bundle savedInstanceState) {
+//        return inflater.inflate(R.layout.fragment_shoppinglist, container, false);
+//    }
+
+//    @Override
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        Bundle args = getArguments();
+//        System.out.println(args);
+////        myText = ((TextView) view.findViewById(android.R.id.text1));
+////        myText.setText(Integer.toString(args.getInt(ARG_OBJECT)));
+//    }
 
     @Override
     public void update(Observable observable, Object data) {
@@ -49,17 +73,25 @@ public class ListFragment extends Fragment implements Observer {
         listDB = ListDB.get(getActivity());
         mItems = listDB.getListDB();
         listDB.addObserver(this);
+        System.out.println("ShoppingListFragment onCreate was called");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_shoppinglist, container, false);
+        System.out.println("ShoppingListFragment onCreateView was called");
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        System.out.println("ShoppingListFragment onViewCreated was called");
+
         mItemRecyclerView = view.findViewById(R.id.items_recycler_view);
         mItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        //DividerItemDecoration divider = new DividerItemDecoration(mItemRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
-        //mItemRecyclerView.addItemDecoration(divider);
 
         mAddNewButton = (Button) view.findViewById(R.id.addnew_button);
         mAddNewButton.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +123,6 @@ public class ListFragment extends Fragment implements Observer {
                 final Spinner mShop = (Spinner) mView.findViewById(R.id.static_spinner2);
 
                 // static spinner experiment end
-
 
                 //final Item newItem = new Item(mItemName.toString(), mShop.toString(), mQuantity.toString());
                 Button mOkButton = (Button) mView.findViewById(R.id.ok_button);
@@ -126,8 +157,6 @@ public class ListFragment extends Fragment implements Observer {
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(mItemRecyclerView);
-
-        return view;
     }
 
     @Override
@@ -149,6 +178,7 @@ public class ListFragment extends Fragment implements Observer {
             mAdapter.notifyDataSetChanged();
         }
     }
+
 
     private class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

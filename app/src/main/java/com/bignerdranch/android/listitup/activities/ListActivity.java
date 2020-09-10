@@ -1,39 +1,35 @@
 package com.bignerdranch.android.listitup.activities;
 
-import androidx.fragment.app.Fragment;
+import android.os.Bundle;
 
-import com.bignerdranch.android.listitup.ListFragment;
-import com.bignerdranch.android.listitup.ReuseFragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import com.bignerdranch.android.listitup.R;
+import com.bignerdranch.android.listitup.fragments.ListDemoFragment;
 
 /**
- * should shows the current list itself
- * entry screen
+ * This activity hosts ListDemoFragment which operates the tabs of "To Buy" and "In Cart" lists
  */
 
-public class ListActivity extends ReuseFragmentManager {
-
-    //private ListDB listDB;
+public class ListActivity extends AppCompatActivity {
 
     @Override
-    protected Fragment createFragment() {
-        return new ListFragment();
-    }
-
-   /* @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //listDB = ListDB.get(this);
         setContentView(R.layout.activity_list);
-
-
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.list_fragment_container);
 
         if (fragment == null) {
-            fragment = new ListFragment();
+            fragment = new ListDemoFragment();
+
+
             fm.beginTransaction()
                     .add(R.id.list_fragment_container, fragment)
                     .commit();
-        }*/
+        }
     }
+}

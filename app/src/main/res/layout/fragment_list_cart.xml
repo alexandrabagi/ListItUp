@@ -13,7 +13,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:text="@string/list_title1"
+        android:text="Cart List"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="24dp"
         android:textStyle="bold" />

@@ -46,4 +46,6 @@
     <string name="forgot_pw_text">Forgot password?</string>
     <string name="password_hint">Password</string>
     <string name="email_hint">Email</string>
+    <string name="tab_text_cart">In Cart</string>
+    <string name="tab_text_buy">To Buy</string>
 </resources>

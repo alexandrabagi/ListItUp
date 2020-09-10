@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bignerdranch.android.listitup.Item;
-import com.bignerdranch.android.listitup.ItemFragment;
+import com.bignerdranch.android.listitup.fragments.ItemFragment;
 import com.bignerdranch.android.listitup.ListDB;
 import com.bignerdranch.android.listitup.R;
 

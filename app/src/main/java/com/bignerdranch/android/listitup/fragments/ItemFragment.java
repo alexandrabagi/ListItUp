@@ -1,4 +1,4 @@
-package com.bignerdranch.android.listitup;
+package com.bignerdranch.android.listitup.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -20,6 +20,10 @@ import android.widget.TextView;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.bignerdranch.android.listitup.Item;
+import com.bignerdranch.android.listitup.ListDB;
+import com.bignerdranch.android.listitup.PictureUtils;
+import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.activities.LocationActivity;
 
 import java.io.File;

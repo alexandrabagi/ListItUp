@@ -10,7 +10,7 @@
     </style>
 
     <!-- My Customized App Theme -->
-    <style name="MyAppTheme" parent="Theme.AppCompat.Light">
+    <style name="MyAppTheme" parent="Theme.MaterialComponents.Light.Bridge">
         <item name="colorPrimary">@color/Primary_500</item>
         <item name="colorPrimaryDark">@color/Primary_800</item>
         <item name="colorAccent">@color/Secondary_500</item>
@@ -21,11 +21,18 @@
         <item name="android:windowLightStatusBar">true</item>
 
         <item name="toolbarStyle">@style/ToolBarStyle</item>
+        <item name="tabStyle">@style/AppTheme.TabLayout</item>
 
     </style>
 
     <style name="ToolBarStyle" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">@color/white</item>
+    </style>
+
+    <!-- Custom TabLayout -->
+    <style name="AppTheme.TabLayout" parent="Widget.MaterialComponents.TabLayout">
+        <item name="android:background">@color/white</item>
+        <item name="tabIndicatorColor">@color/Primary_500</item>
     </style>
 
     <!-- <style name="TitleTextAppearance" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
