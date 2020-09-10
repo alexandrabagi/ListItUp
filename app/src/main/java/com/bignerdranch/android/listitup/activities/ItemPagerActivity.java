@@ -1,4 +1,4 @@
-package com.bignerdranch.android.listitup;
+package com.bignerdranch.android.listitup.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import com.bignerdranch.android.listitup.Item;
+import com.bignerdranch.android.listitup.ItemFragment;
+import com.bignerdranch.android.listitup.ListDB;
+import com.bignerdranch.android.listitup.R;
 
 import java.util.List;
 import java.util.UUID;

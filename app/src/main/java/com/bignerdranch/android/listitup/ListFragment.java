@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bignerdranch.android.listitup.activities.ItemPagerActivity;
+
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;

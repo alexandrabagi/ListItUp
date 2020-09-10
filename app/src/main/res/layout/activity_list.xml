@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context="com.bignerdranch.android.listitup.ListActivity">
+    tools:context="com.bignerdranch.android.listitup.activities.ListActivity">
 
     <!--<android.support.v7.widget.RecyclerView
         android:id="@+id/singleList_recycler_view"

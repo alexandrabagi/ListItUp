@@ -1,7 +1,6 @@
 package com.bignerdranch.android.listitup;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -12,10 +11,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -23,6 +19,8 @@ import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+
+import com.bignerdranch.android.listitup.activities.LocationActivity;
 
 import java.io.File;
 import java.util.List;

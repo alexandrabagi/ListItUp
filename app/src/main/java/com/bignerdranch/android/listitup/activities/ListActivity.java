@@ -1,6 +1,9 @@
-package com.bignerdranch.android.listitup;
+package com.bignerdranch.android.listitup.activities;
 
 import androidx.fragment.app.Fragment;
+
+import com.bignerdranch.android.listitup.ListFragment;
+import com.bignerdranch.android.listitup.ReuseFragmentManager;
 
 /**
  * should shows the current list itself

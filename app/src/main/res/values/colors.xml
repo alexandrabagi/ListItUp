@@ -8,8 +8,35 @@
     <color name="RemaColor">#D18599</color>
     <color name="NettoColor">#FFC6D9</color>
     <color name="AldiColor">#C4DFED</color>
+
+    <color name="Primary_50">#FFF3E0</color>
+    <color name="Primary_100">#FFE0B2</color>
+    <color name="Primary_200">#FFCC80</color>
+    <color name="Primary_300">#FFB74D</color>
+    <color name="Primary_400">#FFA726</color>
     <color name="Primary_500">#FF9800</color>
+    <color name="Primary_600">#FB8C00</color>
+    <color name="Primary_700">#F57C00</color>
     <color name="Primary_800">#EF6C00</color>
+    <color name="Primary_900">#E65100</color>
+
+
+    <color name="Secondary_50">#E0F7FA</color>
+    <color name="Secondary_100">#B2EBF2</color>
+    <color name="Secondary_200">#80DEEA</color>
+    <color name="Secondary_300">#4DD0E1</color>
+    <color name="Secondary_400">#26C6DA</color>
     <color name="Secondary_500">#00BCD4</color>
+    <color name="Secondary_600">#00ACC1</color>
+    <color name="Secondary_700">#0097A7</color>
+    <color name="Secondary_800">#00838F</color>
+    <color name="Secondary_900">#006064</color>
+
+    <color name="error">#FF0C3E</color>
+
+    <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+
+    <color name="transparent_black_85">#D9000000</color>
+    <color name="transparent_black_54">#8A000000</color>
 </resources>
