@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.Primary_500)); //status bar or the time bar at the top
 
 

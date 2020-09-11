@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.fragments.ListDemoFragment;
+import com.google.android.material.appbar.MaterialToolbar;
 
 /**
  * This activity hosts ListDemoFragment which operates the tabs of "To Buy" and "In Cart" lists
@@ -15,10 +16,16 @@ import com.bignerdranch.android.listitup.fragments.ListDemoFragment;
 
 public class ListActivity extends AppCompatActivity {
 
+    MaterialToolbar appBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+
+        appBar = findViewById(R.id.topAppBar);
+
+//        getSupportActionBar().setElevation(0);
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.list_fragment_container);

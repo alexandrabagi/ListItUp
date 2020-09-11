@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mSignInClient = GoogleSignIn.getClient(this, options);
 
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
     }
 
     private void signIn() {
