@@ -14,6 +14,7 @@ import com.bignerdranch.android.listitup.Item;
 import com.bignerdranch.android.listitup.fragments.ItemFragment;
 import com.bignerdranch.android.listitup.ListDB;
 import com.bignerdranch.android.listitup.R;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +25,8 @@ public class ItemPagerActivity extends AppCompatActivity {
     private List<Item> mItems;
     private static ListDB mListDB;
     private static final String EXTRA_ITEM_ID = "com.bignerdranch.android.criminalintent.crime_id";
+
+    MaterialToolbar appBar;
 
     public static Intent newIntent(Context packageContext, UUID itemUUID) {
         Intent intent = new Intent(packageContext, ItemPagerActivity.class);
@@ -36,6 +39,8 @@ public class ItemPagerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_pager);
         UUID itemId = (UUID) getIntent().getSerializableExtra(EXTRA_ITEM_ID);
+
+        appBar = findViewById(R.id.topAppBar);
 
         mViewPager = (ViewPager) findViewById(R.id.item_view_pager);
         mItems = ListDB.get(this).getListDB();

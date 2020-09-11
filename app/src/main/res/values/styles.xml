@@ -15,7 +15,7 @@
         <item name="colorPrimaryDark">@color/Primary_800</item>
         <item name="colorAccent">@color/Secondary_500</item>
         <item name="colorError">@color/error</item>
-        <item name="android:editTextColor">@color/transparent_black_85</item>
+        <item name="editTextColor">@color/transparent_black_85</item>
 
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>

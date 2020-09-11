@@ -35,7 +35,7 @@ import java.util.Observer;
 
 public class ShoppingListFragment extends Fragment implements Observer {
 
-//    public static final String ARG_OBJECT = "object";
+    public static final String ARG_OBJECT = "object";
 //    private TextView myText;
 
     private Button mAddNewButton;
@@ -45,21 +45,8 @@ public class ShoppingListFragment extends Fragment implements Observer {
     private RecyclerView mItemRecyclerView;
     private ListDB listDB;
     private List<Item> mItems;
-
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-//                             @Nullable Bundle savedInstanceState) {
-//        return inflater.inflate(R.layout.fragment_shoppinglist, container, false);
-//    }
-
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        Bundle args = getArguments();
-//        System.out.println(args);
-////        myText = ((TextView) view.findViewById(android.R.id.text1));
-////        myText.setText(Integer.toString(args.getInt(ARG_OBJECT)));
-//    }
+    private TextView testText;
+    private int position;
 
     @Override
     public void update(Observable observable, Object data) {
@@ -74,6 +61,8 @@ public class ShoppingListFragment extends Fragment implements Observer {
         mItems = listDB.getListDB();
         listDB.addObserver(this);
         System.out.println("ShoppingListFragment onCreate was called");
+
+        position = getArguments().getInt(ARG_OBJECT);
     }
 
     @Override
@@ -81,6 +70,10 @@ public class ShoppingListFragment extends Fragment implements Observer {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_shoppinglist, container, false);
+
+        testText = view.findViewById(R.id.test_text);
+        if (position > 1) testText.setText("In Cart List");
+        else testText.setText("To Buy List");
         System.out.println("ShoppingListFragment onCreateView was called");
 
         return view;

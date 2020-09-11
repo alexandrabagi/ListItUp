@@ -25,8 +25,6 @@ public class ListActivity extends AppCompatActivity {
 
         appBar = findViewById(R.id.topAppBar);
 
-//        getSupportActionBar().setElevation(0);
-
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.list_fragment_container);
 

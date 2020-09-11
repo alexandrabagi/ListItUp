@@ -25,10 +25,10 @@ public class ShoppingListAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         // Return a NEW fragment instance in createFragment(int)
         Fragment fragment = new ShoppingListFragment();
-//        Bundle args = new Bundle();
+        Bundle args = new Bundle();
         // Our object is just an integer :-P
-//        args.putInt(ShoppingListFragment.ARG_OBJECT, position + 1);
-//        fragment.setArguments(args);
+        args.putInt(ShoppingListFragment.ARG_OBJECT, position + 1);
+        fragment.setArguments(args);
         return fragment;
     }
 
