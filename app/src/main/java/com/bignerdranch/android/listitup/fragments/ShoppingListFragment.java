@@ -73,11 +73,6 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
         View view = inflater.inflate(R.layout.fragment_shoppinglist, container, false);
 
-        testText = view.findViewById(R.id.test_text);
-        if (position > 1) testText.setText("In Cart List");
-        else testText.setText("To Buy List");
-        System.out.println("ShoppingListFragment onCreateView was called");
-
         return view;
     }
 
@@ -88,7 +83,17 @@ public class ShoppingListFragment extends Fragment implements Observer {
         mItemRecyclerView = view.findViewById(R.id.items_recycler_view);
         mItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        testText = view.findViewById(R.id.test_text);
         mAddNewFAB = view.findViewById(R.id.add_new_fab);
+        if (position > 1) {
+            testText.setText("In Cart List");
+            mAddNewFAB.setVisibility(View.INVISIBLE);
+        }
+        else {
+            testText.setText("To Buy List");
+        }
+        System.out.println("ShoppingListFragment onCreateView was called");
+
         mAddNewFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
