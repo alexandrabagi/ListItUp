@@ -48,4 +48,5 @@
     <string name="email_hint">Email</string>
     <string name="tab_text_cart">In Cart</string>
     <string name="tab_text_buy">To Buy</string>
+    <string name="fab_content">Adding new element to the list</string>
 </resources>

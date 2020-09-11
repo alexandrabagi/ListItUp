@@ -24,6 +24,7 @@ import com.bignerdranch.android.listitup.Item;
 import com.bignerdranch.android.listitup.ListDB;
 import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.activities.ItemPagerActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 import java.util.Observable;
@@ -39,6 +40,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
 //    private TextView myText;
 
     private Button mAddNewButton;
+    private FloatingActionButton mAddNewFAB;
 
     private ItemAdapter mAdapter;
 
@@ -86,8 +88,8 @@ public class ShoppingListFragment extends Fragment implements Observer {
         mItemRecyclerView = view.findViewById(R.id.items_recycler_view);
         mItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mAddNewButton = (Button) view.findViewById(R.id.addnew_button);
-        mAddNewButton.setOnClickListener(new View.OnClickListener() {
+        mAddNewFAB = view.findViewById(R.id.add_new_fab);
+        mAddNewFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
@@ -145,6 +147,66 @@ public class ShoppingListFragment extends Fragment implements Observer {
                 dialog.show();
             }
         });
+
+        /*mAddNewButton = (Button) view.findViewById(R.id.addnew_button);
+        mAddNewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+                // 1. parameter: Resource File, 2. view group --> null to be changed later on, in example
+                //view group is in other dialog
+                View mView = getLayoutInflater().inflate(R.layout.dialog_entername, null);
+                final EditText mItemName = (EditText) mView.findViewById(R.id.itemName);
+                //final EditText mShop = (EditText) mView.findViewById(R.id.ShopName);
+                final EditText mQuantity = (EditText) mView.findViewById(R.id.Quantity);
+
+
+                //static spinner experiment begin
+                Spinner staticSpinner = (Spinner) mView.findViewById(R.id.static_spinner2);
+
+                // Create an ArrayAdapter using the string array and a default spinner
+                ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter
+                        .createFromResource(getContext(), R.array.brew_array,
+                                android.R.layout.simple_spinner_item);
+
+                // Specify the layout to use when the list of choices appears
+                staticAdapter
+                        .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                // Apply the adapter to the spinner
+                staticSpinner.setAdapter(staticAdapter);
+                final Spinner mShop = (Spinner) mView.findViewById(R.id.static_spinner2);
+
+                // static spinner experiment end
+
+                //final Item newItem = new Item(mItemName.toString(), mShop.toString(), mQuantity.toString());
+                Button mOkButton = (Button) mView.findViewById(R.id.ok_button);
+                mBuilder.setView(mView);
+                final AlertDialog dialog = mBuilder.create();
+
+                mOkButton.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view) {
+                        if (!mItemName.getText().toString().isEmpty()){
+                            //Toast.makeText(ListActivity.this, "you added successfully", Toast.LENGTH_SHORT).show();
+                            Item newItem = new Item(mItemName.getText().toString(), mShop.getSelectedItem().toString(), mQuantity.getText().toString());
+                            listDB.addToDB(newItem);
+
+                            mItemName.setText("");
+                            //mShop.setText("");
+                            mQuantity.setText("");
+                            dialog.dismiss();
+                            updateUI();
+                        }
+                        else{
+                            Toast.makeText(getActivity(), "Please enter name of item", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                dialog.show();
+            }
+        }); */
 
         updateUI();
 
