@@ -5,6 +5,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.UUID;
+
 @Entity(tableName = "shop_table")
 public class ShopItem {
 
@@ -32,27 +34,47 @@ public class ShopItem {
         this.mBought = false;
     }
 
-    public int getmId() {
+    public int getId() {
         return mId;
     }
 
-    public String getmName() {
+    public String getName() {
         return mName;
     }
 
-    public String getmShopName() {
+    public String getShopName() {
         return mShopName;
     }
 
-    public int getmQuantity() {
+    public int getQuantity() {
         return mQuantity;
     }
 
-    public boolean ismBought() {
+    public boolean isBought() {
         return mBought;
     }
 
-    public void setmId(int mId) {
+    public void setId(int mId) {
         this.mId = mId;
     }
+
+    public void setName(@NonNull String mName) {
+        this.mName = mName;
+    }
+
+    public void setShopName(@NonNull String mShopName) {
+        this.mShopName = mShopName;
+    }
+
+    public void setQuantity(int mQuantity) {
+        this.mQuantity = mQuantity;
+    }
+
+    public void setBought(boolean mBought) {
+        this.mBought = mBought;
+    }
+
+//    public void setId(int mId) {
+//        this.mId = mId;
+//    }
 }

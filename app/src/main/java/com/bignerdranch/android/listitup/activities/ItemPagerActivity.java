@@ -28,7 +28,7 @@ public class ItemPagerActivity extends AppCompatActivity {
 
     MaterialToolbar appBar;
 
-    public static Intent newIntent(Context packageContext, UUID itemUUID) {
+    public static Intent newIntent(Context packageContext, int itemUUID) {
         Intent intent = new Intent(packageContext, ItemPagerActivity.class);
         intent.putExtra(EXTRA_ITEM_ID, itemUUID);
         return intent;

@@ -26,6 +26,6 @@ public interface ItemDAO {
     @Query("SELECT * from shop_table ORDER BY shopName ASC")
     List<ShopItem> getAlphabetizedShops();
 
-    @Query("SELECT * from shop_table ORDER BY id ASC")
+    @Query("SELECT * from shop_table ORDER BY name ASC")
     LiveData<List<ShopItem>> getOrderedItems();
 }

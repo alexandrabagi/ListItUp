@@ -1,6 +1,7 @@
 package com.bignerdranch.android.listitup.fragments;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,14 +17,19 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import com.bignerdranch.android.listitup.Item;
 import com.bignerdranch.android.listitup.ListDB;
 import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.activities.ItemPagerActivity;
+import com.bignerdranch.android.listitup.room.ItemRoomDB;
+import com.bignerdranch.android.listitup.room.ItemVM;
+import com.bignerdranch.android.listitup.room.ShopItem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -37,18 +43,18 @@ import java.util.Observer;
 public class ShoppingListFragment extends Fragment implements Observer {
 
     public static final String ARG_OBJECT = "object";
-//    private TextView myText;
 
-    private Button mAddNewButton;
     private FloatingActionButton mAddNewFAB;
 
-    private ItemAdapter mAdapter;
+    private ShopItemAdapter mAdapter;
 
     private RecyclerView mItemRecyclerView;
     private ListDB listDB;
     private List<Item> mItems;
     private TextView testText;
-    private int position;
+    private int tabPosition;
+
+    private ItemVM mItemVM;
 
     @Override
     public void update(Observable observable, Object data) {
@@ -59,12 +65,12 @@ public class ShoppingListFragment extends Fragment implements Observer {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        listDB = ListDB.get(getActivity());
-        mItems = listDB.getListDB();
-        listDB.addObserver(this);
-        System.out.println("ShoppingListFragment onCreate was called");
+//        listDB = ListDB.get(getActivity());
+//        mItems = listDB.getListDB();
+//        listDB.addObserver(this);
+//        System.out.println("ShoppingListFragment onCreate was called");
 
-        position = getArguments().getInt(ARG_OBJECT);
+        tabPosition = getArguments().getInt(ARG_OBJECT);
     }
 
     @Override
@@ -72,6 +78,33 @@ public class ShoppingListFragment extends Fragment implements Observer {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_shoppinglist, container, false);
+
+        mAdapter = new ShopItemAdapter(getActivity());
+
+        mItemVM = ViewModelProviders.of(this).get(ItemVM.class);
+        mItemVM.getAllItems().observe(getViewLifecycleOwner(), new androidx.lifecycle.Observer<List<ShopItem>>() {
+
+            @Override
+            public void onChanged(List<ShopItem> shopItems) {
+                mAdapter.setItems(shopItems);
+            }
+        });
+
+
+
+
+//        mItemVM.getAllItems().observe(this, new Observer<List<ShopItem>>() {
+//            @Override
+//            public void update(Observable o, Object arg) {
+//
+//            }
+//
+//            @Override
+//            public void onChanged(@Nullable List<ShopItem> items) {
+//                mAdapter.setList(items);
+//            };
+//
+//        });
 
         return view;
     }
@@ -82,10 +115,11 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
         mItemRecyclerView = view.findViewById(R.id.items_recycler_view);
         mItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mItemRecyclerView.setAdapter(mAdapter); // added
 
         testText = view.findViewById(R.id.test_text);
         mAddNewFAB = view.findViewById(R.id.add_new_fab);
-        if (position > 1) {
+        if (tabPosition > 1) {
             testText.setText("In Cart List");
             mAddNewFAB.setVisibility(View.INVISIBLE);
         }
@@ -226,29 +260,38 @@ public class ShoppingListFragment extends Fragment implements Observer {
     }
 
     private void updateUI() {
-        ListDB listDB = ListDB.get(getActivity());
-        List<Item> items = listDB.getListDB();
+//        ItemRoomDB itemDB = ItemRoomDB.getDatabase(getActivity());
+//        ListDB listDB = ListDB.get(getActivity());
+//        List<ShopItem> items = listDB.getListDB();
+//        List<ShopItem> items = mItemVM.getAllItems();
+//
+//        if (mAdapter == null) {
+//            mAdapter = new ShopItemAdapter(getActivity());
+//            mItemRecyclerView.setAdapter(mAdapter);
+//        }
+//        else {
+//            mAdapter.setItems(items);
+//            mAdapter.notifyDataSetChanged();
+//        }
 
-        if (mAdapter == null) {
-            mAdapter = new ItemAdapter(mItems);
-            mItemRecyclerView.setAdapter(mAdapter);
-        }
-        else {
-            mAdapter.setList(items);
-            mAdapter.notifyDataSetChanged();
-        }
+//        if (mAdapter == null) {
+//            mAdapter = new ShopItemAdapter(getActivity());
+//            mItemRecyclerView.setAdapter(mAdapter);
+//        } else {
+//            mAdapter.setItems();
+//        }
     }
 
 
-    private class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class ShopItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private Item mItem;
+        private ShopItem mItem;
         private TextView mThingNo;
         private TextView itemName;
         private TextView shopName;
         private TextView quantity;
 
-        public ItemHolder(LayoutInflater inflater, ViewGroup parent) {
+        public ShopItemHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item, parent, false));
             itemName = itemView.findViewById(R.id.what_item);
             mThingNo = itemView.findViewById(R.id.no_item);
@@ -257,12 +300,12 @@ public class ShoppingListFragment extends Fragment implements Observer {
             itemView.setOnClickListener(this);
         }
 
-        public void bind(Item item, int position) {
+        public void bind(ShopItem item, int position) {
             mItem = item;
             mThingNo.setText(" "+ (position+1) +" "); // returns index+1 of item
 
-            itemName.setText(mItem.getWhat());
-            shopName.setText(mItem.getShop());
+            itemName.setText(mItem.getName());
+            shopName.setText(mItem.getShopName());
             quantity.setText(mItem.getQuantity());
         }
 
@@ -271,31 +314,33 @@ public class ShoppingListFragment extends Fragment implements Observer {
          */
         @Override
         public void onClick(View view) {
-            Intent intent = ItemPagerActivity.newIntent(getActivity(), mItem.getItemUUID());
+            Intent intent = ItemPagerActivity.newIntent(getActivity(), mItem.getId());
             startActivity(intent);
         }
     }
 
-    private class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
+    private class ShopItemAdapter extends Adapter<ShopItemHolder> {
 
-        private List<Item> mList;
+        private List<ShopItem> mItems;
 
-        public ItemAdapter(List<Item> items) {
-            mList = items;
+        public ShopItemAdapter(Context context) {
+//            mList = items;
+            LayoutInflater inflater = LayoutInflater.from(context);
         }
 
         @Override
-        public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ShopItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//            View view = getLayoutInflater().inflate(R.layout.list_item, parent, false);
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            return new ItemHolder(layoutInflater, parent);
+            return new ShopItemHolder(layoutInflater, parent);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
-            Item item = ListDB.get(getContext()).getListDB().get(position);
+        public void onBindViewHolder(@NonNull ShopItemHolder holder, int position) {
+            ShopItem item = mItems.get(position);
             holder.bind(item, position);
 
-            switch (item.getShop()) {
+            switch (item.getShopName()) {
                 case "Lidl": holder.itemView.setBackgroundColor(getResources().getColor(R.color.LidlColor));
                     break;
                 case "Bilka": holder.itemView.setBackgroundColor(getResources().getColor(R.color.BilkaColor));
@@ -311,11 +356,15 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
         @Override
         public int getItemCount() {
-            return ListDB.get(getContext()).getListDB().size();
+            if (mItems != null) {
+                return mItems.size();
+            } else return 0;
+
         }
 
-        public void setList(List<Item> items) {
-            mList = items;
+        void setItems(List<ShopItem> items) {
+            mItems = items;
+            notifyDataSetChanged();
         }
     }
 
@@ -333,8 +382,8 @@ public class ShoppingListFragment extends Fragment implements Observer {
             //Remove swiped item from list and notify the RecyclerView
             //But where to remove from???
             int position = viewHolder.getAdapterPosition();
-            Item itemToRemove = mAdapter.mList.get(position);
-            listDB.deleteItem(itemToRemove.getWhat());
+            ShopItem itemToRemove = mAdapter.mItems.get(position);
+            listDB.deleteItem(itemToRemove.getName());
             mAdapter.notifyDataSetChanged();
 
             updateUI();

@@ -27,7 +27,7 @@ public abstract class ItemRoomDB extends RoomDatabase {
     static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
     // returns a singleton
-    static ItemRoomDB getDatabase(final Context context) {
+    public static ItemRoomDB getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (ItemRoomDB.class) {
                 if (INSTANCE == null) {

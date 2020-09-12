@@ -28,4 +28,44 @@ public class CartIem {
         this.mQuantity = quantity;
         this.mBought = true;
     }
+
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int mId) {
+        this.mId = mId;
+    }
+
+    public String getName() {
+        return mName;
+    }
+
+    public void setName(String mName) {
+        this.mName = mName;
+    }
+
+    public String getShopName() {
+        return mShopName;
+    }
+
+    public void setShopName(String mShopName) {
+        this.mShopName = mShopName;
+    }
+
+    public int getQuantity() {
+        return mQuantity;
+    }
+
+    public void setQuantity(int mQuantity) {
+        this.mQuantity = mQuantity;
+    }
+
+    public boolean isBought() {
+        return mBought;
+    }
+
+    public void setBought(boolean mBought) {
+        this.mBought = mBought;
+    }
 }
