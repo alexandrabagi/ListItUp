@@ -21,7 +21,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.bignerdranch.android.listitup.Item;
-import com.bignerdranch.android.listitup.ListDB;
+//import com.bignerdranch.android.listitup.ListDB;
 import com.bignerdranch.android.listitup.PictureUtils;
 import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.activities.LocationActivity;
@@ -80,15 +80,15 @@ public class ItemFragment extends Fragment {
 
         UUID thingID = (UUID) getArguments().getSerializable(ARG_THING_ID);
         //get item from database
-        mItem = ListDB.get(getActivity()).getItemWithUUID(thingID);
-        mPhotoFile = ListDB.get(getActivity()).getPhotoFile(mItem); //saves pointer to where photo is stored
+//        mItem = ListDB.get(getActivity()).getItemWithUUID(thingID);
+//        mPhotoFile = ListDB.get(getActivity()).getPhotoFile(mItem); //saves pointer to where photo is stored
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        ListDB.get(getActivity())
-                .updateItem(mItem);
+//        ListDB.get(getActivity())
+//                .updateItem(mItem);
     }
 
     @Override

@@ -10,7 +10,7 @@ import java.util.UUID;
 @Entity(tableName = "shop_table")
 public class ShopItem {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "id")
     private int mId;
@@ -26,8 +26,7 @@ public class ShopItem {
     @ColumnInfo(name = "bought")
     private boolean mBought;
 
-    public ShopItem(int id, String name, String shopName, int quantity) {
-        this.mId = id;
+    public ShopItem(String name, String shopName, int quantity) {
         this.mName = name;
         this.mShopName = shopName;
         this.mQuantity = quantity;

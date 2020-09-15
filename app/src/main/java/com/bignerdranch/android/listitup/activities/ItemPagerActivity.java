@@ -12,7 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bignerdranch.android.listitup.Item;
 import com.bignerdranch.android.listitup.fragments.ItemFragment;
-import com.bignerdranch.android.listitup.ListDB;
+//import com.bignerdranch.android.listitup.ListDB;
 import com.bignerdranch.android.listitup.R;
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -23,7 +23,7 @@ public class ItemPagerActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
     private List<Item> mItems;
-    private static ListDB mListDB;
+//    private static ListDB mListDB;
     private static final String EXTRA_ITEM_ID = "com.bignerdranch.android.criminalintent.crime_id";
 
     MaterialToolbar appBar;
@@ -43,7 +43,7 @@ public class ItemPagerActivity extends AppCompatActivity {
         appBar = findViewById(R.id.topAppBar);
 
         mViewPager = (ViewPager) findViewById(R.id.item_view_pager);
-        mItems = ListDB.get(this).getListDB();
+//        mItems = ListDB.get(this).getListDB();
         FragmentManager fragmentManager = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override

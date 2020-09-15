@@ -3,6 +3,7 @@ package com.bignerdranch.android.listitup.room;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -20,6 +21,9 @@ public interface ItemDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(ShopItem item);
 
+    @Delete
+    void delete(ShopItem item);
+
     @Query("DELETE FROM shop_table")
     void deleteAll();
 
@@ -27,5 +31,8 @@ public interface ItemDAO {
     List<ShopItem> getAlphabetizedShops();
 
     @Query("SELECT * from shop_table ORDER BY name ASC")
-    LiveData<List<ShopItem>> getOrderedItems();
+    LiveData<List<ShopItem>> getAllItems();
+
+    @Query("SELECT * FROM shop_table WHERE id = :id")
+    ShopItem loadItem(int id);
 }

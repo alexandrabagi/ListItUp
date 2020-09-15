@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import com.bignerdranch.android.listitup.Item;
-import com.bignerdranch.android.listitup.ListDB;
+//import com.bignerdranch.android.listitup.ListDB;
 import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.activities.ItemPagerActivity;
 import com.bignerdranch.android.listitup.room.ItemRoomDB;
@@ -49,7 +49,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
     private ShopItemAdapter mAdapter;
 
     private RecyclerView mItemRecyclerView;
-    private ListDB listDB;
+//    private ListDB listDB;
     private List<Item> mItems;
     private TextView testText;
     private int tabPosition;
@@ -168,8 +168,9 @@ public class ShoppingListFragment extends Fragment implements Observer {
                     public void onClick(View view) {
                         if (!mItemName.getText().toString().isEmpty()){
                             //Toast.makeText(ListActivity.this, "you added successfully", Toast.LENGTH_SHORT).show();
-                            Item newItem = new Item(mItemName.getText().toString(), mShop.getSelectedItem().toString(), mQuantity.getText().toString());
-                            listDB.addToDB(newItem);
+                            ShopItem newItem = new ShopItem(mItemName.getText().toString(), mShop.getSelectedItem().toString(), Integer.parseInt(mQuantity.getText().toString()));
+//                            listDB.addToDB(newItem);
+                            mItemVM.insert(newItem);
 
                             mItemName.setText("");
                             //mShop.setText("");
@@ -306,7 +307,8 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
             itemName.setText(mItem.getName());
             shopName.setText(mItem.getShopName());
-            quantity.setText(mItem.getQuantity());
+            quantity.setText(Integer.toString(mItem.getQuantity()));
+
         }
 
         /*
@@ -383,7 +385,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
             //But where to remove from???
             int position = viewHolder.getAdapterPosition();
             ShopItem itemToRemove = mAdapter.mItems.get(position);
-            listDB.deleteItem(itemToRemove.getName());
+//            listDB.deleteItem(itemToRemove.getName());
             mAdapter.notifyDataSetChanged();
 
             updateUI();

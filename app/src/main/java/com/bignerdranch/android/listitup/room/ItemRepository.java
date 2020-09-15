@@ -21,7 +21,7 @@ public class ItemRepository {
     ItemRepository(Application application) {
         ItemRoomDB db = ItemRoomDB.getDatabase(application);
         mItemDao = db.itemDao();
-        mAllItems = mItemDao.getOrderedItems();
+        mAllItems = mItemDao.getAllItems();
     }
 
     // Room executes all queries ona separate thread
@@ -33,7 +33,9 @@ public class ItemRepository {
     // Must be called on a non-UI thread
     // Room ensures that no long running operations happen on the main thread, blocking the UI
     void insert(ShopItem item) {
-        mItemDao.insert(item);
+        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+            mItemDao.insert(item);
+        });
     }
 
     void deleteAll() {
