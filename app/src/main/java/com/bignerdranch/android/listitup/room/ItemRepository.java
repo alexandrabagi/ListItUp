@@ -30,6 +30,10 @@ public class ItemRepository {
         return mAllItems;
     }
 
+    LiveData<List<ShopItem>> getAllItemsByShops() {
+        return mItemDao.getAlphabetizedShops();
+    }
+
     // Must be called on a non-UI thread
     // Room ensures that no long running operations happen on the main thread, blocking the UI
     void insert(ShopItem item) {
@@ -37,6 +41,13 @@ public class ItemRepository {
             mItemDao.insert(item);
         });
     }
+
+    void delete(ShopItem item) {
+        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+            mItemDao.delete(item);
+        });
+    }
+
 
     void deleteAll() {
         mItemDao.deleteAll();

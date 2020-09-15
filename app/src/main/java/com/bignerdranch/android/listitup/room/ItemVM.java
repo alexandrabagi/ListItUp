@@ -28,8 +28,16 @@ public class ItemVM extends AndroidViewModel {
             return mAllItems;
         }
 
+        public LiveData<List<ShopItem>> getAllItemsByShops() {
+            return mRepository.getAllItemsByShops();
+        }
+
         public void insert(ShopItem item) {
             mRepository.insert(item);
+        }
+
+        public void delete(ShopItem item) {
+            mRepository.delete(item);
         }
 
         public void deleteAll() {

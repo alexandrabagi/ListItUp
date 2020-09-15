@@ -38,7 +38,7 @@ import java.util.Observer;
  * This fragment hosts "To Buy" and "In Cart" lists
  */
 
-public class ShoppingListFragment extends Fragment implements Observer {
+public class CartListFragment extends Fragment implements Observer {
 
     public static final String ARG_OBJECT = "object";
 
@@ -47,8 +47,6 @@ public class ShoppingListFragment extends Fragment implements Observer {
     private ShopItemAdapter mAdapter;
 
     private RecyclerView mItemRecyclerView;
-//    private ListDB listDB;
-    private List<Item> mItems;
     private TextView testText;
     private int tabPosition;
 
@@ -75,14 +73,13 @@ public class ShoppingListFragment extends Fragment implements Observer {
         mAdapter = new ShopItemAdapter(getActivity());
 
         mItemVM = ViewModelProviders.of(this).get(ItemVM.class);
-//        mItemVM.getAllItems().observe(getViewLifecycleOwner(), new androidx.lifecycle.Observer<List<ShopItem>>() {
-//
-//            @Override
-//            public void onChanged(List<ShopItem> shopItems) {
-//                mAdapter.setItems(shopItems);
-//            }
-//        });
-        mItemVM.getAllItemsByShops().observe(getViewLifecycleOwner(), shopItems -> mAdapter.setItems(shopItems));
+        mItemVM.getAllItems().observe(getViewLifecycleOwner(), new androidx.lifecycle.Observer<List<ShopItem>>() {
+
+            @Override
+            public void onChanged(List<ShopItem> shopItems) {
+                mAdapter.setItems(shopItems);
+            }
+        });
 
         return view;
     }
@@ -280,8 +277,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
         public void bind(ShopItem item, int position) {
             mItem = item;
-//            mThingNo.setText(" "+ (position+1) +" "); // returns index+1 of item
-            mThingNo.setText(" " + item.getId() + " ");
+            mThingNo.setText(" "+ (position+1) +" "); // returns index+1 of item
 
             itemName.setText(mItem.getName());
             shopName.setText(mItem.getShopName());
