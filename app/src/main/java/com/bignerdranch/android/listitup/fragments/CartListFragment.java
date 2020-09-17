@@ -70,7 +70,7 @@ public class CartListFragment extends Fragment implements Observer {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_shoppinglist, container, false);
+        View view = inflater.inflate(R.layout.fragment_cartlist, container, false);
 
         mAdapter = new CartItemAdapter(getActivity());
 
