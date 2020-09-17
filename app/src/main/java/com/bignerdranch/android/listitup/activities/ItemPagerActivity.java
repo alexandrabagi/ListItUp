@@ -29,7 +29,7 @@ public class ItemPagerActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private List<ShopItem> mItems;
     private ItemVM mItemVM;
-    private static final String EXTRA_ITEM_ID = "com.bignerdranch.android.criminalintent.crime_id";
+    public static final String EXTRA_ITEM_ID = "com.bignerdranch.android.criminalintent.crime_id";
 
     private static final String TAG = "pager";
 
@@ -45,7 +45,9 @@ public class ItemPagerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_pager);
-        Log.i(TAG, "OnCreate was called");
+
+        int itemId = (int) getIntent().getIntExtra(EXTRA_ITEM_ID, 0);
+
         mItems = new ArrayList<>();
 
         mViewPager = (ViewPager) findViewById(R.id.item_view_pager);
@@ -57,6 +59,8 @@ public class ItemPagerActivity extends AppCompatActivity {
             public void onChanged(List<ShopItem> items) {
                 if (items != null) {
                     mItems = items;
+                    // sets the correct item to look at individually, when clicking on an item in our list
+
                     mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
                         @Override
                         public Fragment getItem(int position) {
@@ -68,30 +72,20 @@ public class ItemPagerActivity extends AppCompatActivity {
                             return mItems.size();
                         }
                     });
+                    for (int i = 0; i < mItems.size(); i++) {
+                        if (mItems.get(i).getId() == itemId) {
+                            mViewPager.setCurrentItem(i);
+                            break;
+                        } else continue;
+                    }
+
                 } else {
                     Log.i(TAG, "mItems was null");
                 }
             }
         });
 
-
-        int itemId = (int) getIntent().getIntExtra(EXTRA_ITEM_ID, 0);
-
-
         appBar = findViewById(R.id.topAppBar);
-
-
-//        Log.i(TAG, "mItems check 4: " + mItems.size());
-
-
-        /*
-        sets the correct item to look at individually, when clicking on an item in our list
-         */
-        for (int i = 0; i < mItems.size(); i++) {
-            if (mItems.get(i).getId() == itemId) {
-                mViewPager.setCurrentItem(i);
-                break; }
-        }
     }
 
 //    private void getAllItems() {
