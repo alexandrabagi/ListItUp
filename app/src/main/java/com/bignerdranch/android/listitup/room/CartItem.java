@@ -6,7 +6,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "cart_table")
-public class CartIem {
+public class CartItem {
 
     @PrimaryKey
     @NonNull
@@ -21,7 +21,7 @@ public class CartIem {
     @ColumnInfo(name = "bought")
     private boolean mBought;
 
-    public CartIem(int id, String name, String shopName, int quantity) {
+    public CartItem(int id, String name, String shopName, int quantity) {
         this.mId = id;
         this.mName = name;
         this.mShopName = shopName;

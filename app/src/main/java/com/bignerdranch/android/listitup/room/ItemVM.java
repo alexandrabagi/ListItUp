@@ -4,8 +4,6 @@ import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 
 import java.util.List;
 
@@ -18,45 +16,64 @@ import java.util.List;
 public class ItemVM extends AndroidViewModel {
 
     private ItemRepository mRepository;
-    private LiveData<List<ShopItem>> mAllItems;
-//    private LiveData<Integer> itemIdLiveData;
-//    private LiveData<ShopItem> mLiveItem = Transformations.switchMap(itemIdLiveData, itemID -> {
-//        return mRepository.loadItem(itemID);
-//    });
+    private LiveData<List<ShopItem>> mAllShopItems;
+    private LiveData<List<CartItem>> mAllCartItems;
+
 
     public ItemVM (Application application) {
         super(application);
         mRepository = new ItemRepository(application);
-        mAllItems = mRepository.getAllItems();
+        mAllShopItems = mRepository.getAllShopItems();
+        mAllCartItems = mRepository.getAllCartItems();
     }
 
-    public LiveData<List<ShopItem>> getAllItems() {
-        return mAllItems;
+//    public LiveData<List<ShopItem>> getAllItems() {
+//        return mAllShopItems;
+//    }
+
+//    public LiveData<List<CartItem>> getAllCartItems() {
+//        return mAllCartItems;
+//    }
+
+    ///SHOPLIST///
+    public void insertToShop(ShopItem item) {
+        mRepository.insertToShop(item);
     }
 
+    public void deleteFromShop(ShopItem item) {
+        mRepository.deleteShopItem(item);
+    }
 
     public LiveData<List<ShopItem>> getAllItemsByShops() {
         return mRepository.getAllItemsByShops();
     }
 
-    public void insert(ShopItem item) {
-        mRepository.insert(item);
-    }
-
-    public void delete(ShopItem item) {
-        mRepository.delete(item);
-    }
-
-    public ShopItem loadItem(int id) {
+    public ShopItem loadShopItem(int id) {
         return mRepository.loadItem(id).getValue();
     }
 
-    public ShopItem getItem(int id) {
-        return mRepository.getItem(id);
+    public void deleteAllShop() {
+            mRepository.deleteAllShop();
     }
 
-    public void deleteAll() {
-            mRepository.deleteAll();
-        }
+    ///CARTLIST///
+    public void insertToCart(CartItem item) {
+        mRepository.insertToCart(item);
+    }
 
+    public void deleteFromCart(CartItem item) {
+        mRepository.deleteCartItem(item);
+    }
+
+    public LiveData<List<CartItem>> getAllCartItems() {
+        return mRepository.getAllCartItems();
+    }
+
+    public CartItem loadCartItem(int id) {
+        return mRepository.loadCartItem(id).getValue();
+    }
+
+    public void deleteAllCart() {
+        mRepository.deleteAllCart();
+    }
 }

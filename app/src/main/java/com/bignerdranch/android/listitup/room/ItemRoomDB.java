@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
  * No queries on the main thread
  */
 
-@Database(entities = {ShopItem.class, CartIem.class}, version = 1, exportSchema = false)
+@Database(entities = {ShopItem.class, CartItem.class}, version = 1, exportSchema = false)
 public abstract class ItemRoomDB extends RoomDatabase {
 
     public abstract ItemDAO itemDao();

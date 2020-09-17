@@ -18,24 +18,41 @@ import java.util.List;
 @Dao
 public interface ItemDAO {
 
+    ///SHOPLIST///
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(ShopItem item);
+    void insertToShop(ShopItem item);
 
     @Delete
-    void delete(ShopItem item);
+    void deleteShopItem(ShopItem item);
 
     @Query("DELETE FROM shop_table")
-    void deleteAll();
+    void deleteAllShop();
 
     @Query("SELECT * from shop_table ORDER BY shopName ASC")
     LiveData<List<ShopItem>> getAlphabetizedShops();
 
     @Query("SELECT * from shop_table ORDER BY name ASC")
-    LiveData<List<ShopItem>> getAllItems();
+    LiveData<List<ShopItem>> getAllShopItems();
 
     @Query("SELECT * FROM shop_table WHERE id = :id")
-    LiveData<ShopItem> loadItem(int id);
+    LiveData<ShopItem> loadShopItem(int id);
 
-    @Query("SELECT * FROM shop_table WHERE id = :id")
-    ShopItem getItem(int id);
+//    @Query("SELECT * FROM shop_table WHERE id = :id")
+//    ShopItem getItem(int id);
+
+    ///CARTLIST///
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertToCart(CartItem item);
+
+    @Delete
+    void deleteCartItem(CartItem item);
+
+    @Query("DELETE FROM cart_table")
+    void deleteAllCart();
+
+    @Query("SELECT * from cart_table ORDER BY name ASC")
+    LiveData<List<CartItem>> getAllCartItems();
+
+    @Query("SELECT * FROM cart_table WHERE id = :id")
+    LiveData<CartItem> loadCartItem(int id);
 }

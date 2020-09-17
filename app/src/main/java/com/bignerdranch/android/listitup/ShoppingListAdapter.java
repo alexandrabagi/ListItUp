@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.bignerdranch.android.listitup.fragments.CartListFragment;
 import com.bignerdranch.android.listitup.fragments.ShoppingListFragment;
 
 /**
@@ -24,11 +25,21 @@ public class ShoppingListAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         // Return a NEW fragment instance in createFragment(int)
-        Fragment fragment = new ShoppingListFragment();
-        Bundle args = new Bundle();
-        // Our object is just an integer :-P
-        args.putInt(ShoppingListFragment.ARG_OBJECT, position + 1);
-        fragment.setArguments(args);
+        Fragment fragment;
+        if (position == 0) {
+            fragment = new ShoppingListFragment();
+            Bundle args = new Bundle();
+            // Our object is just an integer :-P
+            args.putInt(ShoppingListFragment.ARG_OBJECT, position + 1);
+            fragment.setArguments(args);
+        } else {
+            fragment = new CartListFragment();
+            Bundle args = new Bundle();
+            // Our object is just an integer :-P
+            args.putInt(CartListFragment.ARG_OBJECT, position + 1);
+            fragment.setArguments(args);
+        }
+
         return fragment;
     }
 

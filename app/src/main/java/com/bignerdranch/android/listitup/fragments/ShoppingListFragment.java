@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 import com.bignerdranch.android.listitup.Item;
 import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.activities.ItemPagerActivity;
+import com.bignerdranch.android.listitup.room.CartItem;
 import com.bignerdranch.android.listitup.room.ItemVM;
 import com.bignerdranch.android.listitup.room.ShopItem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -149,7 +150,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
                         if (!mItemName.getText().toString().isEmpty()){
                             //Toast.makeText(ListActivity.this, "you added successfully", Toast.LENGTH_SHORT).show();
                             ShopItem newItem = new ShopItem(mItemName.getText().toString(), mShop.getSelectedItem().toString(), Integer.parseInt(mQuantity.getText().toString()));
-                            mItemVM.insert(newItem);
+                            mItemVM.insertToShop(newItem);
 
                             mItemName.setText("");
                             //mShop.setText("");
@@ -363,7 +364,10 @@ public class ShoppingListFragment extends Fragment implements Observer {
             //But where to remove from???
             int position = viewHolder.getAdapterPosition();
             ShopItem itemToRemove = mAdapter.mItems.get(position);
-            mItemVM.delete(itemToRemove);
+            mItemVM.deleteFromShop(itemToRemove);
+            CartItem itemToAdd = new CartItem(
+                    itemToRemove.getId(), itemToRemove.getName(), itemToRemove.getShopName(), itemToRemove.getQuantity());
+            mItemVM.insertToCart(itemToAdd);
             mAdapter.notifyDataSetChanged();
 
             updateUI();
