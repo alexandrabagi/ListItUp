@@ -1,6 +1,7 @@
 package com.bignerdranch.android.listitup.room;
 
 import android.app.Application;
+import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
@@ -48,6 +49,13 @@ public class ItemRepository {
         });
     }
 
+    LiveData<ShopItem> loadItem(int id) {
+        return mItemDao.loadItem(id);
+    }
+
+    ShopItem getItem(int id) {
+        return mItemDao.getItem(id);
+    }
 
     void deleteAll() {
         mItemDao.deleteAll();

@@ -6,40 +6,51 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
-import com.bignerdranch.android.listitup.Item;
-//import com.bignerdranch.android.listitup.ListDB;
 import com.bignerdranch.android.listitup.PictureUtils;
 import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.activities.LocationActivity;
+import com.bignerdranch.android.listitup.room.ItemVM;
 import com.bignerdranch.android.listitup.room.ShopItem;
 
 import java.io.File;
 import java.util.List;
-import java.util.UUID;
 
-/*
-need to add database wherever stuff is red to retrieve an item
- */
+public class ItemDetailFragment extends Fragment {
 
-public class ItemFragment extends Fragment {
+    private static final String ARG_THING_ID = "itemID";
+    private static final String ARG_THING_NAME = "itemName";
+    private static final String ARG_THING_SHOP = "itemShop";
+    private static final String ARG_THING_QUA = "itemQuantity";
 
-    private static final String ARG_THING_ID = "thingID";
+    private int itemID;
+    private String itemName;
+    private String itemShop;
+    private int itemQuantity;
 
     private ShopItem mItem;
+    private LiveData<ShopItem> mLiveItem;
     private TextView mWhat;
     private TextView mShopName;
     private TextView mQuantity;
@@ -50,17 +61,22 @@ public class ItemFragment extends Fragment {
     private Button goToShop;
     private Button showMap;
 
-    private View mScraperView;
+
+    private ItemVM mItemVM;
 
     private static final String EXTRA_SHOP_NAME = "com.bignerdranch.android.listitup.shop_name";
+    private static final String TAG = "itemDetail";
 
     /*
     Configures item for Pager
      */
-    public static ItemFragment newInstance(int thingID) {
+    public static ItemDetailFragment newInstance(int thingID, String name, String shop, int quantity) {
         Bundle args = new Bundle();
-        args.putSerializable(ARG_THING_ID, thingID);
-        ItemFragment fragment = new ItemFragment();
+        args.putInt(ARG_THING_ID, thingID);
+        args.putString(ARG_THING_NAME, name);
+        args.putString(ARG_THING_SHOP, shop);
+        args.putInt(ARG_THING_QUA, quantity);
+        ItemDetailFragment fragment = new ItemDetailFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -79,8 +95,12 @@ public class ItemFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "OnCreate was called");
 
-        int thingID = getArguments().getInt(ARG_THING_ID);
+        itemID = getArguments().getInt(ARG_THING_ID);
+        itemName = getArguments().getString(ARG_THING_NAME);
+        itemShop = getArguments().getString(ARG_THING_SHOP);
+        itemQuantity = getArguments().getInt(ARG_THING_QUA);
 
         //get item from database
 //        mItem = ListDB.get(getActivity()).getItemWithUUID(thingID);
@@ -90,8 +110,6 @@ public class ItemFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-//        ListDB.get(getActivity())
-//                .updateItem(mItem);
     }
 
     @Override
@@ -99,13 +117,20 @@ public class ItemFragment extends Fragment {
                              Bundle savedInstanceState)  {
         View v = inflater.inflate(R.layout.fragment_item, container, false);
 
-
         mWhat = (TextView) v.findViewById(R.id.item_name);
-        mWhat.setText(mItem.getName());
+        mWhat.setText(itemName);
         mShopName = (TextView) v.findViewById(R.id.item_shop);
-        mShopName.setText(mItem.getShopName());
+        mShopName.setText(itemShop);
         mQuantity = (TextView) v.findViewById(R.id.item_quantity);
-        mQuantity.setText(mItem.getQuantity());
+        mQuantity.setText(Integer.toString(itemQuantity));
+
+        return v;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
+        Log.i(TAG, "OnViewCreated was called");
+
         mPhotoButton = (ImageButton) v.findViewById(R.id.photo_button);
         goToShop =(Button) v.findViewById(R.id.goToShop_button);
         showMap = (Button) v.findViewById(R.id.showMap_button);
@@ -115,9 +140,10 @@ public class ItemFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Intent Getintent = new Intent(Intent.ACTION_VIEW,Uri.parse("https://www."+ mItem.getShopName() + ".dk"));
+                Intent Getintent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www."+ mItem.getShopName() + ".dk"));
                 startActivity(Getintent);}
         });
+
 
         PackageManager packageManager = getActivity().getPackageManager();
 
@@ -137,7 +163,7 @@ public class ItemFragment extends Fragment {
                                 PackageManager.MATCH_DEFAULT_ONLY);
                 for (ResolveInfo activity : cameraActivities) {
                     getActivity().grantUriPermission(activity.activityInfo.packageName,
-                uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);}
+                            uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);}
                 startActivityForResult(captureImage, REQUEST_PHOTO);
             }
         });
@@ -153,8 +179,6 @@ public class ItemFragment extends Fragment {
                 intent.putExtra("name of shop", shopName);
                 startActivity(intent);}
         });
-
-        return v;
     }
 
     //gives us result from child activity to update foto and link it to its item
@@ -170,7 +194,10 @@ public class ItemFragment extends Fragment {
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             updatePhotoView();
         }
+
     }
+
+
 
     public String getShopName() {
         return mShopName.getText().toString();

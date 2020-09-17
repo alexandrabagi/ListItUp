@@ -280,7 +280,6 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
         public void bind(ShopItem item, int position) {
             mItem = item;
-//            mThingNo.setText(" "+ (position+1) +" "); // returns index+1 of item
             mThingNo.setText(" " + item.getId() + " ");
 
             itemName.setText(mItem.getName());
@@ -294,7 +293,8 @@ public class ShoppingListFragment extends Fragment implements Observer {
          */
         @Override
         public void onClick(View view) {
-            Intent intent = ItemPagerActivity.newIntent(getActivity(), mItem.getId());
+            Intent intent = new Intent(getActivity(), ItemPagerActivity.class);
+            intent.putExtra("thingID", Integer.valueOf(mItem.getId()));
             startActivity(intent);
         }
     }

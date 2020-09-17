@@ -34,5 +34,8 @@ public interface ItemDAO {
     LiveData<List<ShopItem>> getAllItems();
 
     @Query("SELECT * FROM shop_table WHERE id = :id")
-    ShopItem loadItem(int id);
+    LiveData<ShopItem> loadItem(int id);
+
+    @Query("SELECT * FROM shop_table WHERE id = :id")
+    ShopItem getItem(int id);
 }
