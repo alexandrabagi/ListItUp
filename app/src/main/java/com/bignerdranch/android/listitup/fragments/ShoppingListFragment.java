@@ -23,12 +23,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
-import com.bignerdranch.android.listitup.Item;
 import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.activities.ItemPagerActivity;
-import com.bignerdranch.android.listitup.room.CartItem;
+import com.bignerdranch.android.listitup.room.Item;
 import com.bignerdranch.android.listitup.room.ItemVM;
-import com.bignerdranch.android.listitup.room.ShopItem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -50,7 +48,6 @@ public class ShoppingListFragment extends Fragment implements Observer {
     private ShopItemAdapter mAdapter;
 
     private RecyclerView mItemRecyclerView;
-//    private ListDB listDB;
     private List<Item> mItems;
     private TextView testText;
     private int tabPosition;
@@ -149,7 +146,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
                     public void onClick(View view) {
                         if (!mItemName.getText().toString().isEmpty()){
                             //Toast.makeText(ListActivity.this, "you added successfully", Toast.LENGTH_SHORT).show();
-                            ShopItem newItem = new ShopItem(mItemName.getText().toString(), mShop.getSelectedItem().toString(), Integer.parseInt(mQuantity.getText().toString()));
+                            Item newItem = new Item(mItemName.getText().toString(), mShop.getSelectedItem().toString(), Integer.parseInt(mQuantity.getText().toString()), 0);
                             mItemVM.insertToShop(newItem);
 
                             mItemName.setText("");
@@ -266,7 +263,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
     private class ShopItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private ShopItem mItem;
+        private Item mItem;
         private TextView mThingNo;
         private TextView itemName;
         private TextView shopName;
@@ -281,7 +278,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
             itemView.setOnClickListener(this);
         }
 
-        public void bind(ShopItem item, int position) {
+        public void bind(Item item, int position) {
             mItem = item;
             mThingNo.setText(" " + item.getId() + " ");
 
@@ -304,7 +301,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
     private class ShopItemAdapter extends Adapter<ShopItemHolder> {
 
-        private List<ShopItem> mItems;
+        private List<Item> mItems;
 
         public ShopItemAdapter(Context context) {
 //            LayoutInflater inflater = LayoutInflater.from(context);
@@ -318,7 +315,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
         @Override
         public void onBindViewHolder(@NonNull ShopItemHolder holder, int position) {
-            ShopItem item = mItems.get(position);
+            Item item = mItems.get(position);
             holder.bind(item, position);
 
             switch (item.getShopName()) {
@@ -343,7 +340,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
         }
 
-        void setItems(List<ShopItem> items) {
+        void setItems(List<Item> items) {
             mItems = items;
             notifyDataSetChanged();
         }
@@ -363,10 +360,10 @@ public class ShoppingListFragment extends Fragment implements Observer {
             //Remove swiped item from list and notify the RecyclerView
             //But where to remove from???
             int position = viewHolder.getAdapterPosition();
-            ShopItem itemToRemove = mAdapter.mItems.get(position);
+            Item itemToRemove = mAdapter.mItems.get(position);
             mItemVM.deleteFromShop(itemToRemove);
-            CartItem itemToAdd = new CartItem(
-                    itemToRemove.getId(), itemToRemove.getName(), itemToRemove.getShopName(), itemToRemove.getQuantity());
+            Item itemToAdd = new Item(
+                    itemToRemove.getName(), itemToRemove.getShopName(), itemToRemove.getQuantity(), 1);
             mItemVM.insertToCart(itemToAdd);
             mAdapter.notifyDataSetChanged();
 

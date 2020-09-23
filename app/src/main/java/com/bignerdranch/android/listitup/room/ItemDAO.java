@@ -7,6 +7,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -20,39 +21,42 @@ public interface ItemDAO {
 
     ///SHOPLIST///
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertToShop(ShopItem item);
+    void insertToShop(Item item);
 
     @Delete
-    void deleteShopItem(ShopItem item);
+    void deleteShopItem(Item item);
+
+    @Update
+    void setBought(Item item);
 
     @Query("DELETE FROM shop_table")
     void deleteAllShop();
 
-    @Query("SELECT * from shop_table ORDER BY shopName ASC")
-    LiveData<List<ShopItem>> getAlphabetizedShops();
+    @Query("SELECT * from shop_table WHERE bought = 0 ORDER BY shopName ASC")
+    LiveData<List<Item>> getAlphabetizedShops();
 
-    @Query("SELECT * from shop_table ORDER BY name ASC")
-    LiveData<List<ShopItem>> getAllShopItems();
+    @Query("SELECT * from shop_table WHERE bought = 0 ORDER BY name ASC")
+    LiveData<List<Item>> getAllShopItems();
 
-    @Query("SELECT * FROM shop_table WHERE id = :id")
-    LiveData<ShopItem> loadShopItem(int id);
+    @Query("SELECT * FROM shop_table WHERE bought = 0 AND id = :id")
+    LiveData<Item> loadShopItem(int id);
 
 //    @Query("SELECT * FROM shop_table WHERE id = :id")
 //    ShopItem getItem(int id);
 
     ///CARTLIST///
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertToCart(CartItem item);
+    void insertToCart(Item item);
 
     @Delete
-    void deleteCartItem(CartItem item);
+    void deleteCartItem(Item item);
 
-    @Query("DELETE FROM cart_table")
+    @Query("DELETE FROM shop_table")
     void deleteAllCart();
 
-    @Query("SELECT * from cart_table ORDER BY name ASC")
-    LiveData<List<CartItem>> getAllCartItems();
+    @Query("SELECT * from shop_table WHERE bought = 1 ORDER BY name ASC")
+    LiveData<List<Item>> getAllCartItems();
 
-    @Query("SELECT * FROM cart_table WHERE id = :id")
-    LiveData<CartItem> loadCartItem(int id);
+    @Query("SELECT * FROM shop_table WHERE bought = 1 AND id = :id")
+    LiveData<Item> loadCartItem(int id);
 }

@@ -20,12 +20,11 @@ import android.widget.TextView;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
-import com.bignerdranch.android.listitup.Item;
 //import com.bignerdranch.android.listitup.ListDB;
 import com.bignerdranch.android.listitup.PictureUtils;
 import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.activities.LocationActivity;
-import com.bignerdranch.android.listitup.room.ShopItem;
+import com.bignerdranch.android.listitup.room.Item;
 
 import java.io.File;
 import java.util.List;
@@ -39,7 +38,7 @@ public class ItemFragment extends Fragment {
 
     private static final String ARG_THING_ID = "thingID";
 
-    private ShopItem mItem;
+    private Item mItem;
     private TextView mWhat;
     private TextView mShopName;
     private TextView mQuantity;

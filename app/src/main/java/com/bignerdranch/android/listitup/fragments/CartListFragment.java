@@ -1,36 +1,26 @@
 package com.bignerdranch.android.listitup.fragments;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
-import com.bignerdranch.android.listitup.Item;
 import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.activities.ItemPagerActivity;
-import com.bignerdranch.android.listitup.room.CartItem;
+import com.bignerdranch.android.listitup.room.Item;
 import com.bignerdranch.android.listitup.room.ItemVM;
-import com.bignerdranch.android.listitup.room.ShopItem;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 import java.util.Observable;
@@ -122,7 +112,7 @@ public class CartListFragment extends Fragment implements Observer {
     ///RECYCLERVIEW CODE///
     private class CartItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private CartItem mItem;
+        private Item mItem;
         private TextView mThingNo;
         private TextView itemName;
         private TextView shopName;
@@ -137,7 +127,7 @@ public class CartListFragment extends Fragment implements Observer {
             itemView.setOnClickListener(this);
         }
 
-        public void bind(CartItem item, int position) {
+        public void bind(Item item, int position) {
             mItem = item;
             mThingNo.setText(" " + item.getId() + " ");
 
@@ -159,7 +149,7 @@ public class CartListFragment extends Fragment implements Observer {
 
     private class CartItemAdapter extends Adapter<CartItemHolder> {
 
-        private List<CartItem> mItems;
+        private List<Item> mItems;
 
         public CartItemAdapter(Context context) {
 //            LayoutInflater inflater = LayoutInflater.from(context);
@@ -173,7 +163,7 @@ public class CartListFragment extends Fragment implements Observer {
 
         @Override
         public void onBindViewHolder(@NonNull CartItemHolder holder, int position) {
-            CartItem item = mItems.get(position);
+            Item item = mItems.get(position);
             holder.bind(item, position);
 
             switch (item.getShopName()) {
@@ -198,7 +188,7 @@ public class CartListFragment extends Fragment implements Observer {
 
         }
 
-        void setItems(List<CartItem> items) {
+        void setItems(List<Item> items) {
             mItems = items;
             notifyDataSetChanged();
         }
@@ -218,7 +208,7 @@ public class CartListFragment extends Fragment implements Observer {
             //Remove swiped item from list and notify the RecyclerView
             //But where to remove from???
             int position = viewHolder.getAdapterPosition();
-            CartItem itemToRemove = mAdapter.mItems.get(position);
+            Item itemToRemove = mAdapter.mItems.get(position);
             mItemVM.deleteFromCart(itemToRemove);
             mAdapter.notifyDataSetChanged();
 

@@ -17,8 +17,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.bignerdranch.android.listitup.fragments.ItemDetailFragment;
 import com.bignerdranch.android.listitup.fragments.ItemFragment;
 import com.bignerdranch.android.listitup.R;
+import com.bignerdranch.android.listitup.room.Item;
 import com.bignerdranch.android.listitup.room.ItemVM;
-import com.bignerdranch.android.listitup.room.ShopItem;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import java.util.List;
 public class ItemPagerActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
-    private List<ShopItem> mItems;
+    private List<Item> mItems;
     private ItemVM mItemVM;
     public static final String EXTRA_ITEM_ID = "com.bignerdranch.android.criminalintent.crime_id";
 
@@ -54,9 +54,9 @@ public class ItemPagerActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         mItemVM = ViewModelProviders.of(this).get(ItemVM.class);
-        mItemVM.getAllItemsByShops().observe(this, new Observer<List<ShopItem>>() {
+        mItemVM.getAllItemsByShops().observe(this, new Observer<List<Item>>() {
             @Override
-            public void onChanged(List<ShopItem> items) {
+            public void onChanged(List<Item> items) {
                 if (items != null) {
                     mItems = items;
                     // sets the correct item to look at individually, when clicking on an item in our list
@@ -64,7 +64,7 @@ public class ItemPagerActivity extends AppCompatActivity {
                     mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
                         @Override
                         public Fragment getItem(int position) {
-                            ShopItem item = mItems.get(position);
+                            Item item = mItems.get(position);
                             return ItemDetailFragment.newInstance(item.getId(), item.getName(), item.getShopName(), item.getQuantity());
                         }
                         @Override

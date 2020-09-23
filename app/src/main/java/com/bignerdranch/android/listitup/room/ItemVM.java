@@ -16,8 +16,8 @@ import java.util.List;
 public class ItemVM extends AndroidViewModel {
 
     private ItemRepository mRepository;
-    private LiveData<List<ShopItem>> mAllShopItems;
-    private LiveData<List<CartItem>> mAllCartItems;
+    private LiveData<List<Item>> mAllShopItems;
+    private LiveData<List<Item>> mAllCartItems;
 
 
     public ItemVM (Application application) {
@@ -36,19 +36,19 @@ public class ItemVM extends AndroidViewModel {
 //    }
 
     ///SHOPLIST///
-    public void insertToShop(ShopItem item) {
+    public void insertToShop(Item item) {
         mRepository.insertToShop(item);
     }
 
-    public void deleteFromShop(ShopItem item) {
+    public void deleteFromShop(Item item) {
         mRepository.deleteShopItem(item);
     }
 
-    public LiveData<List<ShopItem>> getAllItemsByShops() {
+    public LiveData<List<Item>> getAllItemsByShops() {
         return mRepository.getAllItemsByShops();
     }
 
-    public ShopItem loadShopItem(int id) {
+    public Item loadShopItem(int id) {
         return mRepository.loadItem(id).getValue();
     }
 
@@ -57,19 +57,19 @@ public class ItemVM extends AndroidViewModel {
     }
 
     ///CARTLIST///
-    public void insertToCart(CartItem item) {
+    public void insertToCart(Item item) {
         mRepository.insertToCart(item);
     }
 
-    public void deleteFromCart(CartItem item) {
+    public void deleteFromCart(Item item) {
         mRepository.deleteCartItem(item);
     }
 
-    public LiveData<List<CartItem>> getAllCartItems() {
+    public LiveData<List<Item>> getAllCartItems() {
         return mRepository.getAllCartItems();
     }
 
-    public CartItem loadCartItem(int id) {
+    public Item loadCartItem(int id) {
         return mRepository.loadCartItem(id).getValue();
     }
 

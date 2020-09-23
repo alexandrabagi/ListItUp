@@ -31,8 +31,8 @@ import androidx.lifecycle.ViewModelProviders;
 import com.bignerdranch.android.listitup.PictureUtils;
 import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.activities.LocationActivity;
+import com.bignerdranch.android.listitup.room.Item;
 import com.bignerdranch.android.listitup.room.ItemVM;
-import com.bignerdranch.android.listitup.room.ShopItem;
 
 import java.io.File;
 import java.util.List;
@@ -49,8 +49,8 @@ public class ItemDetailFragment extends Fragment {
     private String itemShop;
     private int itemQuantity;
 
-    private ShopItem mItem;
-    private LiveData<ShopItem> mLiveItem;
+    private Item mItem;
+    private LiveData<Item> mLiveItem;
     private TextView mWhat;
     private TextView mShopName;
     private TextView mQuantity;
