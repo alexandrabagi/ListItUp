@@ -3,7 +3,12 @@ package com.bignerdranch.android.listitup.fragments;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +17,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -25,16 +32,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
+import com.bignerdranch.android.listitup.PictureUtils;
 import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.activities.ItemPagerActivity;
 import com.bignerdranch.android.listitup.room.Item;
 import com.bignerdranch.android.listitup.room.ItemVM;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.bignerdranch.android.listitup.activities.ItemPagerActivity.EXTRA_ITEM_ID;
 
 /**
@@ -55,6 +65,11 @@ public class ShoppingListFragment extends Fragment implements Observer {
     private int tabPosition;
 
     private ItemVM mItemVM;
+
+    // FOR PHOTO //
+    private File mPhotoFile;
+    private ImageView mPhotoView;
+    private static final int REQUEST_PHOTO= 2;
 
     @Override
     public void update(Observable observable, Object data) {
@@ -112,121 +127,9 @@ public class ShoppingListFragment extends Fragment implements Observer {
             @Override
             public void onClick(View v) {
                 getDialog();
-//                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
-//                // 1. parameter: Resource File, 2. view group --> null to be changed later on, in example
-//                //view group is in other dialog
-//                View mView = getLayoutInflater().inflate(R.layout.dialog_entername, null);
-//                final EditText mItemName = (EditText) mView.findViewById(R.id.itemName);
-//                //final EditText mShop = (EditText) mView.findViewById(R.id.ShopName);
-//                final EditText mQuantity = (EditText) mView.findViewById(R.id.Quantity);
-//
-//
-//                //static spinner experiment begin
-//                Spinner staticSpinner = (Spinner) mView.findViewById(R.id.static_spinner2);
-//
-//                // Create an ArrayAdapter using the string array and a default spinner
-//                ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter
-//                        .createFromResource(getContext(), R.array.brew_array,
-//                                android.R.layout.simple_spinner_item);
-//
-//                // Specify the layout to use when the list of choices appears
-//                staticAdapter
-//                        .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//
-//                // Apply the adapter to the spinner
-//                staticSpinner.setAdapter(staticAdapter);
-//                final Spinner mShop = (Spinner) mView.findViewById(R.id.static_spinner2);
-//
-//                // static spinner experiment end
-//
-//                //final Item newItem = new Item(mItemName.toString(), mShop.toString(), mQuantity.toString());
-//                Button mOkButton = (Button) mView.findViewById(R.id.ok_button);
-//                mBuilder.setView(mView);
-//                final AlertDialog dialog = mBuilder.create();
-//
-//                mOkButton.setOnClickListener(new View.OnClickListener(){
-//                    @Override
-//                    public void onClick(View view) {
-//                        if (!mItemName.getText().toString().isEmpty()){
-//                            //Toast.makeText(ListActivity.this, "you added successfully", Toast.LENGTH_SHORT).show();
-//                            Item newItem = new Item(mItemName.getText().toString(), mShop.getSelectedItem().toString(), Integer.parseInt(mQuantity.getText().toString()), 0);
-//                            mItemVM.insertToShop(newItem);
-//
-//                            mItemName.setText("");
-//                            //mShop.setText("");
-//                            mQuantity.setText("");
-//                            dialog.dismiss();
-//                            updateUI();
-//                        }
-//                        else{
-//                            Toast.makeText(getActivity(), "Please enter name of item", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                });
-//
-//                dialog.show();
             }
         });
 
-        /*mAddNewButton = (Button) view.findViewById(R.id.addnew_button);
-        mAddNewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
-                // 1. parameter: Resource File, 2. view group --> null to be changed later on, in example
-                //view group is in other dialog
-                View mView = getLayoutInflater().inflate(R.layout.dialog_entername, null);
-                final EditText mItemName = (EditText) mView.findViewById(R.id.itemName);
-                //final EditText mShop = (EditText) mView.findViewById(R.id.ShopName);
-                final EditText mQuantity = (EditText) mView.findViewById(R.id.Quantity);
-
-
-                //static spinner experiment begin
-                Spinner staticSpinner = (Spinner) mView.findViewById(R.id.static_spinner2);
-
-                // Create an ArrayAdapter using the string array and a default spinner
-                ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter
-                        .createFromResource(getContext(), R.array.brew_array,
-                                android.R.layout.simple_spinner_item);
-
-                // Specify the layout to use when the list of choices appears
-                staticAdapter
-                        .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-                // Apply the adapter to the spinner
-                staticSpinner.setAdapter(staticAdapter);
-                final Spinner mShop = (Spinner) mView.findViewById(R.id.static_spinner2);
-
-                // static spinner experiment end
-
-                //final Item newItem = new Item(mItemName.toString(), mShop.toString(), mQuantity.toString());
-                Button mOkButton = (Button) mView.findViewById(R.id.ok_button);
-                mBuilder.setView(mView);
-                final AlertDialog dialog = mBuilder.create();
-
-                mOkButton.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View view) {
-                        if (!mItemName.getText().toString().isEmpty()){
-                            //Toast.makeText(ListActivity.this, "you added successfully", Toast.LENGTH_SHORT).show();
-                            Item newItem = new Item(mItemName.getText().toString(), mShop.getSelectedItem().toString(), mQuantity.getText().toString());
-                            listDB.addToDB(newItem);
-
-                            mItemName.setText("");
-                            //mShop.setText("");
-                            mQuantity.setText("");
-                            dialog.dismiss();
-                            updateUI();
-                        }
-                        else{
-                            Toast.makeText(getActivity(), "Please enter name of item", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-                dialog.show();
-            }
-        }); */
 
         updateUI();
 
@@ -301,11 +204,12 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
     private void getPriceDialog(Item item) {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
-        // 1. parameter: Resource File, 2. view group --> null to be changed later on, in example
-        //view group is in other dialog
+
         View mView = getLayoutInflater().inflate(R.layout.dialog_enterprice, null);
+
         EditText mItemPrice = (EditText) mView.findViewById(R.id.itemPrice);
-        ImageButton mPhotoButton = (ImageButton) mView.findViewById(R.id.photo_button);
+        mPhotoView = (ImageView) mView.findViewById(R.id.item_photo);
+        ImageButton photoButton = (ImageButton) mView.findViewById(R.id.photo_button);
         Button mOkButton = (Button) mView.findViewById(R.id.ok_button);
         Button mCancelButton = (Button) mView.findViewById(R.id.cancel_button);
         mBuilder.setView(mView);
@@ -314,6 +218,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
         mOkButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                Log.d("photo", "OK button clicked");
                 String priceS = mItemPrice.getText().toString();
                 if (priceS.contains(",")) priceS = priceS.replace(",", ".");
                 Log.d("inputprice", priceS);
@@ -327,9 +232,39 @@ public class ShoppingListFragment extends Fragment implements Observer {
         mCancelButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                Log.d("photo", "Cancel button clicked");
+                mItemVM.putToShop(item);
                 dialog.dismiss();
             }
         });
+
+        PackageManager packageManager = getActivity().getPackageManager();
+        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        boolean canTakePhoto = mPhotoFile != null &&
+//                captureImage.resolveActivity(packageManager) != null;
+        Log.d("photo", Boolean.toString(mPhotoFile != null)); //--> false
+        Log.d("photo", Boolean.toString(captureImage.resolveActivity(packageManager) != null));
+
+        photoButton.setEnabled(true);
+        photoButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Log.d("photo", "Photo button clicked");
+//                Uri uri = FileProvider.getUriForFile(getActivity(),
+//                        "com.bignerdranch.android.listitup.fileprovider",
+//                        mPhotoFile);
+//                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+//                List<ResolveInfo> cameraActivities = getActivity()
+//                        .getPackageManager().queryIntentActivities(captureImage,
+//                                PackageManager.MATCH_DEFAULT_ONLY);
+//                for (ResolveInfo activity : cameraActivities) {
+//                    getActivity().grantUriPermission(activity.activityInfo.packageName,
+//                            uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);}
+//                startActivityForResult(captureImage, REQUEST_PHOTO);
+            }
+        });
+
+        updatePhotoView();
 
         dialog.show();
 
@@ -356,6 +291,17 @@ public class ShoppingListFragment extends Fragment implements Observer {
 //        } else {
 //            mAdapter.setItems();
 //        }
+    }
+
+    //// PHOTO RELATED METHODS ////
+    private void updatePhotoView() {
+        if (mPhotoFile == null || !mPhotoFile.exists()) {
+            mPhotoView.setImageDrawable(null);
+        } else {
+            Bitmap bitmap = PictureUtils.getScaledBitmap(
+                    mPhotoFile.getPath(), getActivity());
+            mPhotoView.setImageBitmap(bitmap);
+        }
     }
 
 
@@ -464,6 +410,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
             float itemTotalPrice = itemToChange.getPrice() * itemToChange.getQuantity();
 
             mAdapter.notifyDataSetChanged();
+            getPriceDialog(itemToChange);
 
 //            updateUI();
         }

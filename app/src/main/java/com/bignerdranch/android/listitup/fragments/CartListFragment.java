@@ -119,8 +119,10 @@ public class CartListFragment extends Fragment implements Observer {
 
         updateUI();
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(mItemRecyclerView);
+        ItemTouchHelper itemTouchHelperR = new ItemTouchHelper(simpleItemTouchCallbackR);
+        ItemTouchHelper itemTouchHelperL = new ItemTouchHelper(simpleItemTouchCallbackL);
+        itemTouchHelperR.attachToRecyclerView(mItemRecyclerView);
+        itemTouchHelperL.attachToRecyclerView(mItemRecyclerView);
     }
 
     @Override
@@ -234,7 +236,7 @@ public class CartListFragment extends Fragment implements Observer {
     }
 
 
-    ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+    ItemTouchHelper.SimpleCallback simpleItemTouchCallbackR = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
         // other dirs:  | ItemTouchHelper.RIGHT | ItemTouchHelper.DOWN | ItemTouchHelper.UP
 
         @Override
@@ -251,6 +253,26 @@ public class CartListFragment extends Fragment implements Observer {
             mAdapter.notifyDataSetChanged();
 
             totalPrice -= itemToRemove.getPrice();
+            updateUI();
+        }
+    };
+
+    ItemTouchHelper.SimpleCallback simpleItemTouchCallbackL = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        // other dirs:  | ItemTouchHelper.RIGHT | ItemTouchHelper.DOWN | ItemTouchHelper.UP
+
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+            //Remove swiped item from list and notify the RecyclerView
+            int position = viewHolder.getAdapterPosition();
+            Item itemToRemove = mAdapter.mItems.get(position);
+            mItemVM.putToShop(itemToRemove);
+            mAdapter.notifyDataSetChanged();
+
             updateUI();
         }
     };

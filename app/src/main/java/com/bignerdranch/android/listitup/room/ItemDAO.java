@@ -54,6 +54,9 @@ public interface ItemDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertToCart(Item item);
 
+    @Update
+    void putToShop(Item item);
+
     @Delete
     void deleteCartItem(Item item);
 

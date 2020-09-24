@@ -81,6 +81,12 @@ public class ItemRepository {
         });
     }
 
+    void putToShop(Item item) {
+        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+            mItemDao.putToShop(item);
+        });
+    }
+
     void deleteCartItem(Item item) {
         ItemRoomDB.databaseWriteExecutor.execute(() -> {
             mItemDao.deleteCartItem(item);

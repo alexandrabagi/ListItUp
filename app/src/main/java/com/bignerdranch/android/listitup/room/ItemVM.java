@@ -73,6 +73,12 @@ public class ItemVM extends AndroidViewModel {
         mRepository.insertToCart(item);
     }
 
+    public void putToShop(Item item) {
+        Item newItem = item;
+        newItem.changeBought();
+        mRepository.putToShop(newItem);
+    }
+
     public void deleteFromCart(Item item) {
         mRepository.deleteCartItem(item);
     }
