@@ -23,11 +23,14 @@ public interface ItemDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertToShop(Item item);
 
-    @Delete
-    void deleteShopItem(Item item);
-
     @Update
     void setBought(Item item);
+
+    @Update
+    void putToCart(Item item);
+
+    @Delete
+    void deleteShopItem(Item item);
 
     @Query("DELETE FROM shop_table")
     void deleteAllShop();
@@ -47,6 +50,9 @@ public interface ItemDAO {
     ///CARTLIST///
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertToCart(Item item);
+
+    @Update
+    void setPrice(Item item);
 
     @Delete
     void deleteCartItem(Item item);

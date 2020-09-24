@@ -20,6 +20,8 @@ public class Item {
     private int mQuantity;
     @ColumnInfo(name = "bought")
     private int mBought;
+    @ColumnInfo(name = "price")
+    private float mPrice;
 
 
 //    public Item(int id, String name, String shopName, int quantity) {
@@ -84,5 +86,13 @@ public class Item {
     public void changeBought() {
         if (this.mBought == 0) this.mBought = 1;
         else this.mBought = 0;
+    }
+
+    public float getPrice() {
+        return mPrice;
+    }
+
+    public void setPrice(float mPrice) {
+        this.mPrice = mPrice;
     }
 }
