@@ -46,6 +46,12 @@ public class ItemVM extends AndroidViewModel {
         mRepository.putToCart(newItem);
     }
 
+    public void setPrice(Item item, float price) {
+        Item newItem = item;
+        newItem.setPrice(price);
+        mRepository.setPrice(newItem);
+    }
+
     public void deleteFromShop(Item item) {
         mRepository.deleteShopItem(item);
     }

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -298,27 +299,28 @@ public class ShoppingListFragment extends Fragment implements Observer {
         dialog.show();
     }
 
-    private void getPriceDialog(int position) {
+    private void getPriceDialog(Item item) {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
         // 1. parameter: Resource File, 2. view group --> null to be changed later on, in example
         //view group is in other dialog
         View mView = getLayoutInflater().inflate(R.layout.dialog_enterprice, null);
-        final EditText mItemPrice = (EditText) mView.findViewById(R.id.itemName);
-        final ImageButton mPhotoButton = (ImageButton) mView.findViewById(R.id.photo_button);
-        final Button mOkButton = (Button) mView.findViewById(R.id.ok_button);
-        final Button mCancelButton = (Button) mView.findViewById(R.id.cancel_button);
+        EditText mItemPrice = (EditText) mView.findViewById(R.id.itemPrice);
+        ImageButton mPhotoButton = (ImageButton) mView.findViewById(R.id.photo_button);
+        Button mOkButton = (Button) mView.findViewById(R.id.ok_button);
+        Button mCancelButton = (Button) mView.findViewById(R.id.cancel_button);
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
 
         mOkButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Item itemToRemove = mAdapter.mItems.get(position);
-                mItemVM.deleteFromShop(itemToRemove);
-                Item itemToAdd = new Item(
-                        itemToRemove.getName(), itemToRemove.getShopName(), itemToRemove.getQuantity(), 1);
-                mItemVM.insertToCart(itemToAdd);
+                String priceS = mItemPrice.getText().toString();
+                if (priceS.contains(",")) priceS = priceS.replace(",", ".");
+                Log.d("inputprice", priceS);
+                float priceF = Float.parseFloat(priceS);
+                mItemVM.setPrice(item, priceF);
                 mAdapter.notifyDataSetChanged();
+                dialog.dismiss();
             }
         });
 
@@ -389,9 +391,10 @@ public class ShoppingListFragment extends Fragment implements Observer {
          */
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(getActivity(), ItemPagerActivity.class);
-            intent.putExtra(EXTRA_ITEM_ID, Integer.valueOf(mItem.getId()));
-            startActivity(intent);
+//            Intent intent = new Intent(getActivity(), ItemPagerActivity.class);
+//            intent.putExtra(EXTRA_ITEM_ID, Integer.valueOf(mItem.getId()));
+//            startActivity(intent);
+            getPriceDialog(mItem);
         }
     }
 

@@ -44,6 +44,12 @@ public class ItemRepository {
         });
     }
 
+    void setPrice(Item item) {
+        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+            mItemDao.setPrice(item);
+        });
+    }
+
     void deleteShopItem(Item item) {
         ItemRoomDB.databaseWriteExecutor.execute(() -> {
             mItemDao.deleteShopItem(item);

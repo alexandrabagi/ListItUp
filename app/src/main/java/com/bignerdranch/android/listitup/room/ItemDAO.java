@@ -29,6 +29,9 @@ public interface ItemDAO {
     @Update
     void putToCart(Item item);
 
+    @Update
+    void setPrice(Item item);
+
     @Delete
     void deleteShopItem(Item item);
 
@@ -50,9 +53,6 @@ public interface ItemDAO {
     ///CARTLIST///
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertToCart(Item item);
-
-    @Update
-    void setPrice(Item item);
 
     @Delete
     void deleteCartItem(Item item);
