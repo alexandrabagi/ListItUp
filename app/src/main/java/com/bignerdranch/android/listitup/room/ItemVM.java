@@ -88,4 +88,8 @@ public class ItemVM extends AndroidViewModel {
     public void deleteAllCart() {
         mRepository.deleteAllCart();
     }
+
+    public float getItemPrice(int id) {
+        return mRepository.getItemPrice(id);
+    }
 }

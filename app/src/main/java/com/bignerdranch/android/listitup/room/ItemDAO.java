@@ -65,4 +65,7 @@ public interface ItemDAO {
 
     @Query("SELECT * FROM shop_table WHERE bought = 1 AND id = :id")
     LiveData<Item> loadCartItem(int id);
+
+    @Query("SELECT price FROM shop_table WHERE id = :id")
+    float getItemPrice(int id);
 }

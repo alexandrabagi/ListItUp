@@ -461,14 +461,10 @@ public class ShoppingListFragment extends Fragment implements Observer {
             int position = viewHolder.getAdapterPosition();
             Item itemToChange = mAdapter.mItems.get(position);
             mItemVM.putToCart(itemToChange);
-//            Item itemToRemove = mAdapter.mItems.get(position);
-//            mItemVM.deleteFromShop(itemToRemove);
-//            Item itemToAdd = new Item(
-//                    itemToRemove.getName(), itemToRemove.getShopName(), itemToRemove.getQuantity(), 1);
-//            mItemVM.insertToCart(itemToAdd);
+            float itemTotalPrice = itemToChange.getPrice() * itemToChange.getQuantity();
+
             mAdapter.notifyDataSetChanged();
-//
-////            getPriceDialog(position);
+
 //            updateUI();
         }
     };
@@ -488,13 +484,9 @@ public class ShoppingListFragment extends Fragment implements Observer {
             int position = viewHolder.getAdapterPosition();
             Item itemToRemove = mAdapter.mItems.get(position);
             mItemVM.deleteFromShop(itemToRemove);
-//            Item itemToAdd = new Item(
-//                    itemToRemove.getName(), itemToRemove.getShopName(), itemToRemove.getQuantity(), 1);
-//            mItemVM.insertToCart(itemToAdd);
-            mAdapter.notifyDataSetChanged();
 
-//            getPriceDialog(position);
-            updateUI();
+            mAdapter.notifyDataSetChanged();
+//            updateUI();
         }
     };
 }

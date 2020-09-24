@@ -101,4 +101,8 @@ public class ItemRepository {
     LiveData<Item> loadCartItem(int id) {
         return mItemDao.loadCartItem(id);
     }
+
+    float getItemPrice(int id) {
+        return mItemDao.getItemPrice(id);
+    }
 }

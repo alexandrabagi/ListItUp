@@ -3,6 +3,7 @@ package com.bignerdranch.android.listitup.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.bignerdranch.android.listitup.activities.ItemPagerActivity;
 import com.bignerdranch.android.listitup.room.Item;
 import com.bignerdranch.android.listitup.room.ItemVM;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -35,6 +37,7 @@ import static com.bignerdranch.android.listitup.activities.ItemPagerActivity.EXT
 public class CartListFragment extends Fragment implements Observer {
 
     public static final String ARG_OBJECT = "object";
+    private static final String TAG = "price";
 
     @Override
     public void update(Observable o, Object arg) {
@@ -46,8 +49,12 @@ public class CartListFragment extends Fragment implements Observer {
     private RecyclerView mItemRecyclerView;
     private TextView testText;
     private int tabPosition;
+    private TextView mPriceText;
+    private float totalPrice;
 
     private ItemVM mItemVM;
+
+    private DecimalFormat decimalFormat;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +67,12 @@ public class CartListFragment extends Fragment implements Observer {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        Log.d(TAG, "CartListFragment onCreateView was called");
         View view = inflater.inflate(R.layout.fragment_cartlist, container, false);
+
+        decimalFormat = new DecimalFormat("0.00");
+
+        mPriceText = view.findViewById(R.id.price_text);
 
         mAdapter = new CartItemAdapter(getActivity());
 
@@ -72,14 +84,27 @@ public class CartListFragment extends Fragment implements Observer {
 //                mAdapter.setItems(shopItems);
 //            }
 //        });
-        mItemVM.getAllCartItems().observe(getViewLifecycleOwner(), shopItems -> mAdapter.setItems(shopItems));
+//        mItemVM.getAllCartItems().observe(getViewLifecycleOwner(), cartItems -> {
+//            mAdapter.setItems(cartItems);
+//            for (Item item : cartItems) {
+//                totalPrice += item.getPrice();
+//                Log.d(TAG, "Item price: " + item.getPrice());
+//                Log.d(TAG, "Total price: " + totalPrice);
+//            }
+//            mPriceText = view.findViewById(R.id.price_text);
+//            mPriceText.setText(decimalFormat.format(totalPrice));
+//            Log.d(TAG, "Total price set");
+//        });
+        updateUI();
+
+
 
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        System.out.println("ShoppingListFragment onViewCreated was called");
+        Log.d(TAG, "CartListFragment onViewCreated was called");
 
         mItemRecyclerView = view.findViewById(R.id.items_recycler_view);
         mItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -91,7 +116,6 @@ public class CartListFragment extends Fragment implements Observer {
         } else {
             testText.setText("To Buy List");
         }
-        System.out.println("ShoppingListFragment onCreateView was called");
 
         updateUI();
 
@@ -105,7 +129,19 @@ public class CartListFragment extends Fragment implements Observer {
         updateUI();
     }
 
-    private void updateUI() {}
+    private void updateUI() {
+        mItemVM.getAllCartItems().observe(getViewLifecycleOwner(), cartItems -> {
+            totalPrice = 0.00f;
+            mAdapter.setItems(cartItems);
+            for (Item item : cartItems) {
+                totalPrice += (item.getPrice() * item.getQuantity());
+                Log.d(TAG, "Item price: " + item.getPrice());
+                Log.d(TAG, "Total price: " + totalPrice);
+            }
+            mPriceText.setText(decimalFormat.format(totalPrice));
+            Log.d(TAG, "Total price set");
+        });
+    }
 
 
 
@@ -117,6 +153,7 @@ public class CartListFragment extends Fragment implements Observer {
         private TextView itemName;
         private TextView shopName;
         private TextView quantity;
+        private TextView price;
 
         public CartItemHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item, parent, false));
@@ -124,6 +161,7 @@ public class CartListFragment extends Fragment implements Observer {
             mThingNo = itemView.findViewById(R.id.no_item);
             shopName = itemView.findViewById(R.id.where_item);
             quantity = itemView.findViewById(R.id.quantity_item);
+            price = itemView.findViewById(R.id.price_item);
             itemView.setOnClickListener(this);
         }
 
@@ -134,6 +172,7 @@ public class CartListFragment extends Fragment implements Observer {
             itemName.setText(mItem.getName());
             shopName.setText(mItem.getShopName());
             quantity.setText(Integer.toString(mItem.getQuantity()));
+            price.setText(decimalFormat.format(mItem.getPrice()));
         }
 
         /*
@@ -206,12 +245,12 @@ public class CartListFragment extends Fragment implements Observer {
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
             //Remove swiped item from list and notify the RecyclerView
-            //But where to remove from???
             int position = viewHolder.getAdapterPosition();
             Item itemToRemove = mAdapter.mItems.get(position);
             mItemVM.deleteFromCart(itemToRemove);
             mAdapter.notifyDataSetChanged();
 
+            totalPrice -= itemToRemove.getPrice();
             updateUI();
         }
     };
