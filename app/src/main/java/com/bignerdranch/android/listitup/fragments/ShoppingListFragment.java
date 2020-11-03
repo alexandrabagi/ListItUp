@@ -61,7 +61,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
     private RecyclerView mItemRecyclerView;
     private List<Item> mItems;
-    private TextView testText;
+//    private TextView testText;
     private int tabPosition;
 
     private ItemVM mItemVM;
@@ -112,14 +112,14 @@ public class ShoppingListFragment extends Fragment implements Observer {
         mItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mItemRecyclerView.setAdapter(mAdapter); // added
 
-        testText = view.findViewById(R.id.test_text);
+//        testText = view.findViewById(R.id.test_text);
         mAddNewFAB = view.findViewById(R.id.add_new_fab);
         if (tabPosition > 1) {
-            testText.setText("In Cart List");
+//            testText.setText("In Cart List");
             mAddNewFAB.setVisibility(View.INVISIBLE);
         }
         else {
-            testText.setText("To Buy List");
+//            testText.setText("To Buy List");
         }
         System.out.println("ShoppingListFragment onCreateView was called");
 
@@ -310,26 +310,19 @@ public class ShoppingListFragment extends Fragment implements Observer {
     private class ShopItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private Item mItem;
-        private TextView mThingNo;
         private TextView itemName;
-        private TextView shopName;
         private TextView quantity;
 
         public ShopItemHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.list_item, parent, false));
+            super(inflater.inflate(R.layout.card_item, parent, false));
             itemName = itemView.findViewById(R.id.what_item);
-            mThingNo = itemView.findViewById(R.id.no_item);
-            shopName = itemView.findViewById(R.id.where_item);
             quantity = itemView.findViewById(R.id.quantity_item);
             itemView.setOnClickListener(this);
         }
 
         public void bind(Item item, int position) {
             mItem = item;
-            mThingNo.setText(" " + item.getId() + " ");
-
             itemName.setText(mItem.getName());
-            shopName.setText(mItem.getShopName());
             quantity.setText(Integer.toString(mItem.getQuantity()));
 
         }
@@ -365,18 +358,18 @@ public class ShoppingListFragment extends Fragment implements Observer {
             Item item = mItems.get(position);
             holder.bind(item, position);
 
-            switch (item.getShopName()) {
-                case "Lidl": holder.itemView.setBackgroundColor(getResources().getColor(R.color.LidlColor));
-                    break;
-                case "Bilka": holder.itemView.setBackgroundColor(getResources().getColor(R.color.BilkaColor));
-                    break;
-                case "Rema1000": holder.itemView.setBackgroundColor(getResources().getColor(R.color.RemaColor));
-                    break;
-                case "Netto": holder.itemView.setBackgroundColor(getResources().getColor(R.color.NettoColor));
-                    break;
-                case "Aldi": holder.itemView.setBackgroundColor(getResources().getColor(R.color.AldiColor));
-                    break;
-            }
+//            switch (item.getShopName()) {
+//                case "Lidl": holder.itemView.setBackgroundColor(getResources().getColor(R.color.LidlColor));
+//                    break;
+//                case "Bilka": holder.itemView.setBackgroundColor(getResources().getColor(R.color.BilkaColor));
+//                    break;
+//                case "Rema1000": holder.itemView.setBackgroundColor(getResources().getColor(R.color.RemaColor));
+//                    break;
+//                case "Netto": holder.itemView.setBackgroundColor(getResources().getColor(R.color.NettoColor));
+//                    break;
+//                case "Aldi": holder.itemView.setBackgroundColor(getResources().getColor(R.color.AldiColor));
+//                    break;
+//            }
         }
 
         @Override

@@ -158,23 +158,26 @@ public class CartListFragment extends Fragment implements Observer {
         private TextView price;
 
         public CartItemHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.list_item, parent, false));
+//            super(inflater.inflate(R.layout.list_item, parent, false));
+//            itemName = itemView.findViewById(R.id.what_item);
+//            mThingNo = itemView.findViewById(R.id.no_item);
+//            shopName = itemView.findViewById(R.id.where_item);
+//            quantity = itemView.findViewById(R.id.quantity_item);
+//            price = itemView.findViewById(R.id.price_item);
+            super(inflater.inflate(R.layout.card_item, parent, false));
             itemName = itemView.findViewById(R.id.what_item);
-            mThingNo = itemView.findViewById(R.id.no_item);
-            shopName = itemView.findViewById(R.id.where_item);
             quantity = itemView.findViewById(R.id.quantity_item);
-            price = itemView.findViewById(R.id.price_item);
             itemView.setOnClickListener(this);
         }
 
         public void bind(Item item, int position) {
             mItem = item;
-            mThingNo.setText(" " + item.getId() + " ");
+//            mThingNo.setText(" " + item.getId() + " ");
 
             itemName.setText(mItem.getName());
-            shopName.setText(mItem.getShopName());
+//            shopName.setText(mItem.getShopName());
             quantity.setText(Integer.toString(mItem.getQuantity()));
-            price.setText(decimalFormat.format(mItem.getPrice()));
+//            price.setText(decimalFormat.format(mItem.getPrice()));
         }
 
         /*
