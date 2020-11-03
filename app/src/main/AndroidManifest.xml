@@ -34,6 +34,7 @@
         <activity android:name=".activities.LoginActivity"/>
         <activity android:name=".activities.LocationActivity" />
         <activity android:name=".activities.ItemPagerActivity" />
+        <activity android:name=".activities.ItemDetailActivity" />
         <activity
             android:name=".activities.ListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"/>

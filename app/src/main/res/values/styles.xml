@@ -45,6 +45,8 @@
     <style name="AppTheme.TabLayout" parent="Widget.MaterialComponents.TabLayout">
         <item name="android:background">@color/white</item>
         <item name="tabIndicatorColor">@color/Primary_500</item>
+        <item name="tabIndicatorGravity">bottom</item>
+        <item name="tabIndicatorFullWidth">false</item>
     </style>
 
 </resources>

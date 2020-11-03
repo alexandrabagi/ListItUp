@@ -1,4 +1,4 @@
-package com.bignerdranch.android.listitup.fragments;
+package com.bignerdranch.android.listitup.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -22,22 +21,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.bignerdranch.android.listitup.PictureUtils;
 import com.bignerdranch.android.listitup.R;
-import com.bignerdranch.android.listitup.activities.LocationActivity;
 import com.bignerdranch.android.listitup.room.Item;
 import com.bignerdranch.android.listitup.room.ItemVM;
 
 import java.io.File;
 import java.util.List;
 
-public class ItemDetailFragment extends Fragment {
+public class ItemDetailActivity extends Fragment {
 
     private static final String ARG_THING_ID = "itemID";
     private static final String ARG_THING_NAME = "itemName";
@@ -70,13 +64,13 @@ public class ItemDetailFragment extends Fragment {
     /*
     Configures item for Pager
      */
-    public static ItemDetailFragment newInstance(int thingID, String name, String shop, int quantity) {
+    public static ItemDetailActivity newInstance(int thingID, String name, String shop, int quantity) {
         Bundle args = new Bundle();
         args.putInt(ARG_THING_ID, thingID);
         args.putString(ARG_THING_NAME, name);
         args.putString(ARG_THING_SHOP, shop);
         args.putInt(ARG_THING_QUA, quantity);
-        ItemDetailFragment fragment = new ItemDetailFragment();
+        ItemDetailActivity fragment = new ItemDetailActivity();
         fragment.setArguments(args);
         return fragment;
     }

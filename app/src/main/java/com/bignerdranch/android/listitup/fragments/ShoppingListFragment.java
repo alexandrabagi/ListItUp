@@ -34,6 +34,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import com.bignerdranch.android.listitup.PictureUtils;
 import com.bignerdranch.android.listitup.R;
+import com.bignerdranch.android.listitup.activities.ItemDetailActivity;
 import com.bignerdranch.android.listitup.activities.ItemPagerActivity;
 import com.bignerdranch.android.listitup.room.Item;
 import com.bignerdranch.android.listitup.room.ItemVM;
@@ -44,7 +45,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.bignerdranch.android.listitup.activities.ItemPagerActivity.EXTRA_ITEM_ID;
 
 /**
@@ -240,27 +240,29 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
         PackageManager packageManager = getActivity().getPackageManager();
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        updatePhotoView();
 //        boolean canTakePhoto = mPhotoFile != null &&
 //                captureImage.resolveActivity(packageManager) != null;
         Log.d("photo", Boolean.toString(mPhotoFile != null)); //--> false
         Log.d("photo", Boolean.toString(captureImage.resolveActivity(packageManager) != null));
+
 
         photoButton.setEnabled(true);
         photoButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Log.d("photo", "Photo button clicked");
-//                Uri uri = FileProvider.getUriForFile(getActivity(),
-//                        "com.bignerdranch.android.listitup.fileprovider",
-//                        mPhotoFile);
-//                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-//                List<ResolveInfo> cameraActivities = getActivity()
-//                        .getPackageManager().queryIntentActivities(captureImage,
-//                                PackageManager.MATCH_DEFAULT_ONLY);
-//                for (ResolveInfo activity : cameraActivities) {
-//                    getActivity().grantUriPermission(activity.activityInfo.packageName,
-//                            uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);}
-//                startActivityForResult(captureImage, REQUEST_PHOTO);
+                Uri uri = FileProvider.getUriForFile(getActivity(),
+                        "com.bignerdranch.android.listitup.fileprovider",
+                        mPhotoFile);
+                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                List<ResolveInfo> cameraActivities = getActivity()
+                        .getPackageManager().queryIntentActivities(captureImage,
+                                PackageManager.MATCH_DEFAULT_ONLY);
+                for (ResolveInfo activity : cameraActivities) {
+                    getActivity().grantUriPermission(activity.activityInfo.packageName,
+                            uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);}
+                startActivityForResult(captureImage, REQUEST_PHOTO);
             }
         });
 
@@ -340,7 +342,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
 //            Intent intent = new Intent(getActivity(), ItemPagerActivity.class);
 //            intent.putExtra(EXTRA_ITEM_ID, Integer.valueOf(mItem.getId()));
 //            startActivity(intent);
-            getPriceDialog(mItem);
+//            getPriceDialog(mItem);
         }
     }
 
@@ -407,10 +409,13 @@ public class ShoppingListFragment extends Fragment implements Observer {
             int position = viewHolder.getAdapterPosition();
             Item itemToChange = mAdapter.mItems.get(position);
             mItemVM.putToCart(itemToChange);
-            float itemTotalPrice = itemToChange.getPrice() * itemToChange.getQuantity();
 
             mAdapter.notifyDataSetChanged();
             getPriceDialog(itemToChange);
+
+//            Intent intent = new Intent(getActivity(), ItemPagerActivity.class);
+//            intent.putExtra(EXTRA_ITEM_ID, Integer.valueOf(itemToChange.getId()));
+//            startActivity(intent);
 
 //            updateUI();
         }
