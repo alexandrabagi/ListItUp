@@ -20,11 +20,12 @@ import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.room.Item;
 import com.bignerdranch.android.listitup.room.ItemVM;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomappbar.BottomAppBar;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemPagerActivity extends AppCompatActivity {
+/*public class ItemPagerActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
     private List<Item> mItems;
@@ -34,6 +35,7 @@ public class ItemPagerActivity extends AppCompatActivity {
     private static final String TAG = "pager";
 
     MaterialToolbar appBar;
+    BottomAppBar bottomAppBar;
 
     public static Intent newIntent(Context packageContext, int itemID) {
         Intent intent = new Intent(packageContext, ItemPagerActivity.class);
@@ -86,6 +88,7 @@ public class ItemPagerActivity extends AppCompatActivity {
         });
 
         appBar = findViewById(R.id.topAppBar);
+        bottomAppBar = findViewById(R.id.bottomAppBar);
     }
 
 //    private void getAllItems() {
@@ -105,3 +108,4 @@ public class ItemPagerActivity extends AppCompatActivity {
 //    }
 
 }
+*/

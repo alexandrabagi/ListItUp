@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import com.bignerdranch.android.listitup.R;
-import com.bignerdranch.android.listitup.activities.ItemPagerActivity;
+//import com.bignerdranch.android.listitup.activities.ItemPagerActivity;
 import com.bignerdranch.android.listitup.room.Item;
 import com.bignerdranch.android.listitup.room.ItemVM;
 
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import static com.bignerdranch.android.listitup.activities.ItemPagerActivity.EXTRA_ITEM_ID;
+//import static com.bignerdranch.android.listitup.activities.ItemPagerActivity.EXTRA_ITEM_ID;
 
 /**
  * This fragment hosts "To Buy" and "In Cart" lists
@@ -185,9 +185,9 @@ public class CartListFragment extends Fragment implements Observer {
          */
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(getActivity(), ItemPagerActivity.class);
-            intent.putExtra(EXTRA_ITEM_ID, Integer.valueOf(mItem.getId()));
-            startActivity(intent);
+//            Intent intent = new Intent(getActivity(), ItemPagerActivity.class);
+//            intent.putExtra(EXTRA_ITEM_ID, Integer.valueOf(mItem.getId()));
+//            startActivity(intent);
         }
     }
 

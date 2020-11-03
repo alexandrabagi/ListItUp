@@ -35,7 +35,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 import com.bignerdranch.android.listitup.PictureUtils;
 import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.activities.ItemDetailActivity;
-import com.bignerdranch.android.listitup.activities.ItemPagerActivity;
+//import com.bignerdranch.android.listitup.activities.ItemPagerActivity;
 import com.bignerdranch.android.listitup.room.Item;
 import com.bignerdranch.android.listitup.room.ItemVM;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -45,7 +45,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import static com.bignerdranch.android.listitup.activities.ItemPagerActivity.EXTRA_ITEM_ID;
+//import static com.bignerdranch.android.listitup.activities.ItemPagerActivity.EXTRA_ITEM_ID;
 
 /**
  * This fragment hosts "To Buy" and "In Cart" lists
@@ -55,14 +55,13 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
     public static final String ARG_OBJECT = "object";
 
-    private FloatingActionButton mAddNewFAB;
 
     private ShopItemAdapter mAdapter;
 
     private RecyclerView mItemRecyclerView;
     private List<Item> mItems;
 //    private TextView testText;
-    private int tabPosition;
+
 
     private ItemVM mItemVM;
 
@@ -80,7 +79,6 @@ public class ShoppingListFragment extends Fragment implements Observer {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        tabPosition = getArguments().getInt(ARG_OBJECT);
     }
 
     @Override
@@ -111,25 +109,6 @@ public class ShoppingListFragment extends Fragment implements Observer {
         mItemRecyclerView = view.findViewById(R.id.items_recycler_view);
         mItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mItemRecyclerView.setAdapter(mAdapter); // added
-
-//        testText = view.findViewById(R.id.test_text);
-        mAddNewFAB = view.findViewById(R.id.add_new_fab);
-        if (tabPosition > 1) {
-//            testText.setText("In Cart List");
-            mAddNewFAB.setVisibility(View.INVISIBLE);
-        }
-        else {
-//            testText.setText("To Buy List");
-        }
-        System.out.println("ShoppingListFragment onCreateView was called");
-
-        mAddNewFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getDialog();
-            }
-        });
-
 
         updateUI();
 
@@ -357,19 +336,6 @@ public class ShoppingListFragment extends Fragment implements Observer {
         public void onBindViewHolder(@NonNull ShopItemHolder holder, int position) {
             Item item = mItems.get(position);
             holder.bind(item, position);
-
-//            switch (item.getShopName()) {
-//                case "Lidl": holder.itemView.setBackgroundColor(getResources().getColor(R.color.LidlColor));
-//                    break;
-//                case "Bilka": holder.itemView.setBackgroundColor(getResources().getColor(R.color.BilkaColor));
-//                    break;
-//                case "Rema1000": holder.itemView.setBackgroundColor(getResources().getColor(R.color.RemaColor));
-//                    break;
-//                case "Netto": holder.itemView.setBackgroundColor(getResources().getColor(R.color.NettoColor));
-//                    break;
-//                case "Aldi": holder.itemView.setBackgroundColor(getResources().getColor(R.color.AldiColor));
-//                    break;
-//            }
         }
 
         @Override

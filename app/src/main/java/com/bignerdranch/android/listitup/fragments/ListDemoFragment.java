@@ -20,7 +20,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
  * This Fragment hosts the pager for the tabs of "To Buy" and "In Cart" lists
  */
 
-public class ListDemoFragment extends Fragment {
+/* public class ListDemoFragment extends Fragment {
 
     // When requested, this adapter returns a ShoppingListFragment,
     // representing an object in the collection.
@@ -91,4 +91,4 @@ public class ListDemoFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("TO BUY"));
         tabLayout.addTab(tabLayout.newTab().setText("IN CART"));
     }
-}
+} */
