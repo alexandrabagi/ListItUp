@@ -45,8 +45,15 @@ public class ListActivity extends AppCompatActivity {
         mAddNewFAB = findViewById(R.id.add_new_fab);
 
         FragmentManager fm = getSupportFragmentManager();
-//        bottomAppBar = findViewById(R.id.bottom_app_bar); // do we need it?
+//        bottomAppBar = findViewById(R.id.bottom_app_bar); // do we need it?\
+
+        Fragment fragment = new ShoppingListFragment();
+        fm.beginTransaction()
+                .replace(R.id.list_fragment_container, fragment)
+                .commit();
+
         bottomNavView = findViewById(R.id.bottom_navigation);
+        bottomNavView.setSelectedItemId(R.id.list_button);
         bottomNavView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -54,7 +61,7 @@ public class ListActivity extends AppCompatActivity {
 //                    // Handle list fragment
                     mAddNewFAB.setVisibility(View.VISIBLE);
 
-                    Fragment fragment = new ShoppingListFragment();
+
                     Bundle args = new Bundle();
                     // Our object is just an integer
                     args.putInt(ShoppingListFragment.ARG_OBJECT, 0); // check
