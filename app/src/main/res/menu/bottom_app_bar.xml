@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/search"
-        android:icon="@drawable/ic_more"
+    <!-- <item
+        android:id="@+id/list"
+        android:icon="@drawable/ic_list_active"
+        android:contentDescription="Shopping list"
         app:showAsAction="ifRoom"
         android:title="TODO" />
 
     <item
-        android:id="@+id/more"
+        android:id="@+id/cart"
+        android:icon="@drawable/ic_cart_active"
+        android:contentDescription="List of items already in the cart"
         android:title="TODO"
-        app:showAsAction="never"
-        />
+        app:showAsAction="ifRoom" /> -->
 </menu>

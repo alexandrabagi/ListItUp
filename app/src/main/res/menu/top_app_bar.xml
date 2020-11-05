@@ -9,7 +9,7 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/more"
+        android:id="@+id/cart"
         android:title="Log out"
         android:contentDescription="Log out from account"
         app:showAsAction="never" />
