@@ -6,6 +6,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,7 +32,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -112,11 +122,14 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
         updateUI();
 
-        ItemTouchHelper itemTouchHelperR = new ItemTouchHelper(simpleItemTouchCallbackR);
-        ItemTouchHelper itemTouchHelperL = new ItemTouchHelper(simpleItemTouchCallbackL);
+        ItemTouchHelper myITH = new ItemTouchHelper(new MyItemTouchCallback(mAdapter));
+        myITH.attachToRecyclerView(mItemRecyclerView);
 
-        itemTouchHelperR.attachToRecyclerView(mItemRecyclerView);
-        itemTouchHelperL.attachToRecyclerView(mItemRecyclerView);
+//        ItemTouchHelper itemTouchHelperR = new ItemTouchHelper(simpleItemTouchCallbackR);
+//        ItemTouchHelper itemTouchHelperL = new ItemTouchHelper(simpleItemTouchCallbackL);
+//
+//        itemTouchHelperR.attachToRecyclerView(mItemRecyclerView);
+//        itemTouchHelperL.attachToRecyclerView(mItemRecyclerView);
     }
 
     @Override
@@ -125,7 +138,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
         updateUI();
     }
 
-    private void getDialog() {
+    /*private void getDialog() {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
         // 1. parameter: Resource File, 2. view group --> null to be changed later on, in example
         //view group is in other dialog
@@ -179,7 +192,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
         });
 
         dialog.show();
-    }
+    }*/
 
     private void getPriceDialog(Item item) {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
@@ -353,7 +366,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
     }
 
 
-    ItemTouchHelper.SimpleCallback simpleItemTouchCallbackR = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+    /*ItemTouchHelper.SimpleCallback simpleItemTouchCallbackR = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
         // other dirs:  | ItemTouchHelper.RIGHT | ItemTouchHelper.DOWN | ItemTouchHelper.UP
 
         @Override
@@ -378,9 +391,9 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
 //            updateUI();
         }
-    };
+    }; */
 
-    ItemTouchHelper.SimpleCallback simpleItemTouchCallbackL = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+    /*ItemTouchHelper.SimpleCallback simpleItemTouchCallbackL = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
         // other dirs:  | ItemTouchHelper.RIGHT | ItemTouchHelper.DOWN | ItemTouchHelper.UP
 
         @Override
@@ -399,5 +412,98 @@ public class ShoppingListFragment extends Fragment implements Observer {
             mAdapter.notifyDataSetChanged();
 //            updateUI();
         }
-    };
+    }; */
+
+    // https://stackoverflow.com/questions/34609191/why-itemtouchhelper-callbacks-onchilddraw-will-be-called-after-clearview
+    // source: https://github.com/kitek/android-rv-swipe-delete
+    private class MyItemTouchCallback extends ItemTouchHelper.Callback {
+
+        boolean viewBeingCleared = false;
+        ShopItemAdapter adapter;
+
+        MyItemTouchCallback(ShopItemAdapter adapter) {
+            this.adapter = adapter;
+        }
+
+        @Override
+        public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+            return makeFlag(ItemTouchHelper.ACTION_STATE_SWIPE, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        }
+
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+            //Remove swiped item from list and notify the RecyclerView
+            //But where to remove from???
+            int position = viewHolder.getAdapterPosition();
+            Item itemToRemove = adapter.mItems.get(position);
+            mItemVM.deleteFromShop(itemToRemove);
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildDraw(Canvas c, RecyclerView recyclerView,
+                                RecyclerView.ViewHolder viewHolder,
+                                float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+            View itemView = viewHolder.itemView;
+            int itemHeight = itemView.getBottom() - itemView.getTop();
+            boolean isCanceled = dX == 0f && !isCurrentlyActive;
+            Drawable deleteIcon = ContextCompat.getDrawable(getActivity(), R.drawable.ic_bin);
+
+            if (isCanceled) {
+                clearCanvas(c, itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                return;
+            }
+
+            ColorDrawable background = new ColorDrawable();
+            int color = Color.parseColor("#FF0C3E");
+            background.setColor(color);
+            // L, T, R, B
+            background.setBounds(
+                    itemView.getRight() + (int) dX,
+                    itemView.getTop(),
+                    itemView.getRight(),
+                    itemView.getBottom()
+            );
+            background.draw(c);
+
+            // Calculate position of delete icon
+            int inHeight = deleteIcon.getIntrinsicHeight();
+            int inWidth = deleteIcon.getIntrinsicWidth();
+            int deleteIconTop = itemView.getTop() + (itemHeight - inHeight) / 2;
+            int deleteIconMargin = (itemHeight - inHeight) / 2;
+            int deleteIconLeft = itemView.getRight() - deleteIconMargin - inWidth;
+            int deleteIconRight = itemView.getRight() - deleteIconMargin;
+            int deleteIconBottom = deleteIconTop + inHeight;
+
+            // Draw the delete icon
+            deleteIcon.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom);
+            deleteIcon.draw(c);
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+
+        private void clearCanvas(Canvas c, Float left, Float top, Float right, Float bottom) {
+            c.drawRect(left, top, right, bottom, clearPaint());
+        }
+        
+        private Paint clearPaint() {
+            Paint paint = new Paint();
+            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+            return paint;
+        }
+
+        @Override
+        public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+            super.clearView(recyclerView, viewHolder);
+            ViewCompat.setElevation(viewHolder.itemView, 0);
+            viewBeingCleared = true;
+        }
+
+    }
 }
