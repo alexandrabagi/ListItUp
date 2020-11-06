@@ -14,6 +14,8 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableContainer;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -461,17 +463,19 @@ public class ShoppingListFragment extends Fragment implements Observer {
                 return;
             }
 
-            ColorDrawable background = new ColorDrawable();
+            GradientDrawable bg = new GradientDrawable();
+            bg.setShape(GradientDrawable.RECTANGLE);
             int color = Color.parseColor("#FF0C3E");
-            background.setColor(color);
-            // L, T, R, B
-            background.setBounds(
-                    itemView.getRight() + (int) dX,
+            bg.setColor(color);
+            float[] radii = {0, 0, 50, 50, 50, 50, 0, 0}; // TODO: get the number programmatically
+            bg.setCornerRadii(radii);
+            bg.setBounds(
+                    itemView.getRight() + (int) dX - 50,
                     itemView.getTop(),
                     itemView.getRight(),
                     itemView.getBottom()
             );
-            background.draw(c);
+            bg.draw(c);
 
             // Calculate position of delete icon
             int inHeight = deleteIcon.getIntrinsicHeight();
