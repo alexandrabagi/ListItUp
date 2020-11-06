@@ -50,6 +50,7 @@ import com.bignerdranch.android.listitup.activities.ItemDetailActivity;
 //import com.bignerdranch.android.listitup.activities.ItemPagerActivity;
 import com.bignerdranch.android.listitup.room.Item;
 import com.bignerdranch.android.listitup.room.ItemVM;
+import com.bignerdranch.android.listitup.utilities.MyItemTouchCallback;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
@@ -124,14 +125,8 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
         updateUI();
 
-        ItemTouchHelper myITH = new ItemTouchHelper(new MyItemTouchCallback(mAdapter));
+        ItemTouchHelper myITH = new ItemTouchHelper(new MyItemTouchCallback(getActivity(), mAdapter, mItemVM));
         myITH.attachToRecyclerView(mItemRecyclerView);
-
-//        ItemTouchHelper itemTouchHelperR = new ItemTouchHelper(simpleItemTouchCallbackR);
-//        ItemTouchHelper itemTouchHelperL = new ItemTouchHelper(simpleItemTouchCallbackL);
-//
-//        itemTouchHelperR.attachToRecyclerView(mItemRecyclerView);
-//        itemTouchHelperL.attachToRecyclerView(mItemRecyclerView);
     }
 
     @Override
@@ -333,7 +328,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
         }
     }
 
-    private class ShopItemAdapter extends Adapter<ShopItemHolder> {
+    public class ShopItemAdapter extends Adapter<ShopItemHolder> {
 
         private List<Item> mItems;
 
@@ -365,149 +360,9 @@ public class ShoppingListFragment extends Fragment implements Observer {
             mItems = items;
             notifyDataSetChanged();
         }
-    }
 
-
-    /*ItemTouchHelper.SimpleCallback simpleItemTouchCallbackR = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-        // other dirs:  | ItemTouchHelper.RIGHT | ItemTouchHelper.DOWN | ItemTouchHelper.UP
-
-        @Override
-        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-            return false;
+        public List<Item> getItems() {
+            return mItems;
         }
-
-        @Override
-        public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-            //Remove swiped item from list and notify the RecyclerView
-            //But where to remove from???
-            int position = viewHolder.getAdapterPosition();
-            Item itemToChange = mAdapter.mItems.get(position);
-            mItemVM.putToCart(itemToChange);
-
-            mAdapter.notifyDataSetChanged();
-            getPriceDialog(itemToChange);
-
-//            Intent intent = new Intent(getActivity(), ItemPagerActivity.class);
-//            intent.putExtra(EXTRA_ITEM_ID, Integer.valueOf(itemToChange.getId()));
-//            startActivity(intent);
-
-//            updateUI();
-        }
-    }; */
-
-    /*ItemTouchHelper.SimpleCallback simpleItemTouchCallbackL = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-        // other dirs:  | ItemTouchHelper.RIGHT | ItemTouchHelper.DOWN | ItemTouchHelper.UP
-
-        @Override
-        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-            //Remove swiped item from list and notify the RecyclerView
-            //But where to remove from???
-            int position = viewHolder.getAdapterPosition();
-            Item itemToRemove = mAdapter.mItems.get(position);
-            mItemVM.deleteFromShop(itemToRemove);
-
-            mAdapter.notifyDataSetChanged();
-//            updateUI();
-        }
-    }; */
-
-    // https://stackoverflow.com/questions/34609191/why-itemtouchhelper-callbacks-onchilddraw-will-be-called-after-clearview
-    // source: https://github.com/kitek/android-rv-swipe-delete
-    private class MyItemTouchCallback extends ItemTouchHelper.Callback {
-
-        boolean viewBeingCleared = false;
-        ShopItemAdapter adapter;
-
-        MyItemTouchCallback(ShopItemAdapter adapter) {
-            this.adapter = adapter;
-        }
-
-        @Override
-        public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-            return makeFlag(ItemTouchHelper.ACTION_STATE_SWIPE, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
-        }
-
-        @Override
-        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-            //Remove swiped item from list and notify the RecyclerView
-            //But where to remove from???
-            int position = viewHolder.getAdapterPosition();
-            Item itemToRemove = adapter.mItems.get(position);
-            mItemVM.deleteFromShop(itemToRemove);
-            adapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public void onChildDraw(Canvas c, RecyclerView recyclerView,
-                                RecyclerView.ViewHolder viewHolder,
-                                float dX, float dY, int actionState, boolean isCurrentlyActive) {
-
-            View itemView = viewHolder.itemView;
-            int itemHeight = itemView.getBottom() - itemView.getTop();
-            boolean isCanceled = dX == 0f && !isCurrentlyActive;
-            Drawable deleteIcon = ContextCompat.getDrawable(getActivity(), R.drawable.ic_bin);
-
-            if (isCanceled) {
-                clearCanvas(c, itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-                return;
-            }
-
-            GradientDrawable bg = new GradientDrawable();
-            bg.setShape(GradientDrawable.RECTANGLE);
-            int color = Color.parseColor("#FF0C3E");
-            bg.setColor(color);
-            float[] radii = {0, 0, 50, 50, 50, 50, 0, 0}; // TODO: get the number programmatically
-            bg.setCornerRadii(radii);
-            bg.setBounds(
-                    itemView.getRight() + (int) dX - 50,
-                    itemView.getTop(),
-                    itemView.getRight(),
-                    itemView.getBottom()
-            );
-            bg.draw(c);
-
-            // Calculate position of delete icon
-            int inHeight = deleteIcon.getIntrinsicHeight();
-            int inWidth = deleteIcon.getIntrinsicWidth();
-            int deleteIconTop = itemView.getTop() + (itemHeight - inHeight) / 2;
-            int deleteIconMargin = (itemHeight - inHeight) / 2;
-            int deleteIconLeft = itemView.getRight() - deleteIconMargin - inWidth;
-            int deleteIconRight = itemView.getRight() - deleteIconMargin;
-            int deleteIconBottom = deleteIconTop + inHeight;
-
-            // Draw the delete icon
-            deleteIcon.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom);
-            deleteIcon.draw(c);
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-        }
-
-        private void clearCanvas(Canvas c, Float left, Float top, Float right, Float bottom) {
-            c.drawRect(left, top, right, bottom, clearPaint());
-        }
-        
-        private Paint clearPaint() {
-            Paint paint = new Paint();
-            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-            return paint;
-        }
-
-        @Override
-        public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-            super.clearView(recyclerView, viewHolder);
-            ViewCompat.setElevation(viewHolder.itemView, 0);
-            viewBeingCleared = true;
-        }
-
     }
 }
