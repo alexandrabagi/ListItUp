@@ -321,6 +321,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // source: https://github.com/gifffert/ExpandableCardView
                     if (expandedCard.getVisibility() == View.GONE) {
                         TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
                         expandedCard.setVisibility(View.VISIBLE);
