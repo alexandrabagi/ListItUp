@@ -48,12 +48,21 @@ public class MyItemTouchCallback extends ItemTouchHelper.Callback {
 
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-            //Remove swiped item from list and notify the RecyclerView
-            //But where to remove from???
-            int position = viewHolder.getAdapterPosition();
-            Item itemToRemove = adapter.getItems().get(position);
-            mItemVM.deleteFromShop(itemToRemove);
-            adapter.notifyDataSetChanged();
+
+            if (swipeDir == ItemTouchHelper.LEFT) {
+                // When swiping left
+                //Remove swiped item from list and notify the RecyclerView
+                int position = viewHolder.getAdapterPosition();
+                Item itemToRemove = adapter.getItems().get(position);
+                mItemVM.deleteFromShop(itemToRemove);
+                adapter.notifyDataSetChanged();
+            } else if (swipeDir == ItemTouchHelper.RIGHT) {
+                // When swiping right
+                int position = viewHolder.getAdapterPosition();
+                Item itemToCart = adapter.getItems().get(position);
+                mItemVM.putToCart(itemToCart);
+                adapter.notifyDataSetChanged();
+            }
         }
 
         @Override
@@ -78,7 +87,7 @@ public class MyItemTouchCallback extends ItemTouchHelper.Callback {
                 backgroundIntoCart.setShape(GradientDrawable.RECTANGLE);
                 int colorCartBg = Color.parseColor("#00BCD4");
                 backgroundIntoCart.setColor(colorCartBg);
-                float[] radii = {50, 50, 0, 0, 0, 0, 50, 50}; // TODO: get the number programmatically
+                float[] radii = {50, 50, 50, 50, 50, 50, 50, 50}; // TODO: get the number programmatically
                 backgroundIntoCart.setCornerRadii(radii);
                 backgroundIntoCart.setBounds(
                         itemView.getLeft(),
@@ -99,7 +108,7 @@ public class MyItemTouchCallback extends ItemTouchHelper.Callback {
                 int cartIconRight = itemView.getLeft() + cartIconMargin + inWidthCart;
                 int cartIconBottom = cartIconTop + inHeightCart;
 
-                // Draw the delete icon
+                // Draw the cart icon
                 cartIcon.setBounds(cartIconLeft, cartIconTop, cartIconRight, cartIconBottom);
                 cartIcon.draw(c);
             } else {
@@ -108,7 +117,7 @@ public class MyItemTouchCallback extends ItemTouchHelper.Callback {
                 backgroundDelete.setShape(GradientDrawable.RECTANGLE);
                 int color = Color.parseColor("#FF0C3E");
                 backgroundDelete.setColor(color);
-                float[] radiiDel = {0, 0, 50, 50, 50, 50, 0, 0}; // TODO: get the number programmatically
+                float[] radiiDel = {50, 50, 50, 50, 50, 50, 50, 50}; // TODO: get the number programmatically
                 backgroundDelete.setCornerRadii(radiiDel);
                 backgroundDelete.setBounds(
                         itemView.getRight() + (int) dX - 50,
@@ -149,6 +158,6 @@ public class MyItemTouchCallback extends ItemTouchHelper.Callback {
         @Override
         public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
             super.clearView(recyclerView, viewHolder);
-            ViewCompat.setElevation(viewHolder.itemView, 0);
+            ViewCompat.setElevation(viewHolder.itemView, 2);
         }
 }
