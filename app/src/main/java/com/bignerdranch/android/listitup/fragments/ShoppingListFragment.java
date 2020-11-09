@@ -17,8 +17,11 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,12 +31,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.view.ViewCompat;
@@ -298,14 +303,35 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
     private class ShopItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        private CardView cardView;
         private Item mItem;
         private TextView itemName;
         private TextView quantity;
+        private ImageButton editButton;
+        private LinearLayout expandedCard;
 
         public ShopItemHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.card_item, parent, false));
+            super(inflater.inflate(R.layout.card_item_exp, parent, false));
+            cardView = itemView.findViewById(R.id.card_item);
             itemName = itemView.findViewById(R.id.what_item);
             quantity = itemView.findViewById(R.id.quantity_item);
+            editButton = itemView.findViewById(R.id.card_edit_button);
+            expandedCard = itemView.findViewById(R.id.expanded_card);
+
+            editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (expandedCard.getVisibility() == View.GONE) {
+                        TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
+                        expandedCard.setVisibility(View.VISIBLE);
+                        quantity.setVisibility(View.GONE);
+                    } else {
+                        TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
+                        expandedCard.setVisibility(View.GONE);
+                        quantity.setVisibility(View.VISIBLE);
+                    }
+                };
+            });
             itemView.setOnClickListener(this);
         }
 
@@ -346,6 +372,8 @@ public class ShoppingListFragment extends Fragment implements Observer {
         public void onBindViewHolder(@NonNull ShopItemHolder holder, int position) {
             Item item = mItems.get(position);
             holder.bind(item, position);
+
+
         }
 
         @Override
