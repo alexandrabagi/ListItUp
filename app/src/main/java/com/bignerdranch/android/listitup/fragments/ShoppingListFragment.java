@@ -6,18 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableContainer;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.transition.AutoTransition;
@@ -26,22 +15,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -51,12 +35,10 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import com.bignerdranch.android.listitup.PictureUtils;
 import com.bignerdranch.android.listitup.R;
-import com.bignerdranch.android.listitup.activities.ItemDetailActivity;
 //import com.bignerdranch.android.listitup.activities.ItemPagerActivity;
 import com.bignerdranch.android.listitup.room.Item;
 import com.bignerdranch.android.listitup.room.ItemVM;
 import com.bignerdranch.android.listitup.utilities.MyItemTouchCallback;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.util.List;
@@ -308,7 +290,13 @@ public class ShoppingListFragment extends Fragment implements Observer {
         private TextView itemName;
         private TextView quantity;
         private ImageButton editButton;
+
         private LinearLayout expandedCard;
+        private TextView quantitySetter;
+        private ImageButton addButton;
+        private ImageButton reduceButton;
+
+        private int currentQuantity;
 
         public ShopItemHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.card_item_exp, parent, false));
@@ -316,7 +304,11 @@ public class ShoppingListFragment extends Fragment implements Observer {
             itemName = itemView.findViewById(R.id.what_item);
             quantity = itemView.findViewById(R.id.quantity_item);
             editButton = itemView.findViewById(R.id.card_edit_button);
+
             expandedCard = itemView.findViewById(R.id.expanded_card);
+            quantitySetter = itemView.findViewById(R.id.quantity_setter);
+            reduceButton = itemView.findViewById(R.id.reduce_button);
+            addButton = itemView.findViewById(R.id.add_button);
 
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -326,13 +318,37 @@ public class ShoppingListFragment extends Fragment implements Observer {
                         TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
                         expandedCard.setVisibility(View.VISIBLE);
                         quantity.setVisibility(View.GONE);
+                        editButton.setBackgroundResource(R.drawable.ic_done);
                     } else {
                         TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
                         expandedCard.setVisibility(View.GONE);
                         quantity.setVisibility(View.VISIBLE);
+                        quantity.setText(Integer.toString(currentQuantity));
+                        editButton.setBackgroundResource(R.drawable.ic_edit);
                     }
                 };
             });
+
+            reduceButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (currentQuantity > 0) {
+                        currentQuantity--;
+                    } else currentQuantity = 0;
+                    quantitySetter.setText(Integer.toString(currentQuantity));
+                }
+            });
+
+            addButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (currentQuantity < 100) {
+                        currentQuantity++;
+                    } else currentQuantity = 100;
+                    quantitySetter.setText(Integer.toString(currentQuantity));
+                }
+            });
+
             itemView.setOnClickListener(this);
         }
 
@@ -340,7 +356,8 @@ public class ShoppingListFragment extends Fragment implements Observer {
             mItem = item;
             itemName.setText(mItem.getName());
             quantity.setText(Integer.toString(mItem.getQuantity()));
-
+            quantitySetter.setText(Integer.toString(mItem.getQuantity()));
+            currentQuantity = Integer.parseInt(quantity.getText().toString());
         }
 
         /*
