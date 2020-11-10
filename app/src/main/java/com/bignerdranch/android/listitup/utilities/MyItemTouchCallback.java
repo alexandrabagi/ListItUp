@@ -120,7 +120,7 @@ public class MyItemTouchCallback extends ItemTouchHelper.Callback {
                 float[] radiiDel = {50, 50, 50, 50, 50, 50, 50, 50}; // TODO: get the number programmatically
                 backgroundDelete.setCornerRadii(radiiDel);
                 backgroundDelete.setBounds(
-                        itemView.getRight() + (int) dX - 50,
+                        itemView.getLeft() + 50,
                         itemView.getTop(),
                         itemView.getRight(),
                         itemView.getBottom()

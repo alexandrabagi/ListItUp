@@ -323,7 +323,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
                         TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
                         expandedCard.setVisibility(View.GONE);
                         quantity.setVisibility(View.VISIBLE);
-                        quantity.setText(Integer.toString(currentQuantity));
+                        quantity.setText(Integer.toString(currentQuantity)); // TODO: handle db?
                         editButton.setBackgroundResource(R.drawable.ic_edit);
                     }
                 };
