@@ -318,7 +318,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
                         TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
                         expandedCard.setVisibility(View.VISIBLE);
                         quantity.setVisibility(View.GONE);
-                        editButton.setBackgroundResource(R.drawable.ic_done);
+                        editButton.setBackgroundResource(R.drawable.ic_done_img);
                     } else {
                         TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
                         expandedCard.setVisibility(View.GONE);
