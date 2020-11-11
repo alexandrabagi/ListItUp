@@ -25,6 +25,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -288,10 +289,13 @@ public class ShoppingListFragment extends Fragment implements Observer {
         private CardView cardView;
         private Item mItem;
         private TextView itemName;
-        private TextView quantity;
+        private TextView piecesText;
+        private TextView itemQuantity;
+        private TextView priceText;
+        private TextView itemPrice;
         private ImageButton editButton;
 
-        private LinearLayout expandedCard;
+        private ConstraintLayout expandedCard;
         private TextView quantitySetter;
         private ImageButton addButton;
         private ImageButton reduceButton;
@@ -299,10 +303,13 @@ public class ShoppingListFragment extends Fragment implements Observer {
         private int currentQuantity;
 
         public ShopItemHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.card_item_exp, parent, false));
+            super(inflater.inflate(R.layout.card_item_exp_new, parent, false));
             cardView = itemView.findViewById(R.id.card_item);
             itemName = itemView.findViewById(R.id.what_item);
-            quantity = itemView.findViewById(R.id.quantity_item);
+            piecesText = itemView.findViewById(R.id.pieces_text);
+            itemQuantity = itemView.findViewById(R.id.quantity_item);
+            priceText = itemView.findViewById(R.id.currency_text);
+            itemPrice = itemView.findViewById(R.id.price_item);
             editButton = itemView.findViewById(R.id.card_edit_button);
 
             expandedCard = itemView.findViewById(R.id.expanded_card);
@@ -317,13 +324,19 @@ public class ShoppingListFragment extends Fragment implements Observer {
                     if (expandedCard.getVisibility() == View.GONE) {
                         TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
                         expandedCard.setVisibility(View.VISIBLE);
-                        quantity.setVisibility(View.GONE);
-                        editButton.setBackgroundResource(R.drawable.ic_done_img);
+                        piecesText.setVisibility(View.GONE);
+                        itemQuantity.setVisibility(View.GONE);
+                        priceText.setVisibility(View.GONE);
+                        itemPrice.setVisibility(View.GONE);
+                        editButton.setBackgroundResource(R.drawable.ic_done);
                     } else {
                         TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
                         expandedCard.setVisibility(View.GONE);
-                        quantity.setVisibility(View.VISIBLE);
-                        quantity.setText(Integer.toString(currentQuantity)); // TODO: handle db?
+                        piecesText.setVisibility(View.VISIBLE);
+                        itemQuantity.setVisibility(View.VISIBLE);
+                        priceText.setVisibility(View.VISIBLE);
+                        itemPrice.setVisibility(View.VISIBLE);
+                        itemQuantity.setText(Integer.toString(currentQuantity)); // TODO: handle db?
                         editButton.setBackgroundResource(R.drawable.ic_edit);
                     }
                 };
@@ -355,9 +368,9 @@ public class ShoppingListFragment extends Fragment implements Observer {
         public void bind(Item item, int position) {
             mItem = item;
             itemName.setText(mItem.getName());
-            quantity.setText(Integer.toString(mItem.getQuantity()));
+            itemQuantity.setText(Integer.toString(mItem.getQuantity()));
             quantitySetter.setText(Integer.toString(mItem.getQuantity()));
-            currentQuantity = Integer.parseInt(quantity.getText().toString());
+            currentQuantity = Integer.parseInt(itemQuantity.getText().toString());
         }
 
         /*
