@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -122,62 +121,6 @@ public class ShoppingListFragment extends Fragment implements Observer {
         super.onResume();
         updateUI();
     }
-
-    /*private void getDialog() {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
-        // 1. parameter: Resource File, 2. view group --> null to be changed later on, in example
-        //view group is in other dialog
-        View mView = getLayoutInflater().inflate(R.layout.dialog_entername, null);
-        final EditText mItemName = (EditText) mView.findViewById(R.id.itemName);
-        //final EditText mShop = (EditText) mView.findViewById(R.id.ShopName);
-        final EditText mQuantity = (EditText) mView.findViewById(R.id.Quantity);
-
-
-        //static spinner experiment begin
-        Spinner staticSpinner = (Spinner) mView.findViewById(R.id.static_spinner2);
-
-        // Create an ArrayAdapter using the string array and a default spinner
-        ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter
-                .createFromResource(getContext(), R.array.brew_array,
-                        android.R.layout.simple_spinner_item);
-
-        // Specify the layout to use when the list of choices appears
-        staticAdapter
-                .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // Apply the adapter to the spinner
-        staticSpinner.setAdapter(staticAdapter);
-        final Spinner mShop = (Spinner) mView.findViewById(R.id.static_spinner2);
-
-        // static spinner experiment end
-
-        //final Item newItem = new Item(mItemName.toString(), mShop.toString(), mQuantity.toString());
-        Button mOkButton = (Button) mView.findViewById(R.id.ok_button);
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-
-        mOkButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                if (!mItemName.getText().toString().isEmpty()){
-                    //Toast.makeText(ListActivity.this, "you added successfully", Toast.LENGTH_SHORT).show();
-                    Item newItem = new Item(mItemName.getText().toString(), mShop.getSelectedItem().toString(), Integer.parseInt(mQuantity.getText().toString()), 0);
-                    mItemVM.insertToShop(newItem);
-
-                    mItemName.setText("");
-                    //mShop.setText("");
-                    mQuantity.setText("");
-                    dialog.dismiss();
-                    updateUI();
-                }
-                else{
-                    Toast.makeText(getActivity(), "Please enter name of item", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        dialog.show();
-    }*/
 
     private void getPriceDialog(Item item) {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
@@ -300,6 +243,8 @@ public class ShoppingListFragment extends Fragment implements Observer {
         private ImageButton addButton;
         private ImageButton reduceButton;
 
+        private boolean isExpanded = false;
+
         private int currentQuantity;
 
         public ShopItemHolder(LayoutInflater inflater, ViewGroup parent) {
@@ -322,22 +267,9 @@ public class ShoppingListFragment extends Fragment implements Observer {
                 public void onClick(View v) {
                     // source: https://github.com/gifffert/ExpandableCardView
                     if (expandedCard.getVisibility() == View.GONE) {
-                        TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
-                        expandedCard.setVisibility(View.VISIBLE);
-                        piecesText.setVisibility(View.GONE);
-                        itemQuantity.setVisibility(View.GONE);
-                        priceText.setVisibility(View.GONE);
-                        itemPrice.setVisibility(View.GONE);
-                        editButton.setBackgroundResource(R.drawable.ic_done);
+                        expandCard();
                     } else {
-                        TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
-                        expandedCard.setVisibility(View.GONE);
-                        piecesText.setVisibility(View.VISIBLE);
-                        itemQuantity.setVisibility(View.VISIBLE);
-                        priceText.setVisibility(View.VISIBLE);
-                        itemPrice.setVisibility(View.VISIBLE);
-                        itemQuantity.setText(Integer.toString(currentQuantity)); // TODO: handle db?
-                        editButton.setBackgroundResource(R.drawable.ic_edit);
+                        collapseCard();
                     }
                 };
             });
@@ -371,6 +303,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
             itemQuantity.setText(Integer.toString(mItem.getQuantity()));
             quantitySetter.setText(Integer.toString(mItem.getQuantity()));
             currentQuantity = Integer.parseInt(itemQuantity.getText().toString());
+            isExpanded = false;
         }
 
         /*
@@ -378,16 +311,49 @@ public class ShoppingListFragment extends Fragment implements Observer {
          */
         @Override
         public void onClick(View view) {
+            expandCard();
 //            Intent intent = new Intent(getActivity(), ItemPagerActivity.class);
 //            intent.putExtra(EXTRA_ITEM_ID, Integer.valueOf(mItem.getId()));
 //            startActivity(intent);
 //            getPriceDialog(mItem);
+        }
+
+        private void expandCard() {
+            TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
+            expandedCard.setVisibility(View.VISIBLE);
+            piecesText.setVisibility(View.GONE);
+            itemQuantity.setVisibility(View.GONE);
+            priceText.setVisibility(View.GONE);
+            itemPrice.setVisibility(View.GONE);
+            editButton.setBackgroundResource(R.drawable.ic_done);
+            isExpanded = true;
+        }
+
+        private void collapseCard() {
+            TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
+            expandedCard.setVisibility(View.GONE);
+            piecesText.setVisibility(View.VISIBLE);
+            itemQuantity.setVisibility(View.VISIBLE);
+            priceText.setVisibility(View.VISIBLE);
+            itemPrice.setVisibility(View.VISIBLE);
+            itemQuantity.setText(Integer.toString(currentQuantity)); // TODO: handle db?
+            editButton.setBackgroundResource(R.drawable.ic_edit);
+            isExpanded = false;
+        }
+
+        public boolean getIsExpanded() {
+            return isExpanded;
+        }
+
+        public void setIsExpanded(boolean expanded) {
+            isExpanded = expanded;
         }
     }
 
     public class ShopItemAdapter extends Adapter<ShopItemHolder> {
 
         private List<Item> mItems;
+//        private boolean isAnyExpanded;
 
         public ShopItemAdapter(Context context) {
 //            LayoutInflater inflater = LayoutInflater.from(context);
@@ -403,8 +369,6 @@ public class ShoppingListFragment extends Fragment implements Observer {
         public void onBindViewHolder(@NonNull ShopItemHolder holder, int position) {
             Item item = mItems.get(position);
             holder.bind(item, position);
-
-
         }
 
         @Override
@@ -422,6 +386,26 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
         public List<Item> getItems() {
             return mItems;
+        }
+
+//        public boolean getIsAnyExpanded() {
+//            return isAnyExpanded;
+//        }
+//
+//        public void setIsAnyExpanded() {
+//            isAnyExpanded = !isAnyExpanded;
+//        }
+
+        private void changeStateOfCards(ShopItemHolder holder, int position) {
+            for (int i = 0; i < mItems.size(); i++) {
+                if (i == position) {
+                    holder.expandCard();
+                    //Since this is the tapped item, we will skip
+                    //the rest of loop for this item and set it expanded
+                    continue;
+                }
+                holder.collapseCard();
+            }
         }
     }
 }

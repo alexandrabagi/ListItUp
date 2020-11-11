@@ -21,7 +21,7 @@
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_marginTop="10dp"
-           android:layout_marginBottom="10dp"
+           android:layout_marginBottom="15dp"
            app:layout_constraintTop_toTopOf="parent"
            app:layout_constraintBottom_toTopOf="@+id/expanded_card">
 
