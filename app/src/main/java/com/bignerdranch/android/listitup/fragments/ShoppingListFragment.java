@@ -241,12 +241,12 @@ public class ShoppingListFragment extends Fragment implements Observer {
         private FrameLayout bigEditButton;
 
         private ConstraintLayout expandedCard;
+        private EditText editItemName;
         private TextView quantitySetter;
         private ImageButton addButton;
         private ImageButton reduceButton;
 
         private boolean isExpanded = false;
-//        private int activeCard = -1;
 
         private int currentQuantity;
 
@@ -262,6 +262,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
             bigEditButton = itemView.findViewById(R.id.card_edit_button);
 
             expandedCard = itemView.findViewById(R.id.expanded_card);
+            editItemName = itemView.findViewById(R.id.edit_what_item);
             quantitySetter = itemView.findViewById(R.id.quantity_setter);
             reduceButton = itemView.findViewById(R.id.reduce_button);
             addButton = itemView.findViewById(R.id.add_button);
@@ -312,6 +313,9 @@ public class ShoppingListFragment extends Fragment implements Observer {
         private void expandCard() {
             TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
             expandedCard.setVisibility(View.VISIBLE);
+            editItemName.setVisibility(View.VISIBLE);
+            editItemName.setText(itemName.getText());
+            itemName.setVisibility(View.GONE);
             piecesText.setVisibility(View.GONE);
             itemQuantity.setVisibility(View.GONE);
             priceText.setVisibility(View.GONE);
@@ -323,6 +327,9 @@ public class ShoppingListFragment extends Fragment implements Observer {
         private void collapseCard() {
             TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
             expandedCard.setVisibility(View.GONE);
+            editItemName.setVisibility(View.GONE);
+            itemName.setText(editItemName.getText());
+            itemName.setVisibility(View.VISIBLE);
             piecesText.setVisibility(View.VISIBLE);
             itemQuantity.setVisibility(View.VISIBLE);
             priceText.setVisibility(View.VISIBLE);
