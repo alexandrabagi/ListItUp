@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -236,7 +237,8 @@ public class ShoppingListFragment extends Fragment implements Observer {
         private TextView itemQuantity;
         private TextView priceText;
         private TextView itemPrice;
-        private ImageButton editButton;
+        private ImageView editButtonImg;
+        private FrameLayout bigEditButton;
 
         private ConstraintLayout expandedCard;
         private TextView quantitySetter;
@@ -256,7 +258,8 @@ public class ShoppingListFragment extends Fragment implements Observer {
             itemQuantity = itemView.findViewById(R.id.quantity_item);
             priceText = itemView.findViewById(R.id.currency_text);
             itemPrice = itemView.findViewById(R.id.price_item);
-            editButton = itemView.findViewById(R.id.card_edit_button);
+            editButtonImg = itemView.findViewById(R.id.card_edit_button_img);
+            bigEditButton = itemView.findViewById(R.id.card_edit_button);
 
             expandedCard = itemView.findViewById(R.id.expanded_card);
             quantitySetter = itemView.findViewById(R.id.quantity_setter);
@@ -313,7 +316,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
             itemQuantity.setVisibility(View.GONE);
             priceText.setVisibility(View.GONE);
             itemPrice.setVisibility(View.GONE);
-            editButton.setBackgroundResource(R.drawable.ic_done);
+            editButtonImg.setBackgroundResource(R.drawable.ic_done);
             isExpanded = true;
         }
 
@@ -325,7 +328,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
             priceText.setVisibility(View.VISIBLE);
             itemPrice.setVisibility(View.VISIBLE);
             itemQuantity.setText(Integer.toString(currentQuantity)); // TODO: handle db?
-            editButton.setBackgroundResource(R.drawable.ic_edit);
+            editButtonImg.setBackgroundResource(R.drawable.ic_edit);
             isExpanded = false;
         }
     }
@@ -349,9 +352,11 @@ public class ShoppingListFragment extends Fragment implements Observer {
         public void onBindViewHolder(@NonNull ShopItemHolder holder, int position) {
             Item item = mItems.get(position);
 
-            holder.editButton.setOnClickListener(new View.OnClickListener() {
+            holder.bigEditButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    System.out.println("!!!!!!!!!!!!!Clicked!!!!!!!!!!");
 
                     if (!holder.isExpanded) {
                         holder.isExpanded = true;
