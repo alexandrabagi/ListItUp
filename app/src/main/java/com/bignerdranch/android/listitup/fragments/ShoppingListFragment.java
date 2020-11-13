@@ -244,6 +244,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
         private ImageButton reduceButton;
 
         private boolean isExpanded = false;
+//        private int activeCard = -1;
 
         private int currentQuantity;
 
@@ -261,18 +262,6 @@ public class ShoppingListFragment extends Fragment implements Observer {
             quantitySetter = itemView.findViewById(R.id.quantity_setter);
             reduceButton = itemView.findViewById(R.id.reduce_button);
             addButton = itemView.findViewById(R.id.add_button);
-
-            editButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // source: https://github.com/gifffert/ExpandableCardView
-                    if (expandedCard.getVisibility() == View.GONE) {
-                        expandCard();
-                    } else {
-                        collapseCard();
-                    }
-                };
-            });
 
             reduceButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -311,7 +300,6 @@ public class ShoppingListFragment extends Fragment implements Observer {
          */
         @Override
         public void onClick(View view) {
-            expandCard();
 //            Intent intent = new Intent(getActivity(), ItemPagerActivity.class);
 //            intent.putExtra(EXTRA_ITEM_ID, Integer.valueOf(mItem.getId()));
 //            startActivity(intent);
@@ -340,23 +328,15 @@ public class ShoppingListFragment extends Fragment implements Observer {
             editButton.setBackgroundResource(R.drawable.ic_edit);
             isExpanded = false;
         }
-
-        public boolean getIsExpanded() {
-            return isExpanded;
-        }
-
-        public void setIsExpanded(boolean expanded) {
-            isExpanded = expanded;
-        }
     }
 
     public class ShopItemAdapter extends Adapter<ShopItemHolder> {
 
         private List<Item> mItems;
-//        private boolean isAnyExpanded;
+
+        private ShopItemHolder prevHolder = null;
 
         public ShopItemAdapter(Context context) {
-//            LayoutInflater inflater = LayoutInflater.from(context);
         }
 
         @Override
@@ -368,7 +348,30 @@ public class ShoppingListFragment extends Fragment implements Observer {
         @Override
         public void onBindViewHolder(@NonNull ShopItemHolder holder, int position) {
             Item item = mItems.get(position);
+
+            holder.editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (!holder.isExpanded) {
+                        holder.isExpanded = true;
+                        closeInactive();
+                        prevHolder = holder;
+                        holder.expandCard();
+                    } else {
+                        holder.isExpanded = false;
+                        holder.collapseCard();
+                    }
+                }
+            });
+
             holder.bind(item, position);
+        }
+
+        private void closeInactive() {
+            if (prevHolder != null && prevHolder.isExpanded) {
+                prevHolder.collapseCard();
+            }
         }
 
         @Override
@@ -376,7 +379,6 @@ public class ShoppingListFragment extends Fragment implements Observer {
             if (mItems != null) {
                 return mItems.size();
             } else return 0;
-
         }
 
         void setItems(List<Item> items) {
@@ -386,26 +388,6 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
         public List<Item> getItems() {
             return mItems;
-        }
-
-//        public boolean getIsAnyExpanded() {
-//            return isAnyExpanded;
-//        }
-//
-//        public void setIsAnyExpanded() {
-//            isAnyExpanded = !isAnyExpanded;
-//        }
-
-        private void changeStateOfCards(ShopItemHolder holder, int position) {
-            for (int i = 0; i < mItems.size(); i++) {
-                if (i == position) {
-                    holder.expandCard();
-                    //Since this is the tapped item, we will skip
-                    //the rest of loop for this item and set it expanded
-                    continue;
-                }
-                holder.collapseCard();
-            }
         }
     }
 }
