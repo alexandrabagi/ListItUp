@@ -35,6 +35,10 @@ public interface ItemDAO {
     @Delete
     void deleteShopItem(Item item);
 
+    @Query("UPDATE shop_table SET name = :name ,quantity= :quantity,price= :price WHERE id LIKE :id ")
+    void updateShopItem(int id, String name, int quantity, float price);
+
+
     @Query("DELETE FROM shop_table")
     void deleteAllShop();
 
@@ -47,8 +51,6 @@ public interface ItemDAO {
     @Query("SELECT * FROM shop_table WHERE bought = 0 AND id = :id")
     LiveData<Item> loadShopItem(int id);
 
-//    @Query("SELECT * FROM shop_table WHERE id = :id")
-//    ShopItem getItem(int id);
 
     ///CARTLIST///
     @Insert(onConflict = OnConflictStrategy.IGNORE)

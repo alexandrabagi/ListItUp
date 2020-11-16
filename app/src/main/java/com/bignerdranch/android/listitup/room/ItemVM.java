@@ -27,17 +27,14 @@ public class ItemVM extends AndroidViewModel {
         mAllCartItems = mRepository.getAllCartItems();
     }
 
-//    public LiveData<List<ShopItem>> getAllItems() {
-//        return mAllShopItems;
-//    }
-
-//    public LiveData<List<CartItem>> getAllCartItems() {
-//        return mAllCartItems;
-//    }
 
     ///SHOPLIST///
     public void insertToShop(Item item) {
         mRepository.insertToShop(item);
+    }
+
+    public void updateShopItem(int id, String itemName, int itemQuantity, float itemPrice) {
+        mRepository.updateShopItem(id, itemName, itemQuantity, itemPrice);
     }
 
     public void putToCart(Item item) {

@@ -363,8 +363,6 @@ public class ShoppingListFragment extends Fragment implements Observer {
                 @Override
                 public void onClick(View v) {
 
-                    System.out.println("!!!!!!!!!!!!!Clicked!!!!!!!!!!");
-
                     if (!holder.isExpanded) {
                         holder.isExpanded = true;
                         closeInactive();
@@ -373,6 +371,12 @@ public class ShoppingListFragment extends Fragment implements Observer {
                     } else {
                         holder.isExpanded = false;
                         holder.collapseCard();
+                        // save changes into DB
+                        int itemId = holder.mItem.getId();
+                        String itemName = holder.itemName.getText().toString();
+                        int itemQuantity = Integer.parseInt(holder.itemQuantity.getText().toString());
+                        float itemPrice = Float.parseFloat(holder.itemPrice.getText().toString());
+                        mItemVM.updateShopItem(itemId, itemName, itemQuantity, itemPrice);
                     }
                 }
             });

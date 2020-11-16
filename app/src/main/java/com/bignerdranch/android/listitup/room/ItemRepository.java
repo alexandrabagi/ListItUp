@@ -38,6 +38,12 @@ public class ItemRepository {
         });
     }
 
+    void updateShopItem(int id, String itemName, int itemQuantity, float itemPrice) {
+        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+            mItemDao.updateShopItem(id, itemName, itemQuantity, itemPrice);
+        });
+    }
+
     void putToCart(Item item) {
         ItemRoomDB.databaseWriteExecutor.execute(() -> {
             mItemDao.putToCart(item);
