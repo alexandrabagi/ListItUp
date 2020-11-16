@@ -51,4 +51,6 @@
     <string name="fab_content">Adding new element to the list</string>
     <string name="pieces">pcs</string>
     <string name="pounds">£</string>
+    <string name="lets_buy_subtitle">LET\'S BUY...</string>
+    <string name="in_my_cart_subtitle">IN MY CART...</string>
 </resources>

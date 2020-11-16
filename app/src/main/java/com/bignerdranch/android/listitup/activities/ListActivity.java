@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -43,6 +44,8 @@ public class ListActivity extends AppCompatActivity {
 //    private int tabPosition;
     private ItemVM mItemVM;
 
+    private TextView mSubtitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +58,9 @@ public class ListActivity extends AppCompatActivity {
         // TODO have the toolbar too
 
         mAddNewFAB = findViewById(R.id.add_new_fab);
+
+        mSubtitle = findViewById(R.id.subtitle);
+
 
         FragmentManager fm = getSupportFragmentManager();
 //        bottomAppBar = findViewById(R.id.bottom_app_bar); // do we need it?\
@@ -73,7 +79,7 @@ public class ListActivity extends AppCompatActivity {
 //                    // Handle list fragment
                     mAddNewFAB.setVisibility(View.VISIBLE);
 
-
+                    mSubtitle.setText(R.string.lets_buy_subtitle);
                     Bundle args = new Bundle();
                     // Our object is just an integer
                     args.putInt(ShoppingListFragment.ARG_OBJECT, 0); // check
@@ -86,6 +92,8 @@ public class ListActivity extends AppCompatActivity {
                 } else if (item.getItemId() == R.id.cart_button) {
                     // Handle cart fragment
                     mAddNewFAB.setVisibility(View.INVISIBLE);
+
+                    mSubtitle.setText(R.string.in_my_cart_subtitle);
 
                     Fragment fragment = new CartListFragment();
                     Bundle args = new Bundle();

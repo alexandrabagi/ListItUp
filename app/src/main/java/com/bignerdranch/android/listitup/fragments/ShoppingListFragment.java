@@ -243,12 +243,14 @@ public class ShoppingListFragment extends Fragment implements Observer {
         private ConstraintLayout expandedCard;
         private EditText editItemName;
         private TextView quantitySetter;
+        private TextView priceSetter;
         private ImageButton addButton;
         private ImageButton reduceButton;
 
         private boolean isExpanded = false;
 
         private int currentQuantity;
+        private float currentPrice;
 
         public ShopItemHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.card_item_exp_new, parent, false));
@@ -264,6 +266,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
             expandedCard = itemView.findViewById(R.id.expanded_card);
             editItemName = itemView.findViewById(R.id.edit_what_item);
             quantitySetter = itemView.findViewById(R.id.quantity_setter);
+            priceSetter = itemView.findViewById(R.id.price_setter);
             reduceButton = itemView.findViewById(R.id.reduce_button);
             addButton = itemView.findViewById(R.id.add_button);
 
@@ -295,7 +298,9 @@ public class ShoppingListFragment extends Fragment implements Observer {
             itemName.setText(mItem.getName());
             itemQuantity.setText(Integer.toString(mItem.getQuantity()));
             quantitySetter.setText(Integer.toString(mItem.getQuantity()));
+            priceSetter.setText(Float.toString(mItem.getPrice()));
             currentQuantity = Integer.parseInt(itemQuantity.getText().toString());
+            currentPrice = Float.parseFloat(itemPrice.getText().toString());
             isExpanded = false;
         }
 
@@ -335,6 +340,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
             priceText.setVisibility(View.VISIBLE);
             itemPrice.setVisibility(View.VISIBLE);
             itemQuantity.setText(Integer.toString(currentQuantity)); // TODO: handle db?
+            itemPrice.setText(Float.toString(currentPrice));
             editButtonImg.setBackgroundResource(R.drawable.ic_edit);
             isExpanded = false;
         }
