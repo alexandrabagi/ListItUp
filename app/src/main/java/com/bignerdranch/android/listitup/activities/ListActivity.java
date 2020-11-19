@@ -44,7 +44,7 @@ public class ListActivity extends AppCompatActivity {
 //    private int tabPosition;
     private ItemVM mItemVM;
 
-    private TextView mSubtitle;
+//    private TextView mSubtitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +59,17 @@ public class ListActivity extends AppCompatActivity {
 
         mAddNewFAB = findViewById(R.id.add_new_fab);
 
-        mSubtitle = findViewById(R.id.subtitle);
+//        mSubtitle = findViewById(R.id.subtitle);
 
 
         FragmentManager fm = getSupportFragmentManager();
 //        bottomAppBar = findViewById(R.id.bottom_app_bar); // do we need it?\
 
+        Bundle args = new Bundle();
+
         Fragment fragment = new ShoppingListFragment();
+        args.putInt(ShoppingListFragment.ARG_OBJECT, 0); // check
+        fragment.setArguments(args);
         fm.beginTransaction()
                 .replace(R.id.list_fragment_container, fragment)
                 .commit();
@@ -76,12 +80,11 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.list_button) {
-//                    // Handle list fragment
+                    // Handle list fragment
                     mAddNewFAB.setVisibility(View.VISIBLE);
 
-                    mSubtitle.setText(R.string.lets_buy_subtitle);
+                    Fragment fragment = new ShoppingListFragment();
                     Bundle args = new Bundle();
-                    // Our object is just an integer
                     args.putInt(ShoppingListFragment.ARG_OBJECT, 0); // check
                     fragment.setArguments(args);
                     fm.beginTransaction()
@@ -93,12 +96,9 @@ public class ListActivity extends AppCompatActivity {
                     // Handle cart fragment
                     mAddNewFAB.setVisibility(View.INVISIBLE);
 
-                    mSubtitle.setText(R.string.in_my_cart_subtitle);
-
-                    Fragment fragment = new CartListFragment();
+                    Fragment fragment = new ShoppingListFragment();
                     Bundle args = new Bundle();
-                    // Our object is just an integer :-P
-                    args.putInt(CartListFragment.ARG_OBJECT, 1);
+                    args.putInt(ShoppingListFragment.ARG_OBJECT, 1);
                     fragment.setArguments(args);
                     fm.beginTransaction()
                             .replace(R.id.list_fragment_container, fragment)

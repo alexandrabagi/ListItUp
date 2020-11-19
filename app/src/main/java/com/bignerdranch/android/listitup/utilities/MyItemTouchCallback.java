@@ -29,11 +29,13 @@ public class MyItemTouchCallback extends ItemTouchHelper.Callback {
         private ShoppingListFragment.ShopItemAdapter adapter;
         private ItemVM mItemVM;
         private Context context;
+        private int chosenList; // 0 - shopping list, 1 - cart list
 
-        public MyItemTouchCallback(Context context, ShoppingListFragment.ShopItemAdapter adapter, ItemVM viewModel) {
+        public MyItemTouchCallback(Context context, ShoppingListFragment.ShopItemAdapter adapter, ItemVM viewModel, int chosenList) {
             this.adapter = adapter;
             this.mItemVM = viewModel;
             this.context = context;
+            this.chosenList = chosenList;
         }
 
         @Override
@@ -49,19 +51,36 @@ public class MyItemTouchCallback extends ItemTouchHelper.Callback {
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
 
-            if (swipeDir == ItemTouchHelper.LEFT) {
-                // When swiping left
-                //Remove swiped item from list and notify the RecyclerView
-                int position = viewHolder.getAdapterPosition();
-                Item itemToRemove = adapter.getItems().get(position);
-                mItemVM.deleteFromShop(itemToRemove);
-                adapter.notifyDataSetChanged();
-            } else if (swipeDir == ItemTouchHelper.RIGHT) {
-                // When swiping right
-                int position = viewHolder.getAdapterPosition();
-                Item itemToCart = adapter.getItems().get(position);
-                mItemVM.putToCart(itemToCart);
-                adapter.notifyDataSetChanged();
+            if (chosenList == 0) { // shopping list
+                if (swipeDir == ItemTouchHelper.LEFT) {
+                    // When swiping left
+                    //Remove swiped item from list and notify the RecyclerView
+                    int position = viewHolder.getAdapterPosition();
+                    Item itemToRemove = adapter.getItems().get(position);
+                    mItemVM.deleteFromShop(itemToRemove);
+                    adapter.notifyDataSetChanged();
+                } else if (swipeDir == ItemTouchHelper.RIGHT) {
+                    // When swiping right
+                    int position = viewHolder.getAdapterPosition();
+                    Item itemToCart = adapter.getItems().get(position);
+                    mItemVM.putToCart(itemToCart);
+                    adapter.notifyDataSetChanged();
+                }
+            } else { // cart list
+                if (swipeDir == ItemTouchHelper.LEFT) {
+                    // When swiping left
+                    //Remove swiped item from list and notify the RecyclerView
+                    int position = viewHolder.getAdapterPosition();
+                    Item itemToRemove = adapter.getItems().get(position);
+                    mItemVM.deleteFromShop(itemToRemove);
+                    adapter.notifyDataSetChanged();
+                } else if (swipeDir == ItemTouchHelper.RIGHT) {
+                    // When swiping right
+                    int position = viewHolder.getAdapterPosition();
+                    Item itemToList = adapter.getItems().get(position);
+                    mItemVM.putToShop(itemToList);
+                    adapter.notifyDataSetChanged();
+                }
             }
         }
 
@@ -98,10 +117,13 @@ public class MyItemTouchCallback extends ItemTouchHelper.Callback {
                 backgroundIntoCart.draw(c);
 
                 // Calculate position of cart icon
-                Drawable cartIcon = ContextCompat.getDrawable(context, R.drawable.ic_cart_active);
-                cartIcon.setTint(Color.parseColor("#FFFFFF"));
-                int inHeightCart = cartIcon.getIntrinsicHeight();
-                int inWidthCart = cartIcon.getIntrinsicWidth();
+                Drawable swipeIcon;
+                if (chosenList == 0) {
+                    swipeIcon = ContextCompat.getDrawable(context, R.drawable.ic_cart_swipe);
+                } else swipeIcon = ContextCompat.getDrawable(context, R.drawable.ic_list_swipe);
+
+                int inHeightCart = swipeIcon.getIntrinsicHeight();
+                int inWidthCart = swipeIcon.getIntrinsicWidth();
                 int cartIconTop = itemView.getTop() + (itemHeight - inHeightCart) / 2;
                 int cartIconMargin = (itemHeight - inHeightCart) / 2;
                 int cartIconLeft = itemView.getLeft() + cartIconMargin;
@@ -109,8 +131,8 @@ public class MyItemTouchCallback extends ItemTouchHelper.Callback {
                 int cartIconBottom = cartIconTop + inHeightCart;
 
                 // Draw the cart icon
-                cartIcon.setBounds(cartIconLeft, cartIconTop, cartIconRight, cartIconBottom);
-                cartIcon.draw(c);
+                swipeIcon.setBounds(cartIconLeft, cartIconTop, cartIconRight, cartIconBottom);
+                swipeIcon.draw(c);
             } else {
                 // Setting up delete swipe
                 GradientDrawable backgroundDelete = new GradientDrawable();

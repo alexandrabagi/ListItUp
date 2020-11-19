@@ -56,13 +56,17 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
     public static final String ARG_OBJECT = "object";
 
+    private int chosenButton;
+
 
     private ShopItemAdapter mAdapter;
 
     private RecyclerView mItemRecyclerView;
     private List<Item> mItems;
-//    private TextView testText;
 
+    private TextView mSubtitle;
+    private TextView mTotalPriceText;
+    private float mTotalPriceValue;
 
     private ItemVM mItemVM;
 
@@ -74,6 +78,13 @@ public class ShoppingListFragment extends Fragment implements Observer {
     @Override
     public void update(Observable observable, Object data) {
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState == null) mTotalPriceValue = 0.0f;
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putFloat("totalPrice", mTotalPriceValue);
     }
 
     @Override
@@ -98,7 +109,14 @@ public class ShoppingListFragment extends Fragment implements Observer {
 //                mAdapter.setItems(shopItems);
 //            }
 //        });
-        mItemVM.getAllItemsByShops().observe(getViewLifecycleOwner(), shopItems -> mAdapter.setItems(shopItems));
+
+        chosenButton = getArguments().getInt(ARG_OBJECT);
+
+        if (chosenButton == 0) {
+            mItemVM.getAllItemsByShops().observe(getViewLifecycleOwner(), shopItems -> mAdapter.setItems(shopItems));
+        } else {
+            mItemVM.getAllCartItems().observe(getViewLifecycleOwner(), cartItems -> mAdapter.setItems(cartItems));
+        }
 
         return view;
     }
@@ -111,10 +129,24 @@ public class ShoppingListFragment extends Fragment implements Observer {
         mItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mItemRecyclerView.setAdapter(mAdapter); // added
 
+        mSubtitle = view.findViewById(R.id.subtitle);
+        mTotalPriceText = view.findViewById(R.id.sum_price);
+        mTotalPriceText.setText(String.format ("%.2f", mTotalPriceValue));
+
+
+        if (chosenButton == 0) {
+            mSubtitle.setText(R.string.lets_buy_subtitle);
+            ItemTouchHelper myITH = new ItemTouchHelper(new MyItemTouchCallback(getActivity(), mAdapter, mItemVM, 0));
+            myITH.attachToRecyclerView(mItemRecyclerView);
+        } else {
+            mSubtitle.setText(R.string.in_my_cart_subtitle);
+            ItemTouchHelper myITH = new ItemTouchHelper(new MyItemTouchCallback(getActivity(), mAdapter, mItemVM, 1));
+            myITH.attachToRecyclerView(mItemRecyclerView);
+        }
+
+
         updateUI();
 
-        ItemTouchHelper myITH = new ItemTouchHelper(new MyItemTouchCallback(getActivity(), mAdapter, mItemVM));
-        myITH.attachToRecyclerView(mItemRecyclerView);
     }
 
     @Override
@@ -309,10 +341,6 @@ public class ShoppingListFragment extends Fragment implements Observer {
          */
         @Override
         public void onClick(View view) {
-//            Intent intent = new Intent(getActivity(), ItemPagerActivity.class);
-//            intent.putExtra(EXTRA_ITEM_ID, Integer.valueOf(mItem.getId()));
-//            startActivity(intent);
-//            getPriceDialog(mItem);
         }
 
         private void expandCard() {

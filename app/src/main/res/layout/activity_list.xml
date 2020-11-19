@@ -38,64 +38,64 @@
         app:tabIndicator="@drawable/tab_indicator_dot" /> -->
 
 
-    <LinearLayout
-        android:id="@+id/price_line"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/top_app_bar"
-        app:layout_constraintBottom_toTopOf="@id/list_fragment_container"
-        android:weightSum="2">
+<!--    <LinearLayout-->
+<!--        android:id="@+id/price_line"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/top_app_bar"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/list_fragment_container"-->
+<!--        android:weightSum="2">-->
 
-        <TextView
-            android:id="@+id/subtitle"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:background="@color/white"
-            android:text="LET'S BUY..."
-            android:textAlignment="center"
-            android:textColor="@color/Primary_500"
-            android:textSize="22sp"
-            app:layout_constraintEnd_toStartOf="@+id/diamond_shape"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+<!--        <TextView-->
+<!--            android:id="@+id/subtitle"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="center"-->
+<!--            android:background="@color/white"-->
+<!--            android:text="LET'S BUY..."-->
+<!--            android:textAlignment="center"-->
+<!--            android:textColor="@color/Primary_500"-->
+<!--            android:textSize="22sp"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/diamond_shape"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"/>-->
 
-        <TextView
-            android:id="@+id/sum_price"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:paddingEnd="20dp"
-            android:paddingVertical="2dp"
-            android:adjustViewBounds="true"
-            android:background="@color/Secondary_500"
-            android:text="£ 8.25"
-            android:textAlignment="textEnd"
-            android:textColor="@color/white"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            tools:text="£ 8.29" />
+<!--        <TextView-->
+<!--            android:id="@+id/sum_price"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="center"-->
+<!--            android:paddingEnd="20dp"-->
+<!--            android:paddingVertical="2dp"-->
+<!--            android:adjustViewBounds="true"-->
+<!--            android:background="@color/Secondary_500"-->
+<!--            android:text="£ 8.25"-->
+<!--            android:textAlignment="textEnd"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="22sp"-->
+<!--            android:textStyle="bold"-->
+<!--            tools:text="£ 8.29" />-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toTopOf="@id/list_fragment_container"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/price_line"
-        app:layout_constraintTop_toBottomOf="@+id/top_app_bar">
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="50dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/list_fragment_container"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/price_line"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/top_app_bar">-->
 
-        <ImageView
-            android:id="@+id/diamond"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/white_diamond_shape" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--        <ImageView-->
+<!--            android:id="@+id/diamond"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:src="@drawable/white_diamond_shape" />-->
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
 
