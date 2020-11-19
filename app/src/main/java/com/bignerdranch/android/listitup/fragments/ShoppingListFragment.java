@@ -131,7 +131,16 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
         mSubtitle = view.findViewById(R.id.subtitle);
         mTotalPriceText = view.findViewById(R.id.sum_price);
-        mTotalPriceText.setText(String.format ("%.2f", mTotalPriceValue));
+
+        mItemVM.getAllCartItems().observe(getViewLifecycleOwner(), cartItems -> {
+            for (Item item : cartItems) {
+                mTotalPriceValue += item.getPrice();
+                System.out.println("mTotalPrice: " + mTotalPriceValue);
+                mTotalPriceText.setText(String.format ("%.2f", mTotalPriceValue));
+            }
+        });
+        System.out.println("TotalPrice: " + mTotalPriceValue);
+
 
 
         if (chosenButton == 0) {
@@ -155,74 +164,12 @@ public class ShoppingListFragment extends Fragment implements Observer {
         updateUI();
     }
 
-    private void getPriceDialog(Item item) {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+    public float getTotalPriceValue() {
+        return mTotalPriceValue;
+    }
 
-        View mView = getLayoutInflater().inflate(R.layout.dialog_enterprice, null);
-
-        EditText mItemPrice = (EditText) mView.findViewById(R.id.itemPrice);
-        mPhotoView = (ImageView) mView.findViewById(R.id.item_photo);
-        ImageButton photoButton = (ImageButton) mView.findViewById(R.id.photo_button);
-        Button mOkButton = (Button) mView.findViewById(R.id.ok_button);
-        Button mCancelButton = (Button) mView.findViewById(R.id.cancel_button);
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-
-        mOkButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Log.d("photo", "OK button clicked");
-                String priceS = mItemPrice.getText().toString();
-                if (priceS.contains(",")) priceS = priceS.replace(",", ".");
-                Log.d("inputprice", priceS);
-                float priceF = Float.parseFloat(priceS);
-                mItemVM.setPrice(item, priceF);
-                mAdapter.notifyDataSetChanged();
-                dialog.dismiss();
-            }
-        });
-
-        mCancelButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Log.d("photo", "Cancel button clicked");
-                mItemVM.putToShop(item);
-                dialog.dismiss();
-            }
-        });
-
-        PackageManager packageManager = getActivity().getPackageManager();
-        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        updatePhotoView();
-//        boolean canTakePhoto = mPhotoFile != null &&
-//                captureImage.resolveActivity(packageManager) != null;
-        Log.d("photo", Boolean.toString(mPhotoFile != null)); //--> false
-        Log.d("photo", Boolean.toString(captureImage.resolveActivity(packageManager) != null));
-
-
-        photoButton.setEnabled(true);
-        photoButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Log.d("photo", "Photo button clicked");
-                Uri uri = FileProvider.getUriForFile(getActivity(),
-                        "com.bignerdranch.android.listitup.fileprovider",
-                        mPhotoFile);
-                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                List<ResolveInfo> cameraActivities = getActivity()
-                        .getPackageManager().queryIntentActivities(captureImage,
-                                PackageManager.MATCH_DEFAULT_ONLY);
-                for (ResolveInfo activity : cameraActivities) {
-                    getActivity().grantUriPermission(activity.activityInfo.packageName,
-                            uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);}
-                startActivityForResult(captureImage, REQUEST_PHOTO);
-            }
-        });
-
-        updatePhotoView();
-
-        dialog.show();
-
+    public void setTotalPriceValue(float priceToAdd) {
+        mTotalPriceValue += priceToAdd;
     }
 
     private void updateUI() {
@@ -276,8 +223,6 @@ public class ShoppingListFragment extends Fragment implements Observer {
         private EditText editItemName;
         private TextView quantitySetter;
         private TextView priceSetter;
-        private ImageButton addButton;
-        private ImageButton reduceButton;
 
         private boolean isExpanded = false;
 
@@ -299,8 +244,9 @@ public class ShoppingListFragment extends Fragment implements Observer {
             editItemName = itemView.findViewById(R.id.edit_what_item);
             quantitySetter = itemView.findViewById(R.id.quantity_setter);
             priceSetter = itemView.findViewById(R.id.price_setter);
-            reduceButton = itemView.findViewById(R.id.reduce_button);
-            addButton = itemView.findViewById(R.id.add_button);
+            ImageButton reduceButton = itemView.findViewById(R.id.reduce_button);
+            ImageButton addButton = itemView.findViewById(R.id.add_button);
+            Button setPriceButton = itemView.findViewById(R.id.price_setter_button);
 
             reduceButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -322,6 +268,14 @@ public class ShoppingListFragment extends Fragment implements Observer {
                 }
             });
 
+            setPriceButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getPriceDialog(mItem);
+                }
+            });
+
+
             itemView.setOnClickListener(this);
         }
 
@@ -329,16 +283,14 @@ public class ShoppingListFragment extends Fragment implements Observer {
             mItem = item;
             itemName.setText(mItem.getName());
             itemQuantity.setText(Integer.toString(mItem.getQuantity()));
-            quantitySetter.setText(Integer.toString(mItem.getQuantity()));
-            priceSetter.setText(Float.toString(mItem.getPrice()));
+            itemPrice.setText(String.format("%.2f", mItem.getPrice()));
+            quantitySetter.setText(itemQuantity.getText().toString());
+            priceSetter.setText(itemPrice.getText().toString());
             currentQuantity = Integer.parseInt(itemQuantity.getText().toString());
             currentPrice = Float.parseFloat(itemPrice.getText().toString());
             isExpanded = false;
         }
 
-        /*
-        When clicking on list item we start instance of ItemPagerActivity
-         */
         @Override
         public void onClick(View view) {
         }
@@ -368,9 +320,79 @@ public class ShoppingListFragment extends Fragment implements Observer {
             priceText.setVisibility(View.VISIBLE);
             itemPrice.setVisibility(View.VISIBLE);
             itemQuantity.setText(Integer.toString(currentQuantity)); // TODO: handle db?
-            itemPrice.setText(Float.toString(currentPrice));
+            System.out.println("Current price2: " + currentPrice);
+            itemPrice.setText(String.format("%.2f", currentPrice));
             editButtonImg.setBackgroundResource(R.drawable.ic_edit);
             isExpanded = false;
+        }
+
+        private void getPriceDialog(Item item) {
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+
+            View mView = getLayoutInflater().inflate(R.layout.dialog_enterprice, null);
+
+            EditText mItemPrice = (EditText) mView.findViewById(R.id.itemPrice);
+            mPhotoView = (ImageView) mView.findViewById(R.id.item_photo);
+            ImageButton photoButton = (ImageButton) mView.findViewById(R.id.photo_button);
+            Button mOkButton = (Button) mView.findViewById(R.id.ok_button);
+            Button mCancelButton = (Button) mView.findViewById(R.id.cancel_button);
+            mBuilder.setView(mView);
+            final AlertDialog dialog = mBuilder.create();
+
+            mOkButton.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    String priceS = mItemPrice.getText().toString();
+                    if (priceS.contains(",")) priceS = priceS.replace(",", ".");
+                    float priceF = Float.parseFloat(priceS);
+                    currentPrice = Float.parseFloat(priceS);
+                    mItemVM.setPrice(item, priceF);
+                    System.out.println("Current price1: " + currentPrice);
+                    priceSetter.setText(String.format("%.2f",currentPrice));
+//                    mAdapter.notifyDataSetChanged();
+                    dialog.dismiss();
+                }
+            });
+
+            mCancelButton.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+
+            PackageManager packageManager = getActivity().getPackageManager();
+            final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            updatePhotoView();
+//        boolean canTakePhoto = mPhotoFile != null &&
+//                captureImage.resolveActivity(packageManager) != null;
+            Log.d("photo", Boolean.toString(mPhotoFile != null)); //--> false
+            Log.d("photo", Boolean.toString(captureImage.resolveActivity(packageManager) != null));
+
+
+            photoButton.setEnabled(true);
+            photoButton.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    Log.d("photo", "Photo button clicked");
+                    Uri uri = FileProvider.getUriForFile(getActivity(),
+                            "com.bignerdranch.android.listitup.fileprovider",
+                            mPhotoFile);
+                    captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                    List<ResolveInfo> cameraActivities = getActivity()
+                            .getPackageManager().queryIntentActivities(captureImage,
+                                    PackageManager.MATCH_DEFAULT_ONLY);
+                    for (ResolveInfo activity : cameraActivities) {
+                        getActivity().grantUriPermission(activity.activityInfo.packageName,
+                                uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);}
+                    startActivityForResult(captureImage, REQUEST_PHOTO);
+                }
+            });
+
+            updatePhotoView();
+
+            dialog.show();
+
         }
     }
 

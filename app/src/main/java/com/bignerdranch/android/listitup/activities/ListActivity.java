@@ -52,18 +52,15 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
 
         mItemVM = ViewModelProviders.of(this).get(ItemVM.class);
-//        mItemVM.getAllItemsByShops().observe(getViewLifecycleOwner(), shopItems -> mAdapter.setItems(shopItems));
 
         appBar = findViewById(R.id.top_tool_bar);
         // TODO have the toolbar too
 
         mAddNewFAB = findViewById(R.id.add_new_fab);
 
-//        mSubtitle = findViewById(R.id.subtitle);
 
 
         FragmentManager fm = getSupportFragmentManager();
-//        bottomAppBar = findViewById(R.id.bottom_app_bar); // do we need it?\
 
         Bundle args = new Bundle();
 

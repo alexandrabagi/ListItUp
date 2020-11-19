@@ -51,7 +51,6 @@
             android:paddingVertical="2dp"
             android:adjustViewBounds="true"
             android:background="@color/Secondary_500"
-            android:text="£ 8.25"
             android:textAlignment="textEnd"
             android:textColor="@color/white"
             android:textSize="22sp"
