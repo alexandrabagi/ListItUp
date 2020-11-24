@@ -120,7 +120,7 @@
                    android:id="@+id/currency_text"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
-                   android:text="@string/pounds"
+                   android:text="@string/pounds_per_pc"
                    android:textAlignment="center"
                    android:textColor="@color/Secondary_800" />
 
@@ -248,7 +248,7 @@
                    android:id="@+id/currency_text_setter"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
-                   android:text="@string/pounds"
+                   android:text="@string/pounds_per_pc"
                    android:textAlignment="center"
                    android:textColor="@color/Secondary_800" />
 

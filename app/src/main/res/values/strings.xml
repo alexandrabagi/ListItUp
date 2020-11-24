@@ -50,7 +50,8 @@
     <string name="tab_text_buy">To Buy</string>
     <string name="fab_content">Adding new element to the list</string>
     <string name="pieces">pcs</string>
-    <string name="pounds">£</string>
+    <string name="pounds_per_pc">£/pc</string>
     <string name="lets_buy_subtitle">LET\'S BUY...</string>
     <string name="in_my_cart_subtitle">IN MY CART...</string>
+    <string name="preference_file_key">\"com.bignerdranch.android.listitup.PREFERENCE_FILE_KEY\"</string>
 </resources>

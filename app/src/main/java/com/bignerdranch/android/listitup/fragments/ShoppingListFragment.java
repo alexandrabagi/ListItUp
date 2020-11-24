@@ -3,11 +3,13 @@ package com.bignerdranch.android.listitup.fragments;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
@@ -28,6 +30,7 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -39,12 +42,15 @@ import com.bignerdranch.android.listitup.R;
 //import com.bignerdranch.android.listitup.activities.ItemPagerActivity;
 import com.bignerdranch.android.listitup.room.Item;
 import com.bignerdranch.android.listitup.room.ItemVM;
+import com.bignerdranch.android.listitup.room.TotalPrice;
 import com.bignerdranch.android.listitup.utilities.MyItemTouchCallback;
 
 import java.io.File;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+
+import static java.lang.reflect.Array.getFloat;
 
 //import static com.bignerdranch.android.listitup.activities.ItemPagerActivity.EXTRA_ITEM_ID;
 
@@ -61,14 +67,13 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
     private ShopItemAdapter mAdapter;
 
-    private RecyclerView mItemRecyclerView;
-    private List<Item> mItems;
-
-    private TextView mSubtitle;
     private TextView mTotalPriceText;
     private float mTotalPriceValue;
 
     private ItemVM mItemVM;
+    private TotalPrice mTotalPriceHolder;
+
+
 
     // FOR PHOTO //
     private File mPhotoFile;
@@ -80,17 +85,16 @@ public class ShoppingListFragment extends Fragment implements Observer {
         mAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        if (savedInstanceState == null) mTotalPriceValue = 0.0f;
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putFloat("totalPrice", mTotalPriceValue);
-    }
+//    @Override
+//    public void onSaveInstanceState(Bundle savedInstanceState) {
+//        if (savedInstanceState == null) mTotalPriceValue = 0.0f;
+//        super.onSaveInstanceState(savedInstanceState);
+//        savedInstanceState.putFloat("totalPrice", mTotalPriceValue);
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -118,41 +122,53 @@ public class ShoppingListFragment extends Fragment implements Observer {
             mItemVM.getAllCartItems().observe(getViewLifecycleOwner(), cartItems -> mAdapter.setItems(cartItems));
         }
 
+        // get total price from shared preferences
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        mTotalPriceValue = sharedPref.getFloat("totalPrice", 0.0f);
+        mTotalPriceHolder = TotalPrice.getInstance();
+        // set total price value in singleton
+        mTotalPriceHolder.setTotalPrice(mTotalPriceValue);
+
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        System.out.println("ShoppingListFragment onViewCreated was called");
 
-        mItemRecyclerView = view.findViewById(R.id.items_recycler_view);
+        RecyclerView mItemRecyclerView = view.findViewById(R.id.items_recycler_view);
         mItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mItemRecyclerView.setAdapter(mAdapter); // added
 
-        mSubtitle = view.findViewById(R.id.subtitle);
+        TextView mSubtitle = view.findViewById(R.id.subtitle);
         mTotalPriceText = view.findViewById(R.id.sum_price);
 
         mItemVM.getAllCartItems().observe(getViewLifecycleOwner(), cartItems -> {
-            for (Item item : cartItems) {
-                mTotalPriceValue += item.getPrice();
-                System.out.println("mTotalPrice: " + mTotalPriceValue);
-                mTotalPriceText.setText(String.format ("%.2f", mTotalPriceValue));
-            }
+//            for (Item item : cartItems) {
+//                mTotalPriceValue += item.getPrice();
+//                System.out.println("mTotalPrice: " + mTotalPriceValue);
+//                mTotalPriceText.setText(String.format ("%.2f", mTotalPriceValue));
+//            }
         });
-        System.out.println("TotalPrice: " + mTotalPriceValue);
+
+
+//        updateUI();
+
+//        mTotalPriceValue = mTotalPriceHolder.getTotalPrice();
+//        mTotalPriceText.setText(String.format ("%.2f", mTotalPriceValue));
+
+//        System.out.println("TotalPrice: " + mTotalPriceValue);
 
 
 
         if (chosenButton == 0) {
             mSubtitle.setText(R.string.lets_buy_subtitle);
-            ItemTouchHelper myITH = new ItemTouchHelper(new MyItemTouchCallback(getActivity(), mAdapter, mItemVM, 0));
+            ItemTouchHelper myITH = new ItemTouchHelper(new MyItemTouchCallback(getActivity(), mAdapter, mItemVM, 0, mTotalPriceHolder));
             myITH.attachToRecyclerView(mItemRecyclerView);
         } else {
             mSubtitle.setText(R.string.in_my_cart_subtitle);
-            ItemTouchHelper myITH = new ItemTouchHelper(new MyItemTouchCallback(getActivity(), mAdapter, mItemVM, 1));
+            ItemTouchHelper myITH = new ItemTouchHelper(new MyItemTouchCallback(getActivity(), mAdapter, mItemVM, 1, mTotalPriceHolder));
             myITH.attachToRecyclerView(mItemRecyclerView);
         }
-
 
         updateUI();
 
@@ -164,35 +180,20 @@ public class ShoppingListFragment extends Fragment implements Observer {
         updateUI();
     }
 
-    public float getTotalPriceValue() {
-        return mTotalPriceValue;
-    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // saving total price to shared preferences
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putFloat("totalPrice", mTotalPriceValue);
+        editor.apply();
 
-    public void setTotalPriceValue(float priceToAdd) {
-        mTotalPriceValue += priceToAdd;
     }
 
     private void updateUI() {
-//        ItemRoomDB itemDB = ItemRoomDB.getDatabase(getActivity());
-//        ListDB listDB = ListDB.get(getActivity());
-//        List<ShopItem> items = listDB.getListDB();
-//        List<ShopItem> items = mItemVM.getAllItems();
-//
-//        if (mAdapter == null) {
-//            mAdapter = new ShopItemAdapter(getActivity());
-//            mItemRecyclerView.setAdapter(mAdapter);
-//        }
-//        else {
-//            mAdapter.setItems(items);
-//            mAdapter.notifyDataSetChanged();
-//        }
-
-//        if (mAdapter == null) {
-//            mAdapter = new ShopItemAdapter(getActivity());
-//            mItemRecyclerView.setAdapter(mAdapter);
-//        } else {
-//            mAdapter.setItems();
-//        }
+        mTotalPriceValue = mTotalPriceHolder.getTotalPrice();
+        mTotalPriceText.setText(String.format ("%.2f", mTotalPriceValue));
     }
 
     //// PHOTO RELATED METHODS ////
@@ -294,6 +295,8 @@ public class ShoppingListFragment extends Fragment implements Observer {
         @Override
         public void onClick(View view) {
         }
+
+
 
         private void expandCard() {
             TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
@@ -456,6 +459,9 @@ public class ShoppingListFragment extends Fragment implements Observer {
         void setItems(List<Item> items) {
             mItems = items;
             notifyDataSetChanged();
+            System.out.println("notifyDataSetChanged()");
+            System.out.println("totalPrice: " + mTotalPriceValue);
+            updateUI();
         }
 
         public List<Item> getItems() {
