@@ -72,9 +72,9 @@ public class ItemRepository {
         return mAllShopItems;
     }
 
-    LiveData<List<Item>> getAllItemsByShops() {
-        return mItemDao.getAlphabetizedShops();
-    }
+//    LiveData<List<Item>> getAllItemsByShops() {
+//        return mItemDao.getAlphabetizedShops();
+//    }
 
     LiveData<Item> loadItem(int id) {
         return mItemDao.loadShopItem(id);

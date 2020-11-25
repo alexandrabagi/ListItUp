@@ -14,8 +14,6 @@ public class Item {
     private int mId;
     @ColumnInfo(name = "name")
     private String mName;
-    @ColumnInfo(name = "shopName")
-    private String mShopName;
     @ColumnInfo(name = "quantity")
     private int mQuantity;
     @ColumnInfo(name = "bought")
@@ -24,20 +22,18 @@ public class Item {
     private float mPrice;
 
 
-//    public Item(int id, String name, String shopName, int quantity) {
-//        this.mId = id;
-//        this.mName = name;
-//        this.mShopName = shopName;
-//        this.mQuantity = quantity;
-//        this.mBought = 0; //false
-//    }
-
-    public Item(String name, String shopName, int quantity, int bought) {
+    public Item(String name, int quantity, int bought, float price) {
         this.mName = name;
-        this.mShopName = shopName;
         this.mQuantity = quantity;
         this.mBought = bought; //0 - false, 1 - true
+        this.mPrice = price;
     }
+
+//    public Item(String name, int quantity, int bought) {
+//        this.mName = name;
+//        this.mQuantity = quantity;
+//        this.mBought = bought; //0 - false, 1 - true
+//    }
 
     public int getId() {
         return mId;
@@ -53,14 +49,6 @@ public class Item {
 
     public void setName(String mName) {
         this.mName = mName;
-    }
-
-    public String getShopName() {
-        return mShopName;
-    }
-
-    public void setShopName(String mShopName) {
-        this.mShopName = mShopName;
     }
 
     public int getQuantity() {

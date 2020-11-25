@@ -42,8 +42,8 @@ public interface ItemDAO {
     @Query("DELETE FROM shop_table")
     void deleteAllShop();
 
-    @Query("SELECT * from shop_table WHERE bought = 0 ORDER BY shopName ASC")
-    LiveData<List<Item>> getAlphabetizedShops();
+//    @Query("SELECT * from shop_table WHERE bought = 0 ORDER BY shopName ASC")
+//    LiveData<List<Item>> getAlphabetizedShops();
 
     @Query("SELECT * from shop_table WHERE bought = 0 ORDER BY name ASC")
     LiveData<List<Item>> getAllShopItems();

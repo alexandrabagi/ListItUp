@@ -117,7 +117,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
         chosenButton = getArguments().getInt(ARG_OBJECT);
 
         if (chosenButton == 0) {
-            mItemVM.getAllItemsByShops().observe(getViewLifecycleOwner(), shopItems -> mAdapter.setItems(shopItems));
+            mItemVM.getAllShopItems().observe(getViewLifecycleOwner(), shopItems -> mAdapter.setItems(shopItems));
         } else {
             mItemVM.getAllCartItems().observe(getViewLifecycleOwner(), cartItems -> mAdapter.setItems(cartItems));
         }

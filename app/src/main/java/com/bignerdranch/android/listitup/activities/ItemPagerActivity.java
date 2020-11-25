@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.bignerdranch.android.listitup.fragments.ItemDetailFragment;
+//import com.bignerdranch.android.listitup.fragments.ItemDetailFragment;
 import com.bignerdranch.android.listitup.fragments.ItemFragment;
 import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.room.Item;

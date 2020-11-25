@@ -102,7 +102,7 @@ public class ItemFragment extends Fragment {
         mWhat = (TextView) v.findViewById(R.id.item_name);
         mWhat.setText(mItem.getName());
         mShopName = (TextView) v.findViewById(R.id.item_shop);
-        mShopName.setText(mItem.getShopName());
+//        mShopName.setText(mItem.getShopName());
         mQuantity = (TextView) v.findViewById(R.id.item_quantity);
         mQuantity.setText(mItem.getQuantity());
         mPhotoButton = (ImageButton) v.findViewById(R.id.photo_button);
@@ -110,13 +110,13 @@ public class ItemFragment extends Fragment {
         showMap = (Button) v.findViewById(R.id.showMap_button);
 
         //open website
-        goToShop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent Getintent = new Intent(Intent.ACTION_VIEW,Uri.parse("https://www."+ mItem.getShopName() + ".dk"));
-                startActivity(Getintent);}
-        });
+//        goToShop.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Intent Getintent = new Intent(Intent.ACTION_VIEW,Uri.parse("https://www."+ mItem.getShopName() + ".dk"));
+//                startActivity(Getintent);}
+//        });
 
         PackageManager packageManager = getActivity().getPackageManager();
 

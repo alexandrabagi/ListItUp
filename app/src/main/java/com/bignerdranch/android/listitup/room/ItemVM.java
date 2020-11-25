@@ -53,9 +53,13 @@ public class ItemVM extends AndroidViewModel {
         mRepository.deleteShopItem(item);
     }
 
-    public LiveData<List<Item>> getAllItemsByShops() {
-        return mRepository.getAllItemsByShops();
+    public LiveData<List<Item>> getAllShopItems() {
+        return mRepository.getAllShopItems();
     }
+
+//    public LiveData<List<Item>> getAllItemsByShops() {
+//        return mRepository.getAllItemsByShops();
+//    }
 
     public Item loadShopItem(int id) {
         return mRepository.loadItem(id).getValue();

@@ -1,5 +1,8 @@
 package com.bignerdranch.android.listitup.activities;
 
+import android.app.AlertDialog;
+import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -13,7 +16,6 @@ import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -21,7 +23,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bignerdranch.android.listitup.R;
-import com.bignerdranch.android.listitup.fragments.CartListFragment;
+//import com.bignerdranch.android.listitup.fragments.CartListFragment;
 import com.bignerdranch.android.listitup.fragments.ShoppingListFragment;
 import com.bignerdranch.android.listitup.room.Item;
 import com.bignerdranch.android.listitup.room.ItemVM;
@@ -39,12 +41,8 @@ public class ListActivity extends AppCompatActivity {
     MaterialToolbar appBar;
     BottomAppBar bottomAppBar;
     BottomNavigationView bottomNavView;
-//    TabLayout tabLayout;
     private FloatingActionButton mAddNewFAB;
-//    private int tabPosition;
     private ItemVM mItemVM;
-
-//    private TextView mSubtitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,12 +109,12 @@ public class ListActivity extends AppCompatActivity {
         mAddNewFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getDialog();
+                addDialog();
             }
         });
     }
 
-    private void getDialog() {
+    /* private void getDialog() {
         android.app.AlertDialog.Builder mBuilder = new android.app.AlertDialog.Builder(this);
         // 1. parameter: Resource File, 2. view group --> null to be changed later on, in example
         //view group is in other dialog
@@ -168,6 +166,62 @@ public class ListActivity extends AppCompatActivity {
                 }
             }
         });
+
+        dialog.show();
+    } */
+
+    private void addDialog() {
+        android.app.AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+
+        View mView = getLayoutInflater().inflate(R.layout.dialog_add_new, null);
+
+        EditText mItemName = (EditText) mView.findViewById(R.id.addItemName);
+        EditText mItemQuantity = (EditText) mView.findViewById(R.id.addItemQuantity);
+        EditText mItemPrice = (EditText) mView.findViewById(R.id.addItemPrice);
+        Button mAddButton = (Button) mView.findViewById(R.id.addButton);
+        Button mCancelButton = (Button) mView.findViewById(R.id.cancelButton);
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+
+        mAddButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                if (!mItemName.getText().toString().isEmpty() && !mItemQuantity.getText().toString().isEmpty()){
+                    Item newItem;
+                    if (!mItemPrice.getText().toString().isEmpty()) {
+                        newItem = new Item(mItemName.getText().toString(), Integer.parseInt(mItemQuantity.getText().toString()), 0, Float.parseFloat(mItemPrice.getText().toString()));
+                    } else {
+                        newItem = new Item(mItemName.getText().toString(), Integer.parseInt(mItemQuantity.getText().toString()), 0, 0.0f);
+                    }
+
+                    mItemVM.insertToShop(newItem);
+
+                    mItemName.setText("");
+                    mItemQuantity.setText("");
+                    mItemPrice.setText("");
+                    Toast.makeText(ListActivity.this, "You added "+ newItem.getName() + " successfully", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                } else if (mItemName.getText().toString().isEmpty()) {
+                    Toast.makeText(ListActivity.this, "Please enter the name of the item", Toast.LENGTH_SHORT).show();
+                } else if (mItemQuantity.getText().toString().isEmpty()) {
+                    Toast.makeText(ListActivity.this, "Please enter the number of items you need", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        mCancelButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        // round corners
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.80);
+//        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.80);
+//        dialog.getWindow().setLayout(width,height);
 
         dialog.show();
     }
