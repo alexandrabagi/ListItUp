@@ -143,20 +143,13 @@ public class ShoppingListFragment extends Fragment implements Observer {
         mTotalPriceText = view.findViewById(R.id.sum_price);
 
         mItemVM.getAllCartItems().observe(getViewLifecycleOwner(), cartItems -> {
+            // alternative solution - slow
 //            for (Item item : cartItems) {
 //                mTotalPriceValue += item.getPrice();
 //                System.out.println("mTotalPrice: " + mTotalPriceValue);
 //                mTotalPriceText.setText(String.format ("%.2f", mTotalPriceValue));
 //            }
         });
-
-
-//        updateUI();
-
-//        mTotalPriceValue = mTotalPriceHolder.getTotalPrice();
-//        mTotalPriceText.setText(String.format ("%.2f", mTotalPriceValue));
-
-//        System.out.println("TotalPrice: " + mTotalPriceValue);
 
 
 
@@ -294,6 +287,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
         @Override
         public void onClick(View view) {
+
         }
 
 
@@ -418,7 +412,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
         public void onBindViewHolder(@NonNull ShopItemHolder holder, int position) {
             Item item = mItems.get(position);
 
-            holder.bigEditButton.setOnClickListener(new View.OnClickListener() {
+            holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 

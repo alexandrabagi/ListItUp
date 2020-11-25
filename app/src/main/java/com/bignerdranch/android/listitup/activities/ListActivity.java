@@ -114,62 +114,6 @@ public class ListActivity extends AppCompatActivity {
         });
     }
 
-    /* private void getDialog() {
-        android.app.AlertDialog.Builder mBuilder = new android.app.AlertDialog.Builder(this);
-        // 1. parameter: Resource File, 2. view group --> null to be changed later on, in example
-        //view group is in other dialog
-        View mView = getLayoutInflater().inflate(R.layout.dialog_entername, null);
-        final EditText mItemName = (EditText) mView.findViewById(R.id.itemName);
-        //final EditText mShop = (EditText) mView.findViewById(R.id.ShopName);
-        final EditText mQuantity = (EditText) mView.findViewById(R.id.Quantity);
-
-
-        //static spinner experiment begin
-        Spinner staticSpinner = (Spinner) mView.findViewById(R.id.static_spinner2);
-
-        // Create an ArrayAdapter using the string array and a default spinner
-        ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter
-                .createFromResource(this, R.array.brew_array,
-                        android.R.layout.simple_spinner_item);
-
-        // Specify the layout to use when the list of choices appears
-        staticAdapter
-                .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // Apply the adapter to the spinner
-        staticSpinner.setAdapter(staticAdapter);
-        final Spinner mShop = (Spinner) mView.findViewById(R.id.static_spinner2);
-
-        // static spinner experiment end
-
-        //final Item newItem = new Item(mItemName.toString(), mShop.toString(), mQuantity.toString());
-        Button mOkButton = (Button) mView.findViewById(R.id.ok_button);
-        mBuilder.setView(mView);
-        final android.app.AlertDialog dialog = mBuilder.create();
-
-        mOkButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                if (!mItemName.getText().toString().isEmpty()){
-                    //Toast.makeText(ListActivity.this, "you added successfully", Toast.LENGTH_SHORT).show();
-                    Item newItem = new Item(mItemName.getText().toString(), mShop.getSelectedItem().toString(), Integer.parseInt(mQuantity.getText().toString()), 0);
-                    mItemVM.insertToShop(newItem);
-
-                    mItemName.setText("");
-                    //mShop.setText("");
-                    mQuantity.setText("");
-                    dialog.dismiss();
-//                    updateUI();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Please enter name of item", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        dialog.show();
-    } */
-
     private void addDialog() {
         android.app.AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
 

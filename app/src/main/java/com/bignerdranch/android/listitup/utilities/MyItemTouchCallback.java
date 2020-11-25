@@ -75,7 +75,7 @@ public class MyItemTouchCallback extends ItemTouchHelper.Callback {
                     adapter.notifyDataSetChanged();
                 }
             } else { // cart list
-                if (swipeDir == ItemTouchHelper.LEFT) {
+                if (swipeDir == ItemTouchHelper.RIGHT) {
                     // When swiping left
                     //Remove swiped item from list and notify the RecyclerView
                     int position = viewHolder.getAdapterPosition();
@@ -84,7 +84,7 @@ public class MyItemTouchCallback extends ItemTouchHelper.Callback {
                     mTotalPriceHolder.subtractFromTotalPrice(itemToRemove.getPrice()*itemToRemove.getQuantity());
                     mItemVM.deleteFromCart(itemToRemove);
                     adapter.notifyDataSetChanged();
-                } else if (swipeDir == ItemTouchHelper.RIGHT) {
+                } else if (swipeDir == ItemTouchHelper.LEFT) {
                     // When swiping right
                     int position = viewHolder.getAdapterPosition();
                     Item itemToList = adapter.getItems().get(position);
@@ -112,69 +112,135 @@ public class MyItemTouchCallback extends ItemTouchHelper.Callback {
             }
 
             // if dX > 0 then swiping right
-            if (dX > 0) {
-                // Setting up into cart swipe
-                GradientDrawable backgroundIntoCart = new GradientDrawable();
-                backgroundIntoCart.setShape(GradientDrawable.RECTANGLE);
-                int colorCartBg = Color.parseColor("#00BCD4");
-                backgroundIntoCart.setColor(colorCartBg);
-                float[] radii = {50, 50, 50, 50, 50, 50, 50, 50}; // TODO: get the number programmatically
-                backgroundIntoCart.setCornerRadii(radii);
-                backgroundIntoCart.setBounds(
-                        itemView.getLeft(),
-                        itemView.getTop(),
-                        itemView.getRight() - 50,
-                        itemView.getBottom()
-                );
-                backgroundIntoCart.draw(c);
 
-                // Calculate position of cart icon
-                Drawable swipeIcon;
-                if (chosenList == 0) {
+            if (chosenList == 0) { // list fragment
+                if (dX > 0) { // swiping right
+                    // Setting up into cart swipe
+                    GradientDrawable backgroundIntoCart = new GradientDrawable();
+                    backgroundIntoCart.setShape(GradientDrawable.RECTANGLE);
+                    int colorCartBg = Color.parseColor("#00BCD4");
+                    backgroundIntoCart.setColor(colorCartBg);
+                    float[] radii = {50, 50, 50, 50, 50, 50, 50, 50}; // TODO: get the number programmatically
+                    backgroundIntoCart.setCornerRadii(radii);
+                    backgroundIntoCart.setBounds(
+                            itemView.getLeft(),
+                            itemView.getTop(),
+                            itemView.getRight() - 50,
+                            itemView.getBottom()
+                    );
+                    backgroundIntoCart.draw(c);
+
+                    // Calculate position of cart icon
+                    Drawable swipeIcon;
+
                     swipeIcon = ContextCompat.getDrawable(context, R.drawable.ic_cart_swipe);
-                } else swipeIcon = ContextCompat.getDrawable(context, R.drawable.ic_list_swipe);
 
-                int inHeightCart = swipeIcon.getIntrinsicHeight();
-                int inWidthCart = swipeIcon.getIntrinsicWidth();
-                int cartIconTop = itemView.getTop() + (itemHeight - inHeightCart) / 2;
-                int cartIconMargin = (itemHeight - inHeightCart) / 2;
-                int cartIconLeft = itemView.getLeft() + cartIconMargin;
-                int cartIconRight = itemView.getLeft() + cartIconMargin + inWidthCart;
-                int cartIconBottom = cartIconTop + inHeightCart;
+                    int inHeightCart = swipeIcon.getIntrinsicHeight();
+                    int inWidthCart = swipeIcon.getIntrinsicWidth();
+                    int cartIconTop = itemView.getTop() + (itemHeight - inHeightCart) / 2;
+                    int cartIconMargin = (itemHeight - inHeightCart) / 2;
+                    int cartIconLeft = itemView.getLeft() + cartIconMargin;
+                    int cartIconRight = itemView.getLeft() + cartIconMargin + inWidthCart;
+                    int cartIconBottom = cartIconTop + inHeightCart;
 
-                // Draw the cart icon
-                swipeIcon.setBounds(cartIconLeft, cartIconTop, cartIconRight, cartIconBottom);
-                swipeIcon.draw(c);
-            } else {
-                // Setting up delete swipe
-                GradientDrawable backgroundDelete = new GradientDrawable();
-                backgroundDelete.setShape(GradientDrawable.RECTANGLE);
-                int color = Color.parseColor("#FF0C3E");
-                backgroundDelete.setColor(color);
-                float[] radiiDel = {50, 50, 50, 50, 50, 50, 50, 50}; // TODO: get the number programmatically
-                backgroundDelete.setCornerRadii(radiiDel);
-                backgroundDelete.setBounds(
-                        itemView.getLeft() + 50,
-                        itemView.getTop(),
-                        itemView.getRight(),
-                        itemView.getBottom()
-                );
-                backgroundDelete.draw(c);
+                    // Draw the cart icon
+                    swipeIcon.setBounds(cartIconLeft, cartIconTop, cartIconRight, cartIconBottom);
+                    swipeIcon.draw(c);
+                } else { // swiping left
+                    // Setting up delete swipe
+                    GradientDrawable backgroundDelete = new GradientDrawable();
+                    backgroundDelete.setShape(GradientDrawable.RECTANGLE);
+                    int color = Color.parseColor("#FF0C3E");
+                    backgroundDelete.setColor(color);
+                    float[] radiiDel = {50, 50, 50, 50, 50, 50, 50, 50}; // TODO: get the number programmatically
+                    backgroundDelete.setCornerRadii(radiiDel);
+                    backgroundDelete.setBounds(
+                            itemView.getLeft() + 50,
+                            itemView.getTop(),
+                            itemView.getRight(),
+                            itemView.getBottom()
+                    );
+                    backgroundDelete.draw(c);
 
-                // Calculate position of delete icon
-                Drawable deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_bin);
-                int inHeightDel = deleteIcon.getIntrinsicHeight();
-                int inWidthDel = deleteIcon.getIntrinsicWidth();
-                int deleteIconTop = itemView.getTop() + (itemHeight - inHeightDel) / 2;
-                int deleteIconMargin = (itemHeight - inHeightDel) / 2;
-                int deleteIconLeft = itemView.getRight() - deleteIconMargin - inWidthDel;
-                int deleteIconRight = itemView.getRight() - deleteIconMargin;
-                int deleteIconBottom = deleteIconTop + inHeightDel;
+                    // Calculate position of delete icon
+                    Drawable deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_bin);
+                    int inHeightDel = deleteIcon.getIntrinsicHeight();
+                    int inWidthDel = deleteIcon.getIntrinsicWidth();
+                    int deleteIconTop = itemView.getTop() + (itemHeight - inHeightDel) / 2;
+                    int deleteIconMargin = (itemHeight - inHeightDel) / 2;
+                    int deleteIconLeft = itemView.getRight() - deleteIconMargin - inWidthDel;
+                    int deleteIconRight = itemView.getRight() - deleteIconMargin;
+                    int deleteIconBottom = deleteIconTop + inHeightDel;
 
-                // Draw the delete icon
-                deleteIcon.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom);
-                deleteIcon.draw(c);
+                    // Draw the delete icon
+                    deleteIcon.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom);
+                    deleteIcon.draw(c);
+                }
+            } else { // cart fragment
+                if (dX < 0) { // swiping left
+                    // Setting up into cart swipe
+                    GradientDrawable backgroundIntoCart = new GradientDrawable();
+                    backgroundIntoCart.setShape(GradientDrawable.RECTANGLE);
+                    int colorCartBg = Color.parseColor("#00BCD4");
+                    backgroundIntoCart.setColor(colorCartBg);
+                    float[] radii = {50, 50, 50, 50, 50, 50, 50, 50}; // TODO: get the number programmatically
+                    backgroundIntoCart.setCornerRadii(radii);
+                    backgroundIntoCart.setBounds(
+                            itemView.getLeft() + 50,
+                            itemView.getTop(),
+                            itemView.getRight(),
+                            itemView.getBottom()
+                    );
+                    backgroundIntoCart.draw(c);
+
+                    // Calculate position of cart icon
+                    Drawable swipeIcon;
+
+                    swipeIcon = ContextCompat.getDrawable(context, R.drawable.ic_list_swipe);
+
+                    int inHeightCart = swipeIcon.getIntrinsicHeight();
+                    int inWidthCart = swipeIcon.getIntrinsicWidth();
+                    int cartIconTop = itemView.getTop() + (itemHeight - inHeightCart) / 2;
+                    int cartIconMargin = (itemHeight - inHeightCart) / 2;
+                    int cartIconLeft = itemView.getRight() - cartIconMargin - inWidthCart;
+                    int cartIconRight = itemView.getRight() - cartIconMargin;
+                    int cartIconBottom = cartIconTop + inHeightCart;
+
+                    // Draw the cart icon
+                    swipeIcon.setBounds(cartIconLeft, cartIconTop, cartIconRight, cartIconBottom);
+                    swipeIcon.draw(c);
+                } else { // swiping left
+                    // Setting up delete swipe
+                    GradientDrawable backgroundDelete = new GradientDrawable();
+                    backgroundDelete.setShape(GradientDrawable.RECTANGLE);
+                    int color = Color.parseColor("#FF0C3E");
+                    backgroundDelete.setColor(color);
+                    float[] radiiDel = {50, 50, 50, 50, 50, 50, 50, 50}; // TODO: get the number programmatically
+                    backgroundDelete.setCornerRadii(radiiDel);
+                    backgroundDelete.setBounds(
+                            itemView.getLeft(),
+                            itemView.getTop(),
+                            itemView.getRight() - 50,
+                            itemView.getBottom()
+                    );
+                    backgroundDelete.draw(c);
+
+                    // Calculate position of delete icon
+                    Drawable deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_bin);
+                    int inHeightDel = deleteIcon.getIntrinsicHeight();
+                    int inWidthDel = deleteIcon.getIntrinsicWidth();
+                    int deleteIconTop = itemView.getTop() + (itemHeight - inHeightDel) / 2;
+                    int deleteIconMargin = (itemHeight - inHeightDel) / 2;
+                    int deleteIconLeft = itemView.getLeft() + deleteIconMargin;
+                    int deleteIconRight = itemView.getLeft() + deleteIconMargin + inWidthDel;
+                    int deleteIconBottom = deleteIconTop + inHeightDel;
+
+                    // Draw the delete icon
+                    deleteIcon.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom);
+                    deleteIcon.draw(c);
+                }
             }
+
 
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
