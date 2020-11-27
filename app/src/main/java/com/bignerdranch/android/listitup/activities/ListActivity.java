@@ -24,6 +24,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.bignerdranch.android.listitup.R;
 //import com.bignerdranch.android.listitup.fragments.CartListFragment;
+import com.bignerdranch.android.listitup.fragments.HomeFragment;
+import com.bignerdranch.android.listitup.fragments.ProfileFragment;
 import com.bignerdranch.android.listitup.fragments.ShoppingListFragment;
 import com.bignerdranch.android.listitup.room.Item;
 import com.bignerdranch.android.listitup.room.ItemVM;
@@ -41,7 +43,7 @@ public class ListActivity extends AppCompatActivity {
     MaterialToolbar appBar;
     BottomAppBar bottomAppBar;
     BottomNavigationView bottomNavView;
-    private FloatingActionButton mAddNewFAB;
+//    private FloatingActionButton mAddNewFAB;
     private ItemVM mItemVM;
 
     @Override
@@ -54,7 +56,7 @@ public class ListActivity extends AppCompatActivity {
         appBar = findViewById(R.id.top_tool_bar);
         // TODO have the toolbar too
 
-        mAddNewFAB = findViewById(R.id.add_new_fab);
+//        mAddNewFAB = findViewById(R.id.add_new_fab);
 
 
 
@@ -74,9 +76,18 @@ public class ListActivity extends AppCompatActivity {
         bottomNavView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.list_button) {
+                if (item.getItemId() == R.id.home_button) {
+                    Fragment fragment = new HomeFragment();
+                    fm.beginTransaction()
+                            .replace(R.id.list_fragment_container, fragment)
+                            .commit();
+
+                    return true;
+                }
+
+                else if (item.getItemId() == R.id.list_button) {
                     // Handle list fragment
-                    mAddNewFAB.setVisibility(View.VISIBLE);
+//                    mAddNewFAB.setVisibility(View.VISIBLE);
 
                     Fragment fragment = new ShoppingListFragment();
                     Bundle args = new Bundle();
@@ -89,12 +100,20 @@ public class ListActivity extends AppCompatActivity {
                     return true;
                 } else if (item.getItemId() == R.id.cart_button) {
                     // Handle cart fragment
-                    mAddNewFAB.setVisibility(View.INVISIBLE);
+//                    mAddNewFAB.setVisibility(View.VISIBLE);
 
                     Fragment fragment = new ShoppingListFragment();
                     Bundle args = new Bundle();
                     args.putInt(ShoppingListFragment.ARG_OBJECT, 1);
                     fragment.setArguments(args);
+                    fm.beginTransaction()
+                            .replace(R.id.list_fragment_container, fragment)
+                            .commit();
+
+                    return true;
+
+                } else if (item.getItemId() == R.id.profile_button) {
+                    Fragment fragment = new ProfileFragment();
                     fm.beginTransaction()
                             .replace(R.id.list_fragment_container, fragment)
                             .commit();
@@ -106,12 +125,12 @@ public class ListActivity extends AppCompatActivity {
             }
         });
 
-        mAddNewFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addDialog();
-            }
-        });
+//        mAddNewFAB.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                addDialog();
+//            }
+//        });
     }
 
     private void addDialog() {

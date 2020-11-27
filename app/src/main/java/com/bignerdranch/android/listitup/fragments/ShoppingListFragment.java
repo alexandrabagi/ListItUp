@@ -44,6 +44,7 @@ import com.bignerdranch.android.listitup.room.Item;
 import com.bignerdranch.android.listitup.room.ItemVM;
 import com.bignerdranch.android.listitup.room.TotalPrice;
 import com.bignerdranch.android.listitup.utilities.MyItemTouchCallback;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.util.List;
@@ -72,6 +73,9 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
     private ItemVM mItemVM;
     private TotalPrice mTotalPriceHolder;
+
+    private FloatingActionButton mAddNewFAB;
+
 
 
 

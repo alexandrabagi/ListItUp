@@ -119,19 +119,19 @@
         android:id="@+id/list_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/bottom_app_bar"
-        app:layout_constraintTop_toBottomOf="@+id/price_line" />
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        app:layout_constraintTop_toBottomOf="@+id/top_app_bar" />
 
 
-    <com.google.android.material.bottomappbar.BottomAppBar
+    <!-- <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottom_app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:fabAlignmentMode="center"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent" /> -->
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_new_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -141,13 +141,14 @@
         app:layout_constraintEnd_toEndOf="@+id/bottom_app_bar"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:elevation="9dp"/>
+        app:elevation="9dp"/> -->
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/list_fragment_container"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_navigation_menu" />
 
