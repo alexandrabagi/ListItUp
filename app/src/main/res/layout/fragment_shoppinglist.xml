@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/gradient_background">
+    android:background="@color/white">
 
     <!-- <TextView
         android:id="@+id/test_text"
@@ -25,7 +25,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:weightSum="2">
 
-        <TextView
+        <!-- <TextView
             android:id="@+id/subtitle"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -39,9 +39,9 @@
             app:layout_constraintEnd_toStartOf="@+id/diamond_shape"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"/> -->
 
-        <TextView
+        <!-- <TextView
             android:id="@+id/sum_price"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -55,7 +55,7 @@
             android:textColor="@color/white"
             android:textSize="22sp"
             android:textStyle="bold"
-            tools:text="£ 8.29" />
+            tools:text="£ 8.29" /> -->
 
     </LinearLayout>
 
@@ -78,11 +78,70 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_info_line"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/price_line" />
+
+    <View
+        android:id="@+id/gradient"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/gradient_transparent"
+        app:layout_constraintTop_toBottomOf="@id/items_recycler_view"
+        app:layout_constraintBottom_toTopOf="@id/bottom_info_line"/>
+
+    <LinearLayout
+        android:id="@+id/bottom_info_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gradient"
+        android:weightSum="6">
+
+        <TextView
+            android:id="@+id/currency"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="15dp"
+            android:text="@string/pounds"
+            android:textColor="@color/Primary_800"
+            android:textSize="36sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/sum_price"
+            android:layout_weight="4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="15dp"
+            android:textColor="@color/Primary_800"
+            android:textSize="36sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_new_fab"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:contentDescription="@string/fab_content"
+            android:src="@drawable/ic_add_new"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+    </LinearLayout>
+
+
 
     <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_new_fab"

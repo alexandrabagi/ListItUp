@@ -64,6 +64,7 @@ public class ListActivity extends AppCompatActivity {
 
         Bundle args = new Bundle();
 
+        appBar.setTitle("My Lists");
         Fragment fragment = new ShoppingListFragment();
         args.putInt(ShoppingListFragment.ARG_OBJECT, 0); // check
         fragment.setArguments(args);
@@ -77,6 +78,9 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.home_button) {
+
+                    appBar.setTitle("Home");
+
                     Fragment fragment = new HomeFragment();
                     fm.beginTransaction()
                             .replace(R.id.list_fragment_container, fragment)
@@ -87,7 +91,8 @@ public class ListActivity extends AppCompatActivity {
 
                 else if (item.getItemId() == R.id.list_button) {
                     // Handle list fragment
-//                    mAddNewFAB.setVisibility(View.VISIBLE);
+
+                    appBar.setTitle("My Lists");
 
                     Fragment fragment = new ShoppingListFragment();
                     Bundle args = new Bundle();
@@ -100,7 +105,8 @@ public class ListActivity extends AppCompatActivity {
                     return true;
                 } else if (item.getItemId() == R.id.cart_button) {
                     // Handle cart fragment
-//                    mAddNewFAB.setVisibility(View.VISIBLE);
+
+                    appBar.setTitle("My Cart");
 
                     Fragment fragment = new ShoppingListFragment();
                     Bundle args = new Bundle();
@@ -113,6 +119,9 @@ public class ListActivity extends AppCompatActivity {
                     return true;
 
                 } else if (item.getItemId() == R.id.profile_button) {
+
+                    appBar.setTitle("Profile");
+
                     Fragment fragment = new ProfileFragment();
                     fm.beginTransaction()
                             .replace(R.id.list_fragment_container, fragment)

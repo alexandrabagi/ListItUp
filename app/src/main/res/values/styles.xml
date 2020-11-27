@@ -37,7 +37,7 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:paddingTop">10dp</item>
         <item name="android:paddingBottom">10dp</item>
-        <item name="titleTextColor">@color/Primary_500</item>
+        <item name="titleTextColor">@color/Primary_800</item>
 
     </style>
 

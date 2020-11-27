@@ -7,9 +7,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
@@ -23,6 +23,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +31,6 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -39,7 +39,6 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import com.bignerdranch.android.listitup.PictureUtils;
 import com.bignerdranch.android.listitup.R;
-//import com.bignerdranch.android.listitup.activities.ItemPagerActivity;
 import com.bignerdranch.android.listitup.room.Item;
 import com.bignerdranch.android.listitup.room.ItemVM;
 import com.bignerdranch.android.listitup.room.TotalPrice;
@@ -50,8 +49,6 @@ import java.io.File;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-
-import static java.lang.reflect.Array.getFloat;
 
 //import static com.bignerdranch.android.listitup.activities.ItemPagerActivity.EXTRA_ITEM_ID;
 
@@ -143,7 +140,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
         mItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mItemRecyclerView.setAdapter(mAdapter); // added
 
-        TextView mSubtitle = view.findViewById(R.id.subtitle);
+//        TextView mSubtitle = view.findViewById(R.id.subtitle);
         mTotalPriceText = view.findViewById(R.id.sum_price);
 
         mItemVM.getAllCartItems().observe(getViewLifecycleOwner(), cartItems -> {
@@ -158,17 +155,82 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
 
         if (chosenButton == 0) {
-            mSubtitle.setText(R.string.lets_buy_subtitle);
+//            mSubtitle.setText(R.string.lets_buy_subtitle);
             ItemTouchHelper myITH = new ItemTouchHelper(new MyItemTouchCallback(getActivity(), mAdapter, mItemVM, 0, mTotalPriceHolder));
             myITH.attachToRecyclerView(mItemRecyclerView);
+            mTotalPriceText.setVisibility(View.INVISIBLE);
         } else {
-            mSubtitle.setText(R.string.in_my_cart_subtitle);
+//            mSubtitle.setText(R.string.in_my_cart_subtitle);
             ItemTouchHelper myITH = new ItemTouchHelper(new MyItemTouchCallback(getActivity(), mAdapter, mItemVM, 1, mTotalPriceHolder));
             myITH.attachToRecyclerView(mItemRecyclerView);
         }
 
+        mAddNewFAB = view.findViewById(R.id.add_new_fab);
+        mAddNewFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addDialog();
+            }
+        });
+
         updateUI();
 
+    }
+
+    private void addDialog() {
+        android.app.AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+
+        View mView = getLayoutInflater().inflate(R.layout.dialog_add_new, null);
+
+        EditText mItemName = (EditText) mView.findViewById(R.id.addItemName);
+        EditText mItemQuantity = (EditText) mView.findViewById(R.id.addItemQuantity);
+        EditText mItemPrice = (EditText) mView.findViewById(R.id.addItemPrice);
+        Button mAddButton = (Button) mView.findViewById(R.id.addButton);
+        Button mCancelButton = (Button) mView.findViewById(R.id.cancelButton);
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+
+        mAddButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                if (!mItemName.getText().toString().isEmpty() && !mItemQuantity.getText().toString().isEmpty()){
+                    Item newItem;
+                    if (!mItemPrice.getText().toString().isEmpty()) {
+                        newItem = new Item(mItemName.getText().toString(), Integer.parseInt(mItemQuantity.getText().toString()), 0, Float.parseFloat(mItemPrice.getText().toString()));
+                    } else {
+                        newItem = new Item(mItemName.getText().toString(), Integer.parseInt(mItemQuantity.getText().toString()), 0, 0.0f);
+                    }
+
+                    mItemVM.insertToShop(newItem);
+
+                    mItemName.setText("");
+                    mItemQuantity.setText("");
+                    mItemPrice.setText("");
+                    Toast.makeText(getActivity(), "You added "+ newItem.getName() + " successfully", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                } else if (mItemName.getText().toString().isEmpty()) {
+                    Toast.makeText(getActivity(), "Please enter the name of the item", Toast.LENGTH_SHORT).show();
+                } else if (mItemQuantity.getText().toString().isEmpty()) {
+                    Toast.makeText(getActivity(), "Please enter the number of items you need", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        mCancelButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        // round corners
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.80);
+//        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.80);
+//        dialog.getWindow().setLayout(width,height);
+
+        dialog.show();
     }
 
     @Override

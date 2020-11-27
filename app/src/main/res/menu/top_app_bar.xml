@@ -3,10 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <item
-        android:id="@+id/help"
-        android:title="Help"
-        android:contentDescription="Get help here"
-        app:showAsAction="never" />
+        android:id="@+id/delete"
+        android:title="Delete"
+        android:contentDescription="Save list"
+        android:icon="@drawable/ic_bin"
+        android:iconTint="@color/Primary_800"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/save"
+        android:title="Save"
+        android:contentDescription="Save list"
+        android:icon="@drawable/ic_save"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/cart"
