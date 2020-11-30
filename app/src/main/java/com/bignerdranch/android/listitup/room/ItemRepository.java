@@ -15,9 +15,9 @@ import java.util.List;
 
 public class ItemRepository {
 
-    private ItemDAO mItemDao;
-    private LiveData<List<Item>> mAllShopItems;
-    private LiveData<List<Item>> mAllCartItems;
+    private ItemDAOold mItemDao;
+    private LiveData<List<ItemOld>> mAllShopItems;
+    private LiveData<List<ItemOld>> mAllCartItems;
 
     ItemRepository(Application application) {
         ItemRoomDB db = ItemRoomDB.getDatabase(application);
@@ -32,7 +32,7 @@ public class ItemRepository {
 
     // Must be called on a non-UI thread
     // Room ensures that no long running operations happen on the main thread, blocking the UI
-    void insertToShop(Item item) {
+    void insertToShop(ItemOld item) {
         ItemRoomDB.databaseWriteExecutor.execute(() -> {
             mItemDao.insertToShop(item);
         });
@@ -44,19 +44,19 @@ public class ItemRepository {
         });
     }
 
-    void putToCart(Item item) {
+    void putToCart(ItemOld item) {
         ItemRoomDB.databaseWriteExecutor.execute(() -> {
             mItemDao.putToCart(item);
         });
     }
 
-    void setPrice(Item item) {
+    void setPrice(ItemOld item) {
         ItemRoomDB.databaseWriteExecutor.execute(() -> {
             mItemDao.setPrice(item);
         });
     }
 
-    void deleteShopItem(Item item) {
+    void deleteShopItem(ItemOld item) {
         ItemRoomDB.databaseWriteExecutor.execute(() -> {
             mItemDao.deleteShopItem(item);
         });
@@ -68,7 +68,7 @@ public class ItemRepository {
         });
     }
 
-    LiveData<List<Item>> getAllShopItems() {
+    LiveData<List<ItemOld>> getAllShopItems() {
         return mAllShopItems;
     }
 
@@ -76,24 +76,24 @@ public class ItemRepository {
 //        return mItemDao.getAlphabetizedShops();
 //    }
 
-    LiveData<Item> loadItem(int id) {
+    LiveData<ItemOld> loadItem(int id) {
         return mItemDao.loadShopItem(id);
     }
 
     ///CARTLIST///
-    void insertToCart(Item item) {
+    void insertToCart(ItemOld item) {
         ItemRoomDB.databaseWriteExecutor.execute(() -> {
             mItemDao.insertToCart(item);
         });
     }
 
-    void putToShop(Item item) {
+    void putToShop(ItemOld item) {
         ItemRoomDB.databaseWriteExecutor.execute(() -> {
             mItemDao.putToShop(item);
         });
     }
 
-    void deleteCartItem(Item item) {
+    void deleteCartItem(ItemOld item) {
         ItemRoomDB.databaseWriteExecutor.execute(() -> {
             mItemDao.deleteCartItem(item);
             mItemDao.setBought(item);
@@ -106,11 +106,11 @@ public class ItemRepository {
         });
     }
 
-    LiveData<List<Item>> getAllCartItems() {
+    LiveData<List<ItemOld>> getAllCartItems() {
         return mAllCartItems;
     }
 
-    LiveData<Item> loadCartItem(int id) {
+    LiveData<ItemOld> loadCartItem(int id) {
         return mItemDao.loadCartItem(id);
     }
 

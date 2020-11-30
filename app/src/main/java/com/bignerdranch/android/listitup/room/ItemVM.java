@@ -16,8 +16,8 @@ import java.util.List;
 public class ItemVM extends AndroidViewModel {
 
     private ItemRepository mRepository;
-    private LiveData<List<Item>> mAllShopItems;
-    private LiveData<List<Item>> mAllCartItems;
+    private LiveData<List<ItemOld>> mAllShopItems;
+    private LiveData<List<ItemOld>> mAllCartItems;
 
 
     public ItemVM (Application application) {
@@ -29,7 +29,7 @@ public class ItemVM extends AndroidViewModel {
 
 
     ///SHOPLIST///
-    public void insertToShop(Item item) {
+    public void insertToShop(ItemOld item) {
         mRepository.insertToShop(item);
     }
 
@@ -37,23 +37,23 @@ public class ItemVM extends AndroidViewModel {
         mRepository.updateShopItem(id, itemName, itemQuantity, itemPrice);
     }
 
-    public void putToCart(Item item) {
-        Item newItem = item;
+    public void putToCart(ItemOld item) {
+        ItemOld newItem = item;
         newItem.changeBought();
         mRepository.putToCart(newItem);
     }
 
-    public void setPrice(Item item, float price) {
-        Item newItem = item;
+    public void setPrice(ItemOld item, float price) {
+        ItemOld newItem = item;
         newItem.setPrice(price);
         mRepository.setPrice(newItem);
     }
 
-    public void deleteFromShop(Item item) {
+    public void deleteFromShop(ItemOld item) {
         mRepository.deleteShopItem(item);
     }
 
-    public LiveData<List<Item>> getAllShopItems() {
+    public LiveData<List<ItemOld>> getAllShopItems() {
         return mRepository.getAllShopItems();
     }
 
@@ -61,7 +61,7 @@ public class ItemVM extends AndroidViewModel {
 //        return mRepository.getAllItemsByShops();
 //    }
 
-    public Item loadShopItem(int id) {
+    public ItemOld loadShopItem(int id) {
         return mRepository.loadItem(id).getValue();
     }
 
@@ -70,25 +70,25 @@ public class ItemVM extends AndroidViewModel {
     }
 
     ///CARTLIST///
-    public void insertToCart(Item item) {
+    public void insertToCart(ItemOld item) {
         mRepository.insertToCart(item);
     }
 
-    public void putToShop(Item item) {
-        Item newItem = item;
+    public void putToShop(ItemOld item) {
+        ItemOld newItem = item;
         newItem.changeBought();
         mRepository.putToShop(newItem);
     }
 
-    public void deleteFromCart(Item item) {
+    public void deleteFromCart(ItemOld item) {
         mRepository.deleteCartItem(item);
     }
 
-    public LiveData<List<Item>> getAllCartItems() {
+    public LiveData<List<ItemOld>> getAllCartItems() {
         return mRepository.getAllCartItems();
     }
 
-    public Item loadCartItem(int id) {
+    public ItemOld loadCartItem(int id) {
         return mRepository.loadCartItem(id).getValue();
     }
 

@@ -1,76 +1,27 @@
 package com.bignerdranch.android.listitup.room;
 
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.Update;
 
-import java.util.List;
-
-/**
- * (data access object) validates your SQL at compile-time and associates it with a method
- * Represents the most common database operations
- * Room uses the DAO to create a clean API for the code
- */
 @Dao
 public interface ItemDAO {
 
-    ///SHOPLIST///
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertToShop(Item item);
-
-    @Update
-    void setBought(Item item);
-
-    @Update
-    void putToCart(Item item);
-
-    @Update
-    void setPrice(Item item);
+    void addNewItem(Item item);
 
     @Delete
-    void deleteShopItem(Item item);
+    void deleteItem(Item item);
 
-    @Query("UPDATE shop_table SET name = :name ,quantity= :quantity,price= :price WHERE id LIKE :id ")
-    void updateShopItem(int id, String name, int quantity, float price);
+    @Query("UPDATE items_table SET itemName = :name, itemPrice= :price WHERE itemId LIKE :id ")
+    void updateItem(int id, String name, double price);
 
+    @Query("SELECT itemName FROM items_table WHERE itemId LIKE :id")
+    String getItemName(int id);
 
-    @Query("DELETE FROM shop_table")
-    void deleteAllShop();
-
-//    @Query("SELECT * from shop_table WHERE bought = 0 ORDER BY shopName ASC")
-//    LiveData<List<Item>> getAlphabetizedShops();
-
-    @Query("SELECT * from shop_table WHERE bought = 0 ORDER BY name ASC")
-    LiveData<List<Item>> getAllShopItems();
-
-    @Query("SELECT * FROM shop_table WHERE bought = 0 AND id = :id")
-    LiveData<Item> loadShopItem(int id);
-
-
-    ///CARTLIST///
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertToCart(Item item);
-
-    @Update
-    void putToShop(Item item);
-
-    @Delete
-    void deleteCartItem(Item item);
-
-    @Query("DELETE FROM shop_table")
-    void deleteAllCart();
-
-    @Query("SELECT * from shop_table WHERE bought = 1 ORDER BY name ASC")
-    LiveData<List<Item>> getAllCartItems();
-
-    @Query("SELECT * FROM shop_table WHERE bought = 1 AND id = :id")
-    LiveData<Item> loadCartItem(int id);
-
-    @Query("SELECT price FROM shop_table WHERE id = :id")
-    float getItemPrice(int id);
+    @Query("SELECT itemPrice FROM items_table WHERE itemId LIKE :id")
+    double getItemPrice(int id);
 }

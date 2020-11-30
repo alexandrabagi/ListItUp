@@ -1,23 +1,17 @@
 package com.bignerdranch.android.listitup.activities;
 
 import android.app.AlertDialog;
-import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
@@ -27,12 +21,11 @@ import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.fragments.HomeFragment;
 import com.bignerdranch.android.listitup.fragments.ProfileFragment;
 import com.bignerdranch.android.listitup.fragments.ShoppingListFragment;
-import com.bignerdranch.android.listitup.room.Item;
+import com.bignerdranch.android.listitup.room.ItemOld;
 import com.bignerdranch.android.listitup.room.ItemVM;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * This activity hosts ListDemoFragment which operates the tabs of "To Buy" and "In Cart" lists
@@ -159,11 +152,11 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!mItemName.getText().toString().isEmpty() && !mItemQuantity.getText().toString().isEmpty()){
-                    Item newItem;
+                    ItemOld newItem;
                     if (!mItemPrice.getText().toString().isEmpty()) {
-                        newItem = new Item(mItemName.getText().toString(), Integer.parseInt(mItemQuantity.getText().toString()), 0, Float.parseFloat(mItemPrice.getText().toString()));
+                        newItem = new ItemOld(mItemName.getText().toString(), Integer.parseInt(mItemQuantity.getText().toString()), 0, Float.parseFloat(mItemPrice.getText().toString()));
                     } else {
-                        newItem = new Item(mItemName.getText().toString(), Integer.parseInt(mItemQuantity.getText().toString()), 0, 0.0f);
+                        newItem = new ItemOld(mItemName.getText().toString(), Integer.parseInt(mItemQuantity.getText().toString()), 0, 0.0f);
                     }
 
                     mItemVM.insertToShop(newItem);

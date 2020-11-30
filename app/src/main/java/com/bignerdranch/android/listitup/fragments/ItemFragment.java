@@ -24,11 +24,10 @@ import androidx.fragment.app.Fragment;
 import com.bignerdranch.android.listitup.PictureUtils;
 import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.activities.LocationActivity;
-import com.bignerdranch.android.listitup.room.Item;
+import com.bignerdranch.android.listitup.room.ItemOld;
 
 import java.io.File;
 import java.util.List;
-import java.util.UUID;
 
 /*
 need to add database wherever stuff is red to retrieve an item
@@ -38,7 +37,7 @@ public class ItemFragment extends Fragment {
 
     private static final String ARG_THING_ID = "thingID";
 
-    private Item mItem;
+    private ItemOld mItem;
     private TextView mWhat;
     private TextView mShopName;
     private TextView mQuantity;

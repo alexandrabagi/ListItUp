@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.fragments.ShoppingListFragment;
-import com.bignerdranch.android.listitup.room.Item;
+import com.bignerdranch.android.listitup.room.ItemOld;
 import com.bignerdranch.android.listitup.room.ItemVM;
 import com.bignerdranch.android.listitup.room.TotalPrice;
 
@@ -61,14 +61,14 @@ public class MyItemTouchCallback extends ItemTouchHelper.Callback {
                     // When swiping left
                     //Remove swiped item from list and notify the RecyclerView
                     int position = viewHolder.getAdapterPosition();
-                    Item itemToRemove = adapter.getItems().get(position);
+                    ItemOld itemToRemove = adapter.getItems().get(position);
                     itemId = itemToRemove.getId();
                     mItemVM.deleteFromShop(itemToRemove);
                     adapter.notifyDataSetChanged();
                 } else if (swipeDir == ItemTouchHelper.RIGHT) {
                     // When swiping right
                     int position = viewHolder.getAdapterPosition();
-                    Item itemToCart = adapter.getItems().get(position);
+                    ItemOld itemToCart = adapter.getItems().get(position);
                     mTotalPriceHolder.addToTotalPrice(itemToCart.getPrice()*itemToCart.getQuantity());
                     itemId = itemToCart.getId();
                     mItemVM.putToCart(itemToCart);
@@ -79,7 +79,7 @@ public class MyItemTouchCallback extends ItemTouchHelper.Callback {
                     // When swiping left
                     //Remove swiped item from list and notify the RecyclerView
                     int position = viewHolder.getAdapterPosition();
-                    Item itemToRemove = adapter.getItems().get(position);
+                    ItemOld itemToRemove = adapter.getItems().get(position);
                     itemId = itemToRemove.getId();
                     mTotalPriceHolder.subtractFromTotalPrice(itemToRemove.getPrice()*itemToRemove.getQuantity());
                     mItemVM.deleteFromCart(itemToRemove);
@@ -87,7 +87,7 @@ public class MyItemTouchCallback extends ItemTouchHelper.Callback {
                 } else if (swipeDir == ItemTouchHelper.LEFT) {
                     // When swiping right
                     int position = viewHolder.getAdapterPosition();
-                    Item itemToList = adapter.getItems().get(position);
+                    ItemOld itemToList = adapter.getItems().get(position);
                     mTotalPriceHolder.subtractFromTotalPrice(itemToList.getPrice()*itemToList.getQuantity());
                     itemId = itemToList.getId();
                     mItemVM.putToShop(itemToList);

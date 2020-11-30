@@ -134,9 +134,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:contentDescription="@string/fab_content"
-            android:src="@drawable/ic_add_new"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/ic_add_new"
+            app:fabCustomSize="48dp"/>
 
 
     </LinearLayout>

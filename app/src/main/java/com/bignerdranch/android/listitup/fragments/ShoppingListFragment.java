@@ -39,7 +39,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import com.bignerdranch.android.listitup.PictureUtils;
 import com.bignerdranch.android.listitup.R;
-import com.bignerdranch.android.listitup.room.Item;
+import com.bignerdranch.android.listitup.room.ItemOld;
 import com.bignerdranch.android.listitup.room.ItemVM;
 import com.bignerdranch.android.listitup.room.TotalPrice;
 import com.bignerdranch.android.listitup.utilities.MyItemTouchCallback;
@@ -194,11 +194,11 @@ public class ShoppingListFragment extends Fragment implements Observer {
             @Override
             public void onClick(View view) {
                 if (!mItemName.getText().toString().isEmpty() && !mItemQuantity.getText().toString().isEmpty()){
-                    Item newItem;
+                    ItemOld newItem;
                     if (!mItemPrice.getText().toString().isEmpty()) {
-                        newItem = new Item(mItemName.getText().toString(), Integer.parseInt(mItemQuantity.getText().toString()), 0, Float.parseFloat(mItemPrice.getText().toString()));
+                        newItem = new ItemOld(mItemName.getText().toString(), Integer.parseInt(mItemQuantity.getText().toString()), 0, Float.parseFloat(mItemPrice.getText().toString()));
                     } else {
-                        newItem = new Item(mItemName.getText().toString(), Integer.parseInt(mItemQuantity.getText().toString()), 0, 0.0f);
+                        newItem = new ItemOld(mItemName.getText().toString(), Integer.parseInt(mItemQuantity.getText().toString()), 0, 0.0f);
                     }
 
                     mItemVM.insertToShop(newItem);
@@ -270,7 +270,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
     private class ShopItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private CardView cardView;
-        private Item mItem;
+        private ItemOld mItem;
         private TextView itemName;
         private TextView piecesText;
         private TextView itemQuantity;
@@ -339,7 +339,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
             itemView.setOnClickListener(this);
         }
 
-        public void bind(Item item, int position) {
+        public void bind(ItemOld item, int position) {
             mItem = item;
             itemName.setText(mItem.getName());
             itemQuantity.setText(Integer.toString(mItem.getQuantity()));
@@ -389,7 +389,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
             isExpanded = false;
         }
 
-        private void getPriceDialog(Item item) {
+        private void getPriceDialog(ItemOld item) {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
 
             View mView = getLayoutInflater().inflate(R.layout.dialog_enterprice, null);
@@ -461,7 +461,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
     public class ShopItemAdapter extends Adapter<ShopItemHolder> {
 
-        private List<Item> mItems;
+        private List<ItemOld> mItems;
 
         private ShopItemHolder prevHolder = null;
 
@@ -476,7 +476,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
 
         @Override
         public void onBindViewHolder(@NonNull ShopItemHolder holder, int position) {
-            Item item = mItems.get(position);
+            ItemOld item = mItems.get(position);
 
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -516,7 +516,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
             } else return 0;
         }
 
-        void setItems(List<Item> items) {
+        void setItems(List<ItemOld> items) {
             mItems = items;
             notifyDataSetChanged();
             System.out.println("notifyDataSetChanged()");
@@ -524,7 +524,7 @@ public class ShoppingListFragment extends Fragment implements Observer {
             updateUI();
         }
 
-        public List<Item> getItems() {
+        public List<ItemOld> getItems() {
             return mItems;
         }
     }
