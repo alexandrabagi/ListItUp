@@ -36,4 +36,28 @@ public class ListContents {
         this.mContentsItemId = itemId;
         this.mContentsItemQuantity= quantity;
     }
+
+    public int getContentsListId() {
+        return mContentsListId;
+    }
+
+    public void setContentsListId(int listId) {
+        mContentsListId = listId;
+    }
+
+    public int getItemId() {
+        return mContentsItemId;
+    }
+
+    public void setItemId(int itemId) {
+        mContentsItemId = itemId;
+    }
+
+    public int getContentsItemQuantity() {
+        return mContentsItemQuantity;
+    }
+
+    public void setContentsItemQuantity(int itemQuantity) {
+        mContentsItemQuantity = itemQuantity;
+    }
 }

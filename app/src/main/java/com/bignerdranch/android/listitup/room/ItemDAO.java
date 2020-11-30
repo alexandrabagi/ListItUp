@@ -1,11 +1,14 @@
 package com.bignerdranch.android.listitup.room;
 
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+
+import java.util.List;
 
 @Dao
 public interface ItemDAO {
@@ -24,4 +27,7 @@ public interface ItemDAO {
 
     @Query("SELECT itemPrice FROM items_table WHERE itemId LIKE :id")
     double getItemPrice(int id);
+
+    @Query("SELECT * FROM items_table")
+    LiveData<List<Item>> getAllItems();
 }

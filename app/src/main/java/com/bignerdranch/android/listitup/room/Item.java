@@ -16,10 +16,30 @@ public class Item {
     @ColumnInfo(name = "itemName")
     private String mItemName;
     @ColumnInfo(name = "itemPrice")
-    private float mItemPrice;
+    private double mItemPrice;
 
     public Item(String name, float price) {
         this.mItemName = name;
         this.mItemPrice = price;
+    }
+
+    public int getId() {
+        return mItemId;
+    }
+
+    public String getItemName() {
+        return mItemName;
+    }
+
+    public void setItemName(String name) {
+        mItemName = name;
+    }
+
+    public double getItemPrice() {
+        return mItemPrice;
+    }
+
+    public void setItemPrice(double price) {
+        mItemPrice = price;
     }
 }

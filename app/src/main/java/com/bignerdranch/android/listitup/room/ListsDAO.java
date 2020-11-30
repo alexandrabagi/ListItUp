@@ -1,10 +1,13 @@
 package com.bignerdranch.android.listitup.room;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+
+import java.util.List;
 
 @Dao
 public interface ListsDAO {
@@ -29,4 +32,10 @@ public interface ListsDAO {
 
     @Query("SELECT sumPrice FROM lists_table WHERE listId LIKE :id")
     double getSumPrice(int id);
+
+    @Query("SELECT listId FROM lists_table")
+    LiveData<List<Integer>> getAllListIds();
+
+    @Query("SELECT listName FROM lists_table")
+    LiveData<List<String>> getAllListNames();
 }
