@@ -50,7 +50,7 @@ public class ItemRepository {
         });
     }
 
-    // LISTS TABLE
+    // LIST INFO TABLE
 
     // Insert new list
     void addNewList(ListInfo newList) {
@@ -72,7 +72,7 @@ public class ItemRepository {
     }
 
     LiveData<List<ListInfo>> getAllListInfos() {
-        return mAllListInfos;
+        return mItemDao.getAllListInfos();
     }
 
     // LIST CONTENTS TABLE
