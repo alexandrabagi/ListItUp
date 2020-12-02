@@ -3,61 +3,65 @@ package com.bignerdranch.android.listitup.room;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
+
+// Cross-reference table
 
 @Entity(tableName = "list_contents_table",
-        foreignKeys = {
-        @ForeignKey(
-                entity = Lists.class,
-                parentColumns = "listId",
-                childColumns = "contentsListId",
-                onDelete = ForeignKey.CASCADE
-                ),
-        @ForeignKey(
-                entity = Item.class,
-                parentColumns =  "itemId",
-                childColumns = "listsItemId",
-                onDelete = ForeignKey.CASCADE
-                )
-        })
+        primaryKeys = {"listId", "itemId"}
+        )
+
+//        foreignKeys = {
+//        @ForeignKey(
+//                entity = ListInfo.class,
+//                parentColumns = "listId",
+//                childColumns = "contentsListId",
+//                onDelete = ForeignKey.CASCADE
+//                ),
+//        @ForeignKey(
+//                entity = Item.class,
+//                parentColumns =  "itemId",
+//                childColumns = "listsItemId",
+//                onDelete = ForeignKey.CASCADE
+//                )
+//        })
 
 public class ListContents {
 
     @NonNull
-    @ColumnInfo(name = "contentsListId")
-    private int mContentsListId;
-    @ColumnInfo(name = "contentsItemId")
-    private int mContentsItemId;
-    @ColumnInfo(name = "contentsItemQuantity")
-    private int mContentsItemQuantity;
+    @ColumnInfo(name = "listId")
+    private long mContListId;
+    @ColumnInfo(name = "itemId")
+    private long mContItemId;
+    @ColumnInfo(name = "itemQty")
+    private int mContItemQty;
 
     public ListContents(int listId, int itemId, int quantity) {
-        this.mContentsListId = listId;
-        this.mContentsItemId = itemId;
-        this.mContentsItemQuantity= quantity;
+        this.mContListId = listId;
+        this.mContItemId = itemId;
+        this.mContItemQty = quantity;
     }
 
-    public int getContentsListId() {
-        return mContentsListId;
+    public long getContentsListId() {
+        return mContListId;
     }
 
     public void setContentsListId(int listId) {
-        mContentsListId = listId;
+        mContListId = listId;
     }
 
-    public int getItemId() {
-        return mContentsItemId;
+    public long getItemId() {
+        return mContItemId;
     }
 
-    public void setItemId(int itemId) {
-        mContentsItemId = itemId;
+    public void setItemId(long itemId) {
+        mContItemId = itemId;
     }
 
     public int getContentsItemQuantity() {
-        return mContentsItemQuantity;
+        return mContItemQty;
     }
 
     public void setContentsItemQuantity(int itemQuantity) {
-        mContentsItemQuantity = itemQuantity;
+        mContItemQty = itemQuantity;
     }
 }

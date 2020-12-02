@@ -101,7 +101,7 @@
         android:layout_width="220dp"
         android:layout_height="36dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/rounded_corners_filled"
+        android:background="@drawable/rounded_corners_primary"
         android:text="@string/simple_sign_in"
         android:textColor="@color/white"
         android:textSize="14sp"

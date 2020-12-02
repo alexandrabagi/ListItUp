@@ -268,7 +268,7 @@
                    android:layout_height="36dp"
                    android:text="Set Price"
                    android:textColor="@color/white"
-                   android:background="@drawable/rounded_corners_filled"
+                   android:background="@drawable/rounded_corners_primary"
                    android:layout_margin="10dp"/>
 
            </LinearLayout>

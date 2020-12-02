@@ -7,7 +7,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -19,10 +18,12 @@ import androidx.lifecycle.ViewModelProviders;
 import com.bignerdranch.android.listitup.R;
 //import com.bignerdranch.android.listitup.fragments.CartListFragment;
 import com.bignerdranch.android.listitup.fragments.HomeFragment;
+import com.bignerdranch.android.listitup.fragments.ListChooserFragment;
 import com.bignerdranch.android.listitup.fragments.ProfileFragment;
-import com.bignerdranch.android.listitup.fragments.ShoppingListFragment;
-import com.bignerdranch.android.listitup.room.ItemOld;
+//import com.bignerdranch.android.listitup.fragments.ShoppingListFragment;
+//import com.bignerdranch.android.listitup.room.ItemOld;
 import com.bignerdranch.android.listitup.room.ItemVM;
+//import com.bignerdranch.android.listitup.room.ItemVMOld;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -58,9 +59,7 @@ public class ListActivity extends AppCompatActivity {
         Bundle args = new Bundle();
 
         appBar.setTitle("My Lists");
-        Fragment fragment = new ShoppingListFragment();
-        args.putInt(ShoppingListFragment.ARG_OBJECT, 0); // check
-        fragment.setArguments(args);
+        Fragment fragment = new HomeFragment();
         fm.beginTransaction()
                 .replace(R.id.list_fragment_container, fragment)
                 .commit();
@@ -87,10 +86,11 @@ public class ListActivity extends AppCompatActivity {
 
                     appBar.setTitle("My Lists");
 
-                    Fragment fragment = new ShoppingListFragment();
-                    Bundle args = new Bundle();
-                    args.putInt(ShoppingListFragment.ARG_OBJECT, 0); // check
-                    fragment.setArguments(args);
+//                    Fragment fragment = new ShoppingListFragment();
+//                    Bundle args = new Bundle();
+//                    args.putInt(ShoppingListFragment.ARG_OBJECT, 0); // check
+//                    fragment.setArguments(args);
+                    Fragment fragment = new ListChooserFragment();
                     fm.beginTransaction()
                             .replace(R.id.list_fragment_container, fragment)
                             .commit();
@@ -101,13 +101,13 @@ public class ListActivity extends AppCompatActivity {
 
                     appBar.setTitle("My Cart");
 
-                    Fragment fragment = new ShoppingListFragment();
-                    Bundle args = new Bundle();
-                    args.putInt(ShoppingListFragment.ARG_OBJECT, 1);
-                    fragment.setArguments(args);
-                    fm.beginTransaction()
-                            .replace(R.id.list_fragment_container, fragment)
-                            .commit();
+//                    Fragment fragment = new ShoppingListFragment();
+//                    Bundle args = new Bundle();
+//                    args.putInt(ShoppingListFragment.ARG_OBJECT, 1);
+//                    fragment.setArguments(args);
+//                    fm.beginTransaction()
+//                            .replace(R.id.list_fragment_container, fragment)
+//                            .commit();
 
                     return true;
 
@@ -138,40 +138,39 @@ public class ListActivity extends AppCompatActivity {
     private void addDialog() {
         android.app.AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
 
-        View mView = getLayoutInflater().inflate(R.layout.dialog_add_new, null);
+        View mView = getLayoutInflater().inflate(R.layout.dialog_add_new_item, null);
 
         EditText mItemName = (EditText) mView.findViewById(R.id.addItemName);
         EditText mItemQuantity = (EditText) mView.findViewById(R.id.addItemQuantity);
         EditText mItemPrice = (EditText) mView.findViewById(R.id.addItemPrice);
-        Button mAddButton = (Button) mView.findViewById(R.id.addButton);
-        Button mCancelButton = (Button) mView.findViewById(R.id.cancelButton);
+        Button mAddButton = (Button) mView.findViewById(R.id.add_list_add_btn);
+        Button mCancelButton = (Button) mView.findViewById(R.id.add_list_cancel_btn);
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
 
         mAddButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                if (!mItemName.getText().toString().isEmpty() && !mItemQuantity.getText().toString().isEmpty()){
-                    ItemOld newItem;
-                    if (!mItemPrice.getText().toString().isEmpty()) {
-                        newItem = new ItemOld(mItemName.getText().toString(), Integer.parseInt(mItemQuantity.getText().toString()), 0, Float.parseFloat(mItemPrice.getText().toString()));
-                    } else {
-                        newItem = new ItemOld(mItemName.getText().toString(), Integer.parseInt(mItemQuantity.getText().toString()), 0, 0.0f);
-                    }
-
-                    mItemVM.insertToShop(newItem);
-
-                    mItemName.setText("");
-                    mItemQuantity.setText("");
-                    mItemPrice.setText("");
-                    Toast.makeText(ListActivity.this, "You added "+ newItem.getName() + " successfully", Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                } else if (mItemName.getText().toString().isEmpty()) {
-                    Toast.makeText(ListActivity.this, "Please enter the name of the item", Toast.LENGTH_SHORT).show();
-                } else if (mItemQuantity.getText().toString().isEmpty()) {
-                    Toast.makeText(ListActivity.this, "Please enter the number of items you need", Toast.LENGTH_SHORT).show();
-                }
-
+//                if (!mItemName.getText().toString().isEmpty() && !mItemQuantity.getText().toString().isEmpty()){
+//                    Item newItem;
+//                    if (!mItemPrice.getText().toString().isEmpty()) {
+//                        newItem = new Item(mItemName.getText().toString(), Integer.parseInt(mItemQuantity.getText().toString()), 0, Float.parseFloat(mItemPrice.getText().toString()));
+//                    } else {
+//                        newItem = new Item(mItemName.getText().toString(), Integer.parseInt(mItemQuantity.getText().toString()), 0, 0.0f);
+//                    }
+//
+//                    mItemVM.insertToShop(newItem);
+//
+//                    mItemName.setText("");
+//                    mItemQuantity.setText("");
+//                    mItemPrice.setText("");
+//                    Toast.makeText(ListActivity.this, "You added "+ newItem.getName() + " successfully", Toast.LENGTH_SHORT).show();
+//                    dialog.dismiss();
+//                } else if (mItemName.getText().toString().isEmpty()) {
+//                    Toast.makeText(ListActivity.this, "Please enter the name of the item", Toast.LENGTH_SHORT).show();
+//                } else if (mItemQuantity.getText().toString().isEmpty()) {
+//                    Toast.makeText(ListActivity.this, "Please enter the number of items you need", Toast.LENGTH_SHORT).show();
+//                }
             }
         });
 

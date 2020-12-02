@@ -12,7 +12,7 @@ public class Item {
     @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "itemId")
-    private int mItemId;
+    private long mItemId;
     @ColumnInfo(name = "itemName")
     private String mItemName;
     @ColumnInfo(name = "itemPrice")
@@ -23,7 +23,7 @@ public class Item {
         this.mItemPrice = price;
     }
 
-    public int getId() {
+    public long getId() {
         return mItemId;
     }
 

@@ -16,10 +16,16 @@ import java.util.concurrent.Executors;
  * No queries on the main thread
  */
 
-@Database(entities = {ItemOld.class}, version = 2, exportSchema = false)
+@Database(entities = {
+        Item.class,
+        ListInfo.class,
+        ListContents.class},
+        version = 3,
+        exportSchema = false)
+
 public abstract class ItemRoomDB extends RoomDatabase {
 
-    public abstract ItemDAOold itemDao();
+    public abstract ItemDAO itemDao();
 
     private static volatile ItemRoomDB INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;

@@ -9,7 +9,7 @@
 
 
     <TextView
-        android:id="@+id/addDialogTitle"
+        android:id="@+id/add_list_dialog_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -32,7 +32,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addDialogTitle" />
+        app:layout_constraintTop_toBottomOf="@id/add_list_dialog_title" />
 
     <EditText
         android:id="@+id/addItemQuantity"
@@ -64,7 +64,7 @@
 
 
     <LinearLayout
-        android:id="@+id/addDialogButtons"
+        android:id="@+id/add_list_btns"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right|end"
@@ -76,7 +76,7 @@
         android:layout_margin="10dp">
 
         <Button
-            android:id="@+id/addButton"
+            android:id="@+id/add_list_add_btn"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:layout_gravity="center"
@@ -87,7 +87,7 @@
 
 
         <Button
-            android:id="@+id/cancelButton"
+            android:id="@+id/add_list_cancel_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

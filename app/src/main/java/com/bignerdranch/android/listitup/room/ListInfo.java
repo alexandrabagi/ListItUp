@@ -5,20 +5,24 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "lists_table")
-public class Lists {
+@Entity(tableName = "list_info_table")
+public class ListInfo {
 
     @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "listId")
-    private int mListId;
+    private long mListId;
     @ColumnInfo(name = "listName")
     private String mListName;
     @ColumnInfo(name = "sumPrice")
     private double mListSumPrice;
 
-    public Lists(String name) {
+    public ListInfo(String name) {
         this.mListName = name;
+    }
+
+    public long getListId() {
+        return mListId;
     }
 
     public String getListName() {

@@ -15,16 +15,110 @@ import java.util.List;
 
 public class ItemRepository {
 
-    private ItemDAOold mItemDao;
-    private LiveData<List<ItemOld>> mAllShopItems;
-    private LiveData<List<ItemOld>> mAllCartItems;
+    private ItemDAO mItemDao;
+    private LiveData<List<ListInfo>> mAllListInfos;
+    private LiveData<List<ListWithItems>> mAllListsWithItems;
 
     ItemRepository(Application application) {
         ItemRoomDB db = ItemRoomDB.getDatabase(application);
         mItemDao = db.itemDao();
-        mAllShopItems = mItemDao.getAllShopItems();
-        mAllCartItems = mItemDao.getAllCartItems();
+        mAllListInfos = mItemDao.getAllListInfos();
+        mAllListsWithItems = mItemDao.getAllListsWithItems();
     }
+
+
+    // ITEMS TABLE
+
+    // Insert to items table - Item(id, name, price)
+    // Should be called when a new list is saved
+    void addNewItem(Item item) {
+        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+            mItemDao.addNewItem(item);
+        });
+    }
+
+    // Update name or price of the item
+    void updateItem(int id, String name, double price) {
+        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+            mItemDao.updateItem(id, name, price);
+        });
+    }
+
+    void deleteItem(Item item) {
+        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+            mItemDao.deleteItem(item);
+        });
+    }
+
+    // LISTS TABLE
+
+    // Insert new list
+    void addNewList(ListInfo newList) {
+        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+            mItemDao.addNewList(newList);
+        });
+    }
+
+    void updateListInfo(int id, String name, double sumPrice) {
+        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+            mItemDao.updateListInfo(id, name, sumPrice);
+        });
+    }
+
+    void deleteListInfo(int listId) {
+        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+            mItemDao.deleteListInfo(listId);
+        });
+    }
+
+    LiveData<List<ListInfo>> getAllListInfos() {
+        return mAllListInfos;
+    }
+
+    // LIST CONTENTS TABLE
+
+//    // add new list content - should be executed when new list is added
+//    void addNewListContent(ListContents content) {
+//        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+//            mItemDao.addNewListContent(content);
+//        });
+//    }
+//
+//    void updateListContent(int listId, int itemId, int quantity) {
+//        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+//            mItemDao.updateListContent(listId, itemId, quantity);
+//        });
+//    }
+//
+//    // delete all content of one list
+//    void deleteWholeListContent(int listId) {
+//        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+//            mItemDao.deleteWholeListContent(listId);
+//        });
+//    }
+//
+//    void deleteOneListContent(int listId, int itemId) {
+//        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+//            mItemDao.deleteOneListContent(listId, itemId);
+//        });
+//    }
+//
+//    // get all items on one list
+//    LiveData<List<ListContents>> getAllItemsOfList(int listId) {
+//        return mItemDao.getAllItemsOfList(listId);
+//    }
+
+    // get all lists with items
+    LiveData<List<ListWithItems>> getAllListWithItems() {
+        return mAllListsWithItems;
+    }
+
+    // get list with items
+    LiveData<ListWithItems> getListWithItems(long listId) {
+        return mItemDao.getListWithItems(listId);
+    }
+
+
 
     ///SHOPLIST///
     // Room executes all queries on a separate thread
@@ -32,89 +126,87 @@ public class ItemRepository {
 
     // Must be called on a non-UI thread
     // Room ensures that no long running operations happen on the main thread, blocking the UI
-    void insertToShop(ItemOld item) {
-        ItemRoomDB.databaseWriteExecutor.execute(() -> {
-            mItemDao.insertToShop(item);
-        });
-    }
-
-    void updateShopItem(int id, String itemName, int itemQuantity, float itemPrice) {
-        ItemRoomDB.databaseWriteExecutor.execute(() -> {
-            mItemDao.updateShopItem(id, itemName, itemQuantity, itemPrice);
-        });
-    }
-
-    void putToCart(ItemOld item) {
-        ItemRoomDB.databaseWriteExecutor.execute(() -> {
-            mItemDao.putToCart(item);
-        });
-    }
-
-    void setPrice(ItemOld item) {
-        ItemRoomDB.databaseWriteExecutor.execute(() -> {
-            mItemDao.setPrice(item);
-        });
-    }
-
-    void deleteShopItem(ItemOld item) {
-        ItemRoomDB.databaseWriteExecutor.execute(() -> {
-            mItemDao.deleteShopItem(item);
-        });
-    }
-
-    void deleteAllShop() {
-        ItemRoomDB.databaseWriteExecutor.execute(() -> {
-            mItemDao.deleteAllShop();
-        });
-    }
-
-    LiveData<List<ItemOld>> getAllShopItems() {
-        return mAllShopItems;
-    }
-
-//    LiveData<List<Item>> getAllItemsByShops() {
-//        return mItemDao.getAlphabetizedShops();
+//    void insertToShop(ItemOld item) {
+//        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+//            mItemDao.insertToShop(item);
+//        });
 //    }
 
-    LiveData<ItemOld> loadItem(int id) {
-        return mItemDao.loadShopItem(id);
-    }
+//    void updateShopItem(int id, String itemName, int itemQuantity, float itemPrice) {
+//        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+//            mItemDao.updateShopItem(id, itemName, itemQuantity, itemPrice);
+//        });
+//    }
 
-    ///CARTLIST///
-    void insertToCart(ItemOld item) {
-        ItemRoomDB.databaseWriteExecutor.execute(() -> {
-            mItemDao.insertToCart(item);
-        });
-    }
-
-    void putToShop(ItemOld item) {
-        ItemRoomDB.databaseWriteExecutor.execute(() -> {
-            mItemDao.putToShop(item);
-        });
-    }
-
-    void deleteCartItem(ItemOld item) {
-        ItemRoomDB.databaseWriteExecutor.execute(() -> {
-            mItemDao.deleteCartItem(item);
-            mItemDao.setBought(item);
-        });
-    }
-
-    void deleteAllCart() {
-        ItemRoomDB.databaseWriteExecutor.execute(() -> {
-            mItemDao.deleteAllCart();
-        });
-    }
-
-    LiveData<List<ItemOld>> getAllCartItems() {
-        return mAllCartItems;
-    }
-
-    LiveData<ItemOld> loadCartItem(int id) {
-        return mItemDao.loadCartItem(id);
-    }
-
-    float getItemPrice(int id) {
-        return mItemDao.getItemPrice(id);
-    }
+//    void putToCart(ItemOld item) {
+//        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+//            mItemDao.putToCart(item);
+//        });
+//    }
+//
+//    void setPrice(ItemOld item) {
+//        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+//            mItemDao.setPrice(item);
+//        });
+//    }
+//
+//    void deleteShopItem(ItemOld item) {
+//        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+//            mItemDao.deleteShopItem(item);
+//        });
+//    }
+//
+//    void deleteAllShop() {
+//        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+//            mItemDao.deleteAllShop();
+//        });
+//    }
+//
+//    LiveData<List<ItemOld>> getAllShopItems() {
+//        return mAllShopItems;
+//    }
+//
+////    ItemRepositoryOld
+//
+//    LiveData<ItemOld> loadItem(int id) {
+//        return mItemDao.loadShopItem(id);
+//    }
+//
+//    ///CARTLIST///
+//    void insertToCart(ItemOld item) {
+//        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+//            mItemDao.insertToCart(item);
+//        });
+//    }
+//
+//    void putToShop(ItemOld item) {
+//        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+//            mItemDao.putToShop(item);
+//        });
+//    }
+//
+//    void deleteCartItem(ItemOld item) {
+//        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+//            mItemDao.deleteCartItem(item);
+//            mItemDao.setBought(item);
+//        });
+//    }
+//
+//    void deleteAllCart() {
+//        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+//            mItemDao.deleteAllCart();
+//        });
+//    }
+//
+//    LiveData<List<ItemOld>> getAllCartItems() {
+//        return mAllCartItems;
+//    }
+//
+//    LiveData<ItemOld> loadCartItem(int id) {
+//        return mItemDao.loadCartItem(id);
+//    }
+//
+//    float getItemPrice(int id) {
+//        return mItemDao.getItemPrice(id);
+//    }
 }

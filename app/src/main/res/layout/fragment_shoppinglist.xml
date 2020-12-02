@@ -6,17 +6,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white">
 
-    <!-- <TextView
-        android:id="@+id/test_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" /> -->
-
     <LinearLayout
         android:id="@+id/price_line"
         android:layout_width="match_parent"
