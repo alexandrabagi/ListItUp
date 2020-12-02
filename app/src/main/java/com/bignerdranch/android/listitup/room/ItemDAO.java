@@ -23,13 +23,13 @@ public interface ItemDAO {
     void deleteItem(Item item);
 
     @Query("UPDATE items_table SET itemName = :name, itemPrice= :price WHERE itemId LIKE :id ")
-    void updateItem(int id, String name, double price);
+    void updateItem(long id, String name, double price);
 
     @Query("SELECT itemName FROM items_table WHERE itemId LIKE :id")
-    String getItemName(int id);
+    String getItemName(long id);
 
     @Query("SELECT itemPrice FROM items_table WHERE itemId LIKE :id")
-    double getItemPrice(int id);
+    double getItemPrice(long id);
 
     @Query("SELECT * FROM items_table")
     LiveData<List<Item>> getAllItems();
@@ -40,22 +40,22 @@ public interface ItemDAO {
     void addNewList(ListInfo newList);
 
     @Delete
-    void deleteListInfo(int listId);
+    void deleteListInfo(ListInfo listToDelete);
 
     @Query("UPDATE list_info_table SET listName = :name, sumPrice= :price WHERE listId LIKE :id ")
-    void updateListInfo(int id, String name, double price);
+    void updateListInfo(long id, String name, double price);
 
     @Query("UPDATE list_info_table SET listName = :name WHERE listId LIKE :id")
-    void updateListName(int id, String name);
+    void updateListName(long id, String name);
 
     @Query("UPDATE list_info_table SET sumPrice = :price WHERE listId LIKE :id")
-    void updateListSumPrice(int id, double price);
+    void updateListSumPrice(long id, double price);
 
     @Query("SELECT listName FROM list_info_table WHERE listId LIKE :id")
-    String getListName(int id);
+    String getListName(long id);
 
     @Query("SELECT sumPrice FROM list_info_table WHERE listId LIKE :id")
-    double getSumPrice(int id);
+    double getSumPrice(long id);
 
     @Query("SELECT listId FROM list_info_table")
     LiveData<List<Integer>> getAllListIds();

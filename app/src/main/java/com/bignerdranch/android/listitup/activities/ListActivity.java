@@ -58,14 +58,14 @@ public class ListActivity extends AppCompatActivity {
 
         Bundle args = new Bundle();
 
-        appBar.setTitle("My Lists");
+        appBar.setTitle("Home");
         Fragment fragment = new HomeFragment();
         fm.beginTransaction()
                 .replace(R.id.list_fragment_container, fragment)
                 .commit();
 
         bottomNavView = findViewById(R.id.bottom_navigation);
-        bottomNavView.setSelectedItemId(R.id.list_button);
+        bottomNavView.setSelectedItemId(R.id.home_button);
         bottomNavView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

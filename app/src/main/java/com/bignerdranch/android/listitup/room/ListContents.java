@@ -30,38 +30,38 @@ public class ListContents {
     @NonNull
     @ColumnInfo(name = "listId")
     private long mContListId;
-    @ColumnInfo(name = "itemId")
+    @ColumnInfo(name = "itemId", index = true)
     private long mContItemId;
     @ColumnInfo(name = "itemQty")
     private int mContItemQty;
 
-    public ListContents(int listId, int itemId, int quantity) {
-        this.mContListId = listId;
-        this.mContItemId = itemId;
-        this.mContItemQty = quantity;
+    public ListContents(long contListId, long contItemId, int contItemQty) {
+        this.mContListId = contListId;
+        this.mContItemId = contItemId;
+        this.mContItemQty = contItemQty;
     }
 
-    public long getContentsListId() {
+    public long getContListId() {
         return mContListId;
     }
 
-    public void setContentsListId(int listId) {
+    public void setContListId(int listId) {
         mContListId = listId;
     }
 
-    public long getItemId() {
+    public long getContItemId() {
         return mContItemId;
     }
 
-    public void setItemId(long itemId) {
-        mContItemId = itemId;
+    public void setContItemId(long contItemId) {
+        mContItemId = contItemId;
     }
 
-    public int getContentsItemQuantity() {
+    public int getContItemQty() {
         return mContItemQty;
     }
 
-    public void setContentsItemQuantity(int itemQuantity) {
-        mContItemQty = itemQuantity;
+    public void setContItemQty(int contItemQty) {
+        mContItemQty = contItemQty;
     }
 }

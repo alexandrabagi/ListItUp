@@ -32,7 +32,7 @@ public class ItemVM extends AndroidViewModel {
         mRepository.addNewItem(item);
     }
 
-    public void updateItem(int id, String name, double price) {
+    public void updateItem(long id, String name, double price) {
         mRepository.updateItem(id, name, price);
     }
 
@@ -46,12 +46,12 @@ public class ItemVM extends AndroidViewModel {
         mRepository.addNewList(newList);
     }
 
-    public void updateListInfo(int id, String name, double sumPrice) {
+    public void updateListInfo(long id, String name, double sumPrice) {
         mRepository.updateListInfo(id, name, sumPrice);
     }
 
-    public void deleteListInfo(int listId) {
-        mRepository.deleteListInfo(listId);
+    public void deleteListInfo(ListInfo listToDelete) {
+        mRepository.deleteListInfo(listToDelete);
     }
 
     public LiveData<List<ListInfo>> getAllListInfos() {

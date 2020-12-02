@@ -23,6 +23,7 @@ import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.room.ItemVM;
 import com.bignerdranch.android.listitup.room.ListInfo;
 import com.bignerdranch.android.listitup.room.ListWithItems;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class ListChooserFragment extends Fragment {
     private List<ListInfo> myShoppingLists;
     private ShoppingListAdapter mAdapter;
     private ItemVM mItemVM;
-    private Button addNewListBtn;
+    private FloatingActionButton addNewListBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,11 +44,11 @@ public class ListChooserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_home, container, false);
+        View v = inflater.inflate(R.layout.fragment_listchooser, container, false);
 
         noListsYet = v.findViewById(R.id.no_lists_yet);
 
-        addNewListBtn = v.findViewById(R.id.add_new_fab);
+        addNewListBtn = v.findViewById(R.id.add_new_list_fab);
 
         mAdapter = new ShoppingListAdapter();
         mItemVM = ViewModelProviders.of(this).get(ItemVM.class);
@@ -81,6 +82,7 @@ public class ListChooserFragment extends Fragment {
         final AlertDialog dialog = mBuilder.create();
 
         // wiring buttons
+
 
         // round corners
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));

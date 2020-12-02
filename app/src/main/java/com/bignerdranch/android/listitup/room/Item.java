@@ -1,6 +1,5 @@
 package com.bignerdranch.android.listitup.room;
 
-
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -18,12 +17,16 @@ public class Item {
     @ColumnInfo(name = "itemPrice")
     private double mItemPrice;
 
-    public Item(String name, float price) {
-        this.mItemName = name;
-        this.mItemPrice = price;
+    public Item(String itemName, double itemPrice) {
+        this.mItemName = itemName;
+        this.mItemPrice = itemPrice;
     }
 
-    public long getId() {
+    public void setItemId(long itemId) {
+        mItemId = itemId;
+    }
+
+    public long getItemId() {
         return mItemId;
     }
 

@@ -38,7 +38,7 @@ public class ItemRepository {
     }
 
     // Update name or price of the item
-    void updateItem(int id, String name, double price) {
+    void updateItem(long id, String name, double price) {
         ItemRoomDB.databaseWriteExecutor.execute(() -> {
             mItemDao.updateItem(id, name, price);
         });
@@ -59,15 +59,15 @@ public class ItemRepository {
         });
     }
 
-    void updateListInfo(int id, String name, double sumPrice) {
+    void updateListInfo(long id, String name, double sumPrice) {
         ItemRoomDB.databaseWriteExecutor.execute(() -> {
             mItemDao.updateListInfo(id, name, sumPrice);
         });
     }
 
-    void deleteListInfo(int listId) {
+    void deleteListInfo(ListInfo listToDelete) {
         ItemRoomDB.databaseWriteExecutor.execute(() -> {
-            mItemDao.deleteListInfo(listId);
+            mItemDao.deleteListInfo(listToDelete);
         });
     }
 
@@ -132,7 +132,7 @@ public class ItemRepository {
 //        });
 //    }
 
-//    void updateShopItem(int id, String itemName, int itemQuantity, float itemPrice) {
+//    void updateShopItem(long id, String itemName, int itemQuantity, float itemPrice) {
 //        ItemRoomDB.databaseWriteExecutor.execute(() -> {
 //            mItemDao.updateShopItem(id, itemName, itemQuantity, itemPrice);
 //        });

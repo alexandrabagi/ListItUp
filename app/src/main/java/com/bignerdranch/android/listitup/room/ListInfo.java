@@ -17,8 +17,12 @@ public class ListInfo {
     @ColumnInfo(name = "sumPrice")
     private double mListSumPrice;
 
-    public ListInfo(String name) {
-        this.mListName = name;
+    public ListInfo(String listName) {
+        this.mListName = listName;
+    }
+
+    public void setListId(long listId) {
+        mListId = listId;
     }
 
     public long getListId() {
