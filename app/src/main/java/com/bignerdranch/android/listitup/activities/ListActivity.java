@@ -41,7 +41,14 @@ public class ListActivity extends AppCompatActivity {
     BottomNavigationView bottomNavView;
     private ItemVM mItemVM;
 
+    Fragment fragmentHome;
+    Fragment fragmentListChooser;
+    Fragment fragmentActiveList;
+    Fragment fragmentCart;
+    Fragment fragmentProfile;
     private Fragment active;
+    private Fragment activeList;
+    private boolean listSecondaryScreen = false;
 
 
     @Override
@@ -54,12 +61,13 @@ public class ListActivity extends AppCompatActivity {
         appBar = findViewById(R.id.top_tool_bar);
         setSupportActionBar(appBar);
 
-        // TODO have the toolbar too
-
-//        mAddNewFAB = findViewById(R.id.add_new_fab);
-
-
         FragmentManager fm = getSupportFragmentManager();
+
+        fragmentHome = new HomeFragment();
+        fragmentListChooser = new ListChooserFragment();
+        fragmentActiveList = new ActiveListFragment();
+        fragmentCart = new CartFragment();
+        fragmentProfile = new ProfileFragment();
 
         Bundle args = new Bundle();
 
@@ -75,11 +83,8 @@ public class ListActivity extends AppCompatActivity {
     }
 
     private void showFragments() {
-        Fragment fragmentHome = new HomeFragment();
-        Fragment fragmentListChooser = new ListChooserFragment();
-        Fragment fragmentCart = new CartFragment();
-        Fragment fragmentProfile = new ProfileFragment();
         active = fragmentHome;
+        activeList = fragmentListChooser;
 
         FragmentManager fm = getSupportFragmentManager();
 
@@ -87,9 +92,6 @@ public class ListActivity extends AppCompatActivity {
         fm.beginTransaction().add(R.id.list_fragment_container, fragmentListChooser, "2").hide(fragmentListChooser).commit();
         fm.beginTransaction().add(R.id.list_fragment_container, fragmentCart,"3").hide(fragmentCart).commit();
         fm.beginTransaction().add(R.id.list_fragment_container, fragmentProfile, "4").hide(fragmentProfile).commit();
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
 
         bottomNavView.setSelectedItemId(R.id.home_button);
         appBar.setTitle("Home");
@@ -101,42 +103,48 @@ public class ListActivity extends AppCompatActivity {
                     case R.id.home_button:
 
                         appBar.setTitle("Home");
+                        hideAppBarBack();
 
 //                        Fragment fragment = new HomeFragment();
                         //                    fm.beginTransaction()
                         //                            .replace(R.id.list_fragment_container, fragment)
                         //                            .commit();
-                        fm.beginTransaction()
-                                .hide(active)
-                                .show(fragmentHome)
-                                .commit();
-                        active = fragmentHome;
+                            fm.beginTransaction()
+                                    .hide(active)
+                                    .show(fragmentHome)
+                                    .commit();
+                            active = fragmentHome;
 
-                        return true;
+                            return true;
 
                     case R.id.list_button:
                         // Handle list fragment
 
                         appBar.setTitle("My Lists");
 
+                        if (!listSecondaryScreen) {
+                            activeList = fragmentListChooser;
+                            hideAppBarBack();
+                        } else {
+                            showAppBarBack();
+                        }
+                        fm.beginTransaction()
+                                .hide(active)
+                                .show(activeList)
+                                .commit();
+                        active = activeList;
 //                        Fragment fragment = new ListChooserFragment();
                         //                    fm.beginTransaction()
                         //                            .replace(R.id.list_fragment_container, fragment)
                         //                            .addToBackStack("ListChooserFragment")
                         //                            .commit();
-                        fm.beginTransaction()
-                                .hide(active)
-                                .show(fragmentListChooser)
-                                .commit();
-                        active = fragmentListChooser;
-
                         return true;
+
                     case R.id.cart_button:
                         // Handle cart fragment
 
                         appBar.setTitle("My Cart");
-
-//                    Fragment fragment = new CartFragment();
+                        hideAppBarBack();
 
                         fm.beginTransaction()
                                 .hide(active)
@@ -149,6 +157,7 @@ public class ListActivity extends AppCompatActivity {
                     case R.id.profile_button:
 
                         appBar.setTitle("Profile");
+                        hideAppBarBack();
 
 //                    Fragment fragment = new ProfileFragment();
 //                    fm.beginTransaction()
@@ -175,22 +184,35 @@ public class ListActivity extends AppCompatActivity {
     }
 
     public void setActiveList(long listId) {
+        listSecondaryScreen = true;
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = new ActiveListFragment();
+//        fragmentActiveList = new ActiveListFragment();
+//        activeList = fragmentActiveList;
+        activeList = new ActiveListFragment();
         Bundle args = new Bundle();
         args.putLong("listId", listId);
-        fragment.setArguments(args);
+        activeList.setArguments(args);
 //        fm.beginTransaction()
 //                .replace(R.id.list_fragment_container, fragment)
 //                .addToBackStack("ActiveListFragment")
 //                .commit();
         fm.beginTransaction()
                 .hide(active)
-                .add(R.id.list_fragment_container, fragment, "2_2")
-                .show(fragment)
+                .add(R.id.list_fragment_container, activeList, "2_2")
+                .show(activeList)
+//                .addToBackStack("ActiveListFragment")
                 .commit();
-        active = fragment;
+        active = activeList;
 
+        showAppBarBack();
+    }
+
+    private void hideAppBarBack() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+    }
+
+    private void showAppBarBack() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
@@ -200,10 +222,19 @@ public class ListActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         FragmentManager fm = getSupportFragmentManager();
-        if (fm.getBackStackEntryCount() > 0) {
-            fm.popBackStack();
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            getSupportActionBar().setDisplayShowHomeEnabled(false);
+        if (listSecondaryScreen) { // go back to list chooser
+//            activeList = new ListChooserFragment();
+//        }
+//        if (activeList == fragmentListChooser) {
+//            super.onBackPressed();
+//        } else if (activeList == fragmentActiveList) {
+            fm.beginTransaction()
+                    .hide(active)
+                    .show(fragmentListChooser)
+                    .commit();
+            activeList = fragmentListChooser;
+            active = activeList;
+            hideAppBarBack();
         } else {
             super.onBackPressed();
         }
@@ -211,7 +242,7 @@ public class ListActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+        if (listSecondaryScreen) {
             onBackPressed();
             return true;
         } else {
