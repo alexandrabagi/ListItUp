@@ -4,17 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ActiveListActivity">
+    android:background="@color/white">
 
-    <TextView
+    <!--  <com.google.android.material.appbar.AppBarLayout
+         android:id="@+id/top_app_bar"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         app:elevation="0dp"
+         app:layout_constraintHorizontal_bias="0.5"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent">
+
+         <com.google.android.material.appbar.MaterialToolbar
+             android:id="@+id/top_tool_bar"
+             style="@style/MyMaterialAppBar"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             app:menu="@menu/top_app_bar"
+             app:title="ListItUp!" />
+
+
+
+     </com.google.android.material.appbar.AppBarLayout> -->
+
+ <!--    <TextView
+        android:id="@+id/active_list_name_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Active List comes here"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_app_bar" />
 
-    <FrameLayout
-        android:id="@+id/active_list_fragment_container"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/active_list_items"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/active_list_name_text"/> -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

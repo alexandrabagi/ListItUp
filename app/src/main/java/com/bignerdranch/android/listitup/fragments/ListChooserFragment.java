@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bignerdranch.android.listitup.R;
-import com.bignerdranch.android.listitup.activities.ActiveListActivity;
+import com.bignerdranch.android.listitup.activities.ListActivity;
 import com.bignerdranch.android.listitup.room.Item;
 import com.bignerdranch.android.listitup.room.ItemVM;
 import com.bignerdranch.android.listitup.room.ListInfo;
@@ -160,8 +160,11 @@ public class ListChooserFragment extends Fragment {
             useListBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent newIntent = new Intent(getActivity(), ActiveListActivity.class);
-                    startActivity(newIntent);
+//                    Intent newIntent = new Intent(getActivity(), ActiveListActivity.class);
+//                    newIntent.putExtra("listId", listInfo.getListId());
+//                    startActivity(newIntent);
+                    ((ListActivity)getActivity()).setActiveList(listInfo.getListId());
+                    collapseCard();
                 }
             });
             isExpanded = false;

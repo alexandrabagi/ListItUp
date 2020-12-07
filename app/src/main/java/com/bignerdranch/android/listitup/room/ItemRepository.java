@@ -71,6 +71,10 @@ public class ItemRepository {
         });
     }
 
+    LiveData<String> getListName(long id) {
+        return mItemDao.getListName(id);
+    }
+
     LiveData<List<ListInfo>> getAllListInfos() {
         return mItemDao.getAllListInfos();
     }

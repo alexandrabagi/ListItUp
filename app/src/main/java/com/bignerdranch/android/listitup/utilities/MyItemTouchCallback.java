@@ -17,9 +17,11 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bignerdranch.android.listitup.R;
+import com.bignerdranch.android.listitup.fragments.ActiveListFragment;
 import com.bignerdranch.android.listitup.fragments.ShoppingListFragment;
 import com.bignerdranch.android.listitup.room.ItemOld;
 //import com.bignerdranch.android.listitup.room.ItemVMOld;
+import com.bignerdranch.android.listitup.room.ItemVM;
 import com.bignerdranch.android.listitup.room.TotalPrice;
 
 // https://stackoverflow.com/questions/34609191/why-itemtouchhelper-callbacks-onchilddraw-will-be-called-after-clearview
@@ -27,21 +29,21 @@ import com.bignerdranch.android.listitup.room.TotalPrice;
 
 public class MyItemTouchCallback extends ItemTouchHelper.Callback {
 
-        private ShoppingListFragment.ShopItemAdapter adapter;
-//        private ItemVMOld mItemVM;
+        private ActiveListFragment.ShopItemAdapter adapter;
+        private ItemVM mItemVM;
         private Context context;
         private int chosenList; // 0 - shopping list, 1 - cart list
         private int itemId;
 
         private TotalPrice mTotalPriceHolder;
 
-//        public MyItemTouchCallback(Context context, ShoppingListFragment.ShopItemAdapter adapter, ItemVMOld viewModel, int chosenList, TotalPrice totalPrice) {
-//            this.adapter = adapter;
-//            this.mItemVM = viewModel;
-//            this.context = context;
-//            this.chosenList = chosenList;
-//            this.mTotalPriceHolder = totalPrice;
-//        }
+        public MyItemTouchCallback(Context context, ActiveListFragment.ShopItemAdapter adapter, ItemVM viewModel, int chosenList, TotalPrice totalPrice) {
+            this.adapter = adapter;
+            this.mItemVM = viewModel;
+            this.context = context;
+            this.chosenList = chosenList;
+            this.mTotalPriceHolder = totalPrice;
+        }
 
         @Override
         public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {

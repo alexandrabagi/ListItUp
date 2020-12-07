@@ -3,6 +3,7 @@ package com.bignerdranch.android.listitup.room;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "items_table")
@@ -16,9 +17,18 @@ public class Item {
     private String mItemName;
     @ColumnInfo(name = "itemPrice")
     private double mItemPrice;
+    @Ignore
+    private int mItemQty;
 
     public Item(String itemName, double itemPrice) {
         this.mItemName = itemName;
+        this.mItemPrice = itemPrice;
+    }
+
+    @Ignore
+    public Item(String itemName, int itemQty, double itemPrice) {
+        this.mItemName = itemName;
+        this.mItemQty = itemQty;
         this.mItemPrice = itemPrice;
     }
 
@@ -36,6 +46,14 @@ public class Item {
 
     public void setItemName(String name) {
         mItemName = name;
+    }
+
+    public void setItemQty(int quantity) {
+        mItemQty = quantity;
+    }
+
+    public int getItemQty() {
+        return mItemQty;
     }
 
     public double getItemPrice() {

@@ -50,6 +50,10 @@ public class ItemVM extends AndroidViewModel {
         mRepository.updateListInfo(id, name, sumPrice);
     }
 
+    public LiveData<String> getListName(long id) {
+        return mRepository.getListName(id);
+    }
+
     public void deleteListInfo(ListInfo listToDelete) {
         mRepository.deleteListInfo(listToDelete);
     }

@@ -52,7 +52,7 @@ public interface ItemDAO {
     void updateListSumPrice(long id, double price);
 
     @Query("SELECT listName FROM list_info_table WHERE listId LIKE :id")
-    String getListName(long id);
+    LiveData<String> getListName(long id);
 
     @Query("SELECT sumPrice FROM list_info_table WHERE listId LIKE :id")
     double getSumPrice(long id);

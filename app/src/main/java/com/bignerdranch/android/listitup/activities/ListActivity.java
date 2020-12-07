@@ -17,6 +17,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.bignerdranch.android.listitup.R;
 //import com.bignerdranch.android.listitup.fragments.CartListFragment;
+import com.bignerdranch.android.listitup.fragments.ActiveListFragment;
+import com.bignerdranch.android.listitup.fragments.CartFragment;
 import com.bignerdranch.android.listitup.fragments.HomeFragment;
 import com.bignerdranch.android.listitup.fragments.ListChooserFragment;
 import com.bignerdranch.android.listitup.fragments.ProfileFragment;
@@ -37,8 +39,10 @@ public class ListActivity extends AppCompatActivity {
     MaterialToolbar appBar;
     BottomAppBar bottomAppBar;
     BottomNavigationView bottomNavView;
-//    private FloatingActionButton mAddNewFAB;
     private ItemVM mItemVM;
+
+    private Fragment active;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,82 +52,117 @@ public class ListActivity extends AppCompatActivity {
         mItemVM = ViewModelProviders.of(this).get(ItemVM.class);
 
         appBar = findViewById(R.id.top_tool_bar);
+        setSupportActionBar(appBar);
+
         // TODO have the toolbar too
 
 //        mAddNewFAB = findViewById(R.id.add_new_fab);
-
 
 
         FragmentManager fm = getSupportFragmentManager();
 
         Bundle args = new Bundle();
 
-        appBar.setTitle("Home");
-        Fragment fragment = new HomeFragment();
-        fm.beginTransaction()
-                .replace(R.id.list_fragment_container, fragment)
-                .commit();
+//        appBar.setTitle("Home");
+//        Fragment fragment = new HomeFragment();
+//        fm.beginTransaction()
+//                .replace(R.id.list_fragment_container, fragment)
+//                .commit();
 
         bottomNavView = findViewById(R.id.bottom_navigation);
+
+        showFragments();
+    }
+
+    private void showFragments() {
+        Fragment fragmentHome = new HomeFragment();
+        Fragment fragmentListChooser = new ListChooserFragment();
+        Fragment fragmentCart = new CartFragment();
+        Fragment fragmentProfile = new ProfileFragment();
+        active = fragmentHome;
+
+        FragmentManager fm = getSupportFragmentManager();
+
+        fm.beginTransaction().add(R.id.list_fragment_container, fragmentHome, "1").show(fragmentHome).commit();
+        fm.beginTransaction().add(R.id.list_fragment_container, fragmentListChooser, "2").hide(fragmentListChooser).commit();
+        fm.beginTransaction().add(R.id.list_fragment_container, fragmentCart,"3").hide(fragmentCart).commit();
+        fm.beginTransaction().add(R.id.list_fragment_container, fragmentProfile, "4").hide(fragmentProfile).commit();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+
         bottomNavView.setSelectedItemId(R.id.home_button);
+        appBar.setTitle("Home");
         bottomNavView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.home_button) {
 
-                    appBar.setTitle("Home");
+                switch (item.getItemId()) {
+                    case R.id.home_button:
 
-                    Fragment fragment = new HomeFragment();
-                    fm.beginTransaction()
-                            .replace(R.id.list_fragment_container, fragment)
-                            .commit();
+                        appBar.setTitle("Home");
 
-                    return true;
-                }
+//                        Fragment fragment = new HomeFragment();
+                        //                    fm.beginTransaction()
+                        //                            .replace(R.id.list_fragment_container, fragment)
+                        //                            .commit();
+                        fm.beginTransaction()
+                                .hide(active)
+                                .show(fragmentHome)
+                                .commit();
+                        active = fragmentHome;
 
-                else if (item.getItemId() == R.id.list_button) {
-                    // Handle list fragment
+                        return true;
 
-                    appBar.setTitle("My Lists");
+                    case R.id.list_button:
+                        // Handle list fragment
 
-//                    Fragment fragment = new ShoppingListFragment();
-//                    Bundle args = new Bundle();
-//                    args.putInt(ShoppingListFragment.ARG_OBJECT, 0); // check
-//                    fragment.setArguments(args);
-                    Fragment fragment = new ListChooserFragment();
-                    fm.beginTransaction()
-                            .replace(R.id.list_fragment_container, fragment)
-                            .commit();
+                        appBar.setTitle("My Lists");
 
-                    return true;
-                } else if (item.getItemId() == R.id.cart_button) {
-                    // Handle cart fragment
+//                        Fragment fragment = new ListChooserFragment();
+                        //                    fm.beginTransaction()
+                        //                            .replace(R.id.list_fragment_container, fragment)
+                        //                            .addToBackStack("ListChooserFragment")
+                        //                            .commit();
+                        fm.beginTransaction()
+                                .hide(active)
+                                .show(fragmentListChooser)
+                                .commit();
+                        active = fragmentListChooser;
 
-                    appBar.setTitle("My Cart");
+                        return true;
+                    case R.id.cart_button:
+                        // Handle cart fragment
 
-//                    Fragment fragment = new ShoppingListFragment();
-//                    Bundle args = new Bundle();
-//                    args.putInt(ShoppingListFragment.ARG_OBJECT, 1);
-//                    fragment.setArguments(args);
+                        appBar.setTitle("My Cart");
+
+//                    Fragment fragment = new CartFragment();
+
+                        fm.beginTransaction()
+                                .hide(active)
+                                .show(fragmentCart)
+                                .commit();
+                        active = fragmentCart;
+
+                        return true;
+
+                    case R.id.profile_button:
+
+                        appBar.setTitle("Profile");
+
+//                    Fragment fragment = new ProfileFragment();
 //                    fm.beginTransaction()
 //                            .replace(R.id.list_fragment_container, fragment)
 //                            .commit();
+                        fm.beginTransaction()
+                                .hide(active)
+                                .show(fragmentProfile)
+                                .commit();
+                        active = fragmentProfile;
 
-                    return true;
-
-                } else if (item.getItemId() == R.id.profile_button) {
-
-                    appBar.setTitle("Profile");
-
-                    Fragment fragment = new ProfileFragment();
-                    fm.beginTransaction()
-                            .replace(R.id.list_fragment_container, fragment)
-                            .commit();
-
-                    return true;
-                } else {
-                    return false;
+                        return true;
                 }
+                return false;
             }
         });
 
@@ -134,6 +173,67 @@ public class ListActivity extends AppCompatActivity {
 //            }
 //        });
     }
+
+    public void setActiveList(long listId) {
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = new ActiveListFragment();
+        Bundle args = new Bundle();
+        args.putLong("listId", listId);
+        fragment.setArguments(args);
+//        fm.beginTransaction()
+//                .replace(R.id.list_fragment_container, fragment)
+//                .addToBackStack("ActiveListFragment")
+//                .commit();
+        fm.beginTransaction()
+                .hide(active)
+                .add(R.id.list_fragment_container, fragment, "2_2")
+                .show(fragment)
+                .commit();
+        active = fragment;
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+    }
+
+    // Back button behaviour - TODO: refactor ///////
+    @Override
+    public void onBackPressed() {
+        FragmentManager fm = getSupportFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStack();
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayShowHomeEnabled(false);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            onBackPressed();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////
+
+//    public void replaceFragment(Fragment newFragment) {
+//        Fragment fragment = null;
+//        try {
+//            fragment = (Fragment) newFragment.newInstance();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        FragmentManager fm = getSupportFragmentManager();
+//        fm.beginTransaction()
+//                .replace(R.id.list_fragment_container, fragment)
+//                .commit();
+//    }
 
     private void addDialog() {
         android.app.AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);

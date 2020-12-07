@@ -230,8 +230,8 @@
                android:layout_marginBottom="10dp"
                android:background="@color/transparent_black_12"
                app:layout_constraintBottom_toBottomOf="parent"
-               app:layout_constraintEnd_toStartOf="parent"
-               app:layout_constraintStart_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintEnd_toEndOf="parent"
                app:layout_constraintTop_toTopOf="parent" />
 
            <LinearLayout
