@@ -19,7 +19,8 @@ import java.util.concurrent.Executors;
 @Database(entities = {
         Item.class,
         ListInfo.class,
-        ListContents.class},
+        ListContents.class,
+        TempItem.class},
         version = 3,
         exportSchema = false)
 

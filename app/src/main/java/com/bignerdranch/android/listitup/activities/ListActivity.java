@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bignerdranch.android.listitup.R;
@@ -37,7 +38,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class ListActivity extends AppCompatActivity {
 
     MaterialToolbar appBar;
-    BottomAppBar bottomAppBar;
+//    BottomAppBar bottomAppBar;
     BottomNavigationView bottomNavView;
     private ItemVM mItemVM;
 
@@ -56,12 +57,13 @@ public class ListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        mItemVM = ViewModelProviders.of(this).get(ItemVM.class);
+//        mItemVM = ViewModelProviders.of(this).get(ItemVM.class);
+        mItemVM = new ViewModelProvider(this).get(ItemVM.class);
+        System.out.println("ViewModel in Activity: " + mItemVM.toString());
+
 
         appBar = findViewById(R.id.top_tool_bar);
         setSupportActionBar(appBar);
-
-        FragmentManager fm = getSupportFragmentManager();
 
         fragmentHome = new HomeFragment();
         fragmentListChooser = new ListChooserFragment();

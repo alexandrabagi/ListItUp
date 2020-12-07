@@ -3,6 +3,10 @@ package com.bignerdranch.android.listitup.room;
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
 
 import java.util.List;
 
@@ -77,6 +81,34 @@ public class ItemRepository {
 
     LiveData<List<ListInfo>> getAllListInfos() {
         return mItemDao.getAllListInfos();
+    }
+
+    // TEMPLIST TABLE
+
+    void addNewTempItem(TempItem newTempItem) {
+        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+            mItemDao.addNewTempItem(newTempItem);
+        });
+    }
+
+    void deleteTempItem(TempItem tempItem) {
+        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+            mItemDao.deleteTempItem(tempItem);
+        });
+    }
+
+    void updateTempItem(String name, int quantity, double price) {
+        ItemRoomDB.databaseWriteExecutor.execute(() -> {
+            mItemDao.updateTempItem(name, quantity, price);
+        });
+    }
+
+    LiveData<TempItem> getTempItem(long id) {
+        return mItemDao.getTempItem(id);
+    }
+
+    LiveData<List<TempItem>> getAllTempItems() {
+        return mItemDao.getAllTempItems();
     }
 
     // LIST CONTENTS TABLE

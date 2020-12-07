@@ -62,6 +62,28 @@ public class ItemVM extends AndroidViewModel {
         return mRepository.getAllListInfos();
     }
 
+    // TEMPLIST TABLE
+
+    void addNewTempItem(TempItem newTempItem) {
+        mRepository.addNewTempItem(newTempItem);
+    }
+
+    void deleteTempItem(TempItem tempItem) {
+        mRepository.deleteTempItem(tempItem);
+    }
+
+    void updateTempItem(String name, int quantity, double price) {
+        mRepository.updateTempItem(name, quantity, price);
+    }
+
+    LiveData<TempItem> getTempItem(long id) {
+        return mRepository.getTempItem(id);
+    }
+
+    LiveData<List<TempItem>> getAllTempItems() {
+        return mRepository.getAllTempItems();
+    }
+
     // LIST CONTENTS TABLE
 
 //    public void addNewListContent(ListContents content) {

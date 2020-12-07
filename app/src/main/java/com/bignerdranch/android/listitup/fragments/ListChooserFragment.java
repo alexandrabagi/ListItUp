@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,7 +59,10 @@ public class ListChooserFragment extends Fragment {
         addNewListBtn = v.findViewById(R.id.add_new_list_fab);
 
         mAdapter = new ShoppingListAdapter();
-        mItemVM = ViewModelProviders.of(this).get(ItemVM.class);
+//        mItemVM = ViewModelProviders.of(this).get(ItemVM.class);
+        mItemVM = new ViewModelProvider(requireActivity()).get(ItemVM.class);
+        System.out.println("ViewModel in ListChooserFragment: " + mItemVM.toString());
+
         mItemVM.getAllListsWithItems().observe(getViewLifecycleOwner(), shoppingLists -> {
             myShoppingListsWithItems = shoppingLists;
         });

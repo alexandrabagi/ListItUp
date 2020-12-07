@@ -66,6 +66,24 @@ public interface ItemDAO {
     @Query("SELECT * FROM list_info_table")
     LiveData<List<ListInfo>> getAllListInfos();
 
+    // TempList table
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void addNewTempItem(TempItem newTempItem);
+
+    @Delete
+    void deleteTempItem(TempItem tempItem);
+
+    @Query("UPDATE temp_items_table SET tempItemName = :name, tempItemQty = :quantity, tempItemPrice = :price")
+    void updateTempItem(String name, int quantity, double price);
+
+    @Query("SELECT * FROM temp_items_table WHERE tempItemId LIKE :id")
+    LiveData<TempItem> getTempItem(long id);
+
+    @Query("SELECT * FROM temp_items_table")
+    LiveData<List<TempItem>> getAllTempItems();
+
+
     // List Contents table
 
 //    @Insert(onConflict = OnConflictStrategy.IGNORE)

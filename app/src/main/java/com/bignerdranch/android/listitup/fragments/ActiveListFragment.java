@@ -30,6 +30,7 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -82,7 +83,7 @@ public class ActiveListFragment extends Fragment implements Observer {
         long listId = this.getArguments().getLong("listId");
         mActiveListNameText = v.findViewById(R.id.active_list_name_text);
 
-        mItemVM = ViewModelProviders.of(getActivity()).get(ItemVM.class);
+        mItemVM = new ViewModelProvider(requireActivity()).get(ItemVM.class);
 //        mItemVM.getListName(listId).observe(this, listName -> {
 //            mActiveListNameText.setText(listName);
 //        });

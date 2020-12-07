@@ -18,9 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.fragments.ActiveListFragment;
-import com.bignerdranch.android.listitup.fragments.ShoppingListFragment;
-import com.bignerdranch.android.listitup.room.ItemOld;
-//import com.bignerdranch.android.listitup.room.ItemVMOld;
 import com.bignerdranch.android.listitup.room.ItemVM;
 import com.bignerdranch.android.listitup.room.TotalPrice;
 
@@ -165,7 +162,7 @@ public class MyItemTouchCallback extends ItemTouchHelper.Callback {
                     backgroundDelete.draw(c);
 
                     // Calculate position of delete icon
-                    Drawable deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_bin);
+                    Drawable deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_bin_white);
                     int inHeightDel = deleteIcon.getIntrinsicHeight();
                     int inWidthDel = deleteIcon.getIntrinsicWidth();
                     int deleteIconTop = itemView.getTop() + (itemHeight - inHeightDel) / 2;
