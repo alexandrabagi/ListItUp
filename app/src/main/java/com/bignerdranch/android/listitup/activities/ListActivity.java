@@ -206,36 +206,11 @@ public class ListActivity extends AppCompatActivity {
         ab.setHomeAsUpIndicator(R.drawable.ic_back);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_delete:
-                // User chose the "Settings" item, show the app settings UI...
-                return true;
-
-            case R.id.action_save:
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
-                return true;
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-
-        }
-    }
-
     // Back button behaviour - TODO: refactor ///////
     @Override
     public void onBackPressed() {
         FragmentManager fm = getSupportFragmentManager();
         if (listSecondaryScreen) { // go back to list chooser
-//            activeList = new ListChooserFragment();
-//        }
-//        if (activeList == fragmentListChooser) {
-//            super.onBackPressed();
-//        } else if (activeList == fragmentActiveList) {
             fm.beginTransaction()
                     .hide(active)
                     .show(fragmentListChooser)
@@ -260,73 +235,4 @@ public class ListActivity extends AppCompatActivity {
     }
 
     ////////////////////////////////////////////////////////////////
-
-//    public void replaceFragment(Fragment newFragment) {
-//        Fragment fragment = null;
-//        try {
-//            fragment = (Fragment) newFragment.newInstance();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        FragmentManager fm = getSupportFragmentManager();
-//        fm.beginTransaction()
-//                .replace(R.id.list_fragment_container, fragment)
-//                .commit();
-//    }
-
-    private void addDialog() {
-        android.app.AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
-
-        View mView = getLayoutInflater().inflate(R.layout.dialog_add_new_item, null);
-
-        EditText mItemName = (EditText) mView.findViewById(R.id.addItemName);
-        EditText mItemQuantity = (EditText) mView.findViewById(R.id.addItemQuantity);
-        EditText mItemPrice = (EditText) mView.findViewById(R.id.addItemPrice);
-        Button mAddButton = (Button) mView.findViewById(R.id.add_list_add_btn);
-        Button mCancelButton = (Button) mView.findViewById(R.id.add_list_cancel_btn);
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-
-        mAddButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-//                if (!mItemName.getText().toString().isEmpty() && !mItemQuantity.getText().toString().isEmpty()){
-//                    Item newItem;
-//                    if (!mItemPrice.getText().toString().isEmpty()) {
-//                        newItem = new Item(mItemName.getText().toString(), Integer.parseInt(mItemQuantity.getText().toString()), 0, Float.parseFloat(mItemPrice.getText().toString()));
-//                    } else {
-//                        newItem = new Item(mItemName.getText().toString(), Integer.parseInt(mItemQuantity.getText().toString()), 0, 0.0f);
-//                    }
-//
-//                    mItemVM.insertToShop(newItem);
-//
-//                    mItemName.setText("");
-//                    mItemQuantity.setText("");
-//                    mItemPrice.setText("");
-//                    Toast.makeText(ListActivity.this, "You added "+ newItem.getName() + " successfully", Toast.LENGTH_SHORT).show();
-//                    dialog.dismiss();
-//                } else if (mItemName.getText().toString().isEmpty()) {
-//                    Toast.makeText(ListActivity.this, "Please enter the name of the item", Toast.LENGTH_SHORT).show();
-//                } else if (mItemQuantity.getText().toString().isEmpty()) {
-//                    Toast.makeText(ListActivity.this, "Please enter the number of items you need", Toast.LENGTH_SHORT).show();
-//                }
-            }
-        });
-
-        mCancelButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-
-        // round corners
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-//        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.80);
-//        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.80);
-//        dialog.getWindow().setLayout(width,height);
-
-        dialog.show();
-    }
 }

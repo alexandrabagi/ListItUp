@@ -14,6 +14,7 @@ import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -53,6 +54,7 @@ public class ActiveListFragment extends Fragment implements Observer {
 
     private ItemVM mItemVM;
     private TextView mActiveListNameText;
+    private String mActiveListName;
     private List<Item> mListItems = new ArrayList<>();
     private FloatingActionButton mAddNewFAB;
 
@@ -72,7 +74,10 @@ public class ActiveListFragment extends Fragment implements Observer {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -85,7 +90,8 @@ public class ActiveListFragment extends Fragment implements Observer {
 
         mItemVM = new ViewModelProvider(requireActivity()).get(ItemVM.class);
         mItemVM.getListWithItems(listId).observe(getActivity(), listWithItems -> {
-            mActiveListNameText.setText(listWithItems.getListInfo().getListName());
+            mActiveListName = listWithItems.getListInfo().getListName();
+            mActiveListNameText.setText(mActiveListName);
             mListItems = listWithItems.getListItems();
             mAdapter.setItems(mListItems);
         });
@@ -123,6 +129,60 @@ public class ActiveListFragment extends Fragment implements Observer {
             ItemTouchHelper myITH = new ItemTouchHelper(new MyItemTouchCallback(getActivity(), mAdapter, mItemVM, 0, mTotalPriceHolder));
             myITH.attachToRecyclerView(mItemRecyclerView);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_delete:
+                // User chose the "Settings" item, show the app settings UI...
+                return true;
+
+            case R.id.action_save:
+                // Save list into database
+                saveListDialog();
+                System.out.println("!!!!!!!!!!Save pressed in ActiveListFragment");
+                // User chose the "Favorite" action, mark the current item
+                // as a favorite...
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    private void saveListDialog() {
+        android.app.AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+
+        View mView = getLayoutInflater().inflate(R.layout.dialog_save_list_as, null);
+
+        EditText mListName = (EditText) mView.findViewById(R.id.save_list_as_name);
+        mListName.setText(mActiveListName);
+        mListName.setSelectAllOnFocus(true);
+
+        Button mSaveButton = (Button) mView.findViewById(R.id.save_list_as_save_btn);
+        Button mCancelButton = (Button) mView.findViewById(R.id.save_list_as_cancel_btn);
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+
+        mSaveButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+            }
+        });
+
+        mCancelButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.show();
     }
 
     private void addDialog() {
