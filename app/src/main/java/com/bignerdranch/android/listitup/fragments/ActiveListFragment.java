@@ -84,9 +84,6 @@ public class ActiveListFragment extends Fragment implements Observer {
         mActiveListNameText = v.findViewById(R.id.active_list_name_text);
 
         mItemVM = new ViewModelProvider(requireActivity()).get(ItemVM.class);
-//        mItemVM.getListName(listId).observe(this, listName -> {
-//            mActiveListNameText.setText(listName);
-//        });
         mItemVM.getListWithItems(listId).observe(getActivity(), listWithItems -> {
             mActiveListNameText.setText(listWithItems.getListInfo().getListName());
             mListItems = listWithItems.getListItems();

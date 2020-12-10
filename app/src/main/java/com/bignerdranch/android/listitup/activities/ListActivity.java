@@ -3,6 +3,8 @@ package com.bignerdranch.android.listitup.activities;
 import android.app.AlertDialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -10,11 +12,11 @@ import android.widget.EditText;
 
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.bignerdranch.android.listitup.R;
 //import com.bignerdranch.android.listitup.fragments.CartListFragment;
@@ -28,7 +30,6 @@ import com.bignerdranch.android.listitup.fragments.ProfileFragment;
 import com.bignerdranch.android.listitup.room.ItemVM;
 //import com.bignerdranch.android.listitup.room.ItemVMOld;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
@@ -37,8 +38,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ListActivity extends AppCompatActivity {
 
-    MaterialToolbar appBar;
-//    BottomAppBar bottomAppBar;
+    MaterialToolbar myToolbar;
+    ActionBar ab;
     BottomNavigationView bottomNavView;
     private ItemVM mItemVM;
 
@@ -62,8 +63,10 @@ public class ListActivity extends AppCompatActivity {
         System.out.println("ViewModel in Activity: " + mItemVM.toString());
 
 
-        appBar = findViewById(R.id.top_tool_bar);
-        setSupportActionBar(appBar);
+        myToolbar = findViewById(R.id.top_tool_bar);
+        setSupportActionBar(myToolbar);
+        ab = getSupportActionBar();
+
 
         fragmentHome = new HomeFragment();
         fragmentListChooser = new ListChooserFragment();
@@ -73,15 +76,16 @@ public class ListActivity extends AppCompatActivity {
 
         Bundle args = new Bundle();
 
-//        appBar.setTitle("Home");
-//        Fragment fragment = new HomeFragment();
-//        fm.beginTransaction()
-//                .replace(R.id.list_fragment_container, fragment)
-//                .commit();
-
         bottomNavView = findViewById(R.id.bottom_navigation);
 
         showFragments();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.top_app_bar, menu);
+        return true;
     }
 
     private void showFragments() {
@@ -95,8 +99,9 @@ public class ListActivity extends AppCompatActivity {
         fm.beginTransaction().add(R.id.list_fragment_container, fragmentCart,"3").hide(fragmentCart).commit();
         fm.beginTransaction().add(R.id.list_fragment_container, fragmentProfile, "4").hide(fragmentProfile).commit();
 
+        ab.setTitle("Home");
+
         bottomNavView.setSelectedItemId(R.id.home_button);
-        appBar.setTitle("Home");
         bottomNavView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -104,25 +109,21 @@ public class ListActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.home_button:
 
-                        appBar.setTitle("Home");
+                        myToolbar.setTitle("Home");
                         hideAppBarBack();
 
-//                        Fragment fragment = new HomeFragment();
-                        //                    fm.beginTransaction()
-                        //                            .replace(R.id.list_fragment_container, fragment)
-                        //                            .commit();
-                            fm.beginTransaction()
-                                    .hide(active)
-                                    .show(fragmentHome)
-                                    .commit();
-                            active = fragmentHome;
+                        fm.beginTransaction()
+                                .hide(active)
+                                .show(fragmentHome)
+                                .commit();
+                        active = fragmentHome;
 
-                            return true;
+                        return true;
 
                     case R.id.list_button:
                         // Handle list fragment
 
-                        appBar.setTitle("My Lists");
+                        myToolbar.setTitle("My Lists");
 
                         if (!listSecondaryScreen) {
                             activeList = fragmentListChooser;
@@ -135,17 +136,13 @@ public class ListActivity extends AppCompatActivity {
                                 .show(activeList)
                                 .commit();
                         active = activeList;
-//                        Fragment fragment = new ListChooserFragment();
-                        //                    fm.beginTransaction()
-                        //                            .replace(R.id.list_fragment_container, fragment)
-                        //                            .addToBackStack("ListChooserFragment")
-                        //                            .commit();
+
                         return true;
 
                     case R.id.cart_button:
                         // Handle cart fragment
 
-                        appBar.setTitle("My Cart");
+                        myToolbar.setTitle("My Cart");
                         hideAppBarBack();
 
                         fm.beginTransaction()
@@ -158,13 +155,9 @@ public class ListActivity extends AppCompatActivity {
 
                     case R.id.profile_button:
 
-                        appBar.setTitle("Profile");
+                        myToolbar.setTitle("Profile");
                         hideAppBarBack();
 
-//                    Fragment fragment = new ProfileFragment();
-//                    fm.beginTransaction()
-//                            .replace(R.id.list_fragment_container, fragment)
-//                            .commit();
                         fm.beginTransaction()
                                 .hide(active)
                                 .show(fragmentProfile)
@@ -176,13 +169,6 @@ public class ListActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-//        mAddNewFAB.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                addDialog();
-//            }
-//        });
     }
 
     public void setActiveList(long listId) {
@@ -210,14 +196,34 @@ public class ListActivity extends AppCompatActivity {
     }
 
     private void hideAppBarBack() {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        ab.setDisplayHomeAsUpEnabled(false);
+        ab.setDisplayShowHomeEnabled(false);
     }
 
     private void showAppBarBack() {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setDisplayShowHomeEnabled(true);
+        ab.setHomeAsUpIndicator(R.drawable.ic_back);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_delete:
+                // User chose the "Settings" item, show the app settings UI...
+                return true;
+
+            case R.id.action_save:
+                // User chose the "Favorite" action, mark the current item
+                // as a favorite...
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     // Back button behaviour - TODO: refactor ///////
@@ -236,6 +242,7 @@ public class ListActivity extends AppCompatActivity {
                     .commit();
             activeList = fragmentListChooser;
             active = activeList;
+            listSecondaryScreen = false;
             hideAppBarBack();
         } else {
             super.onBackPressed();

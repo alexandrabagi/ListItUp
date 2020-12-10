@@ -12,11 +12,6 @@ import android.view.ViewGroup;
 import com.bignerdranch.android.listitup.R;
 import com.bignerdranch.android.listitup.room.ItemVM;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CartFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CartFragment extends Fragment {
 
     private ItemVM mItemVM;
@@ -40,7 +35,7 @@ public class CartFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mItemVM = new ViewModelProvider(requireActivity()).get(ItemVM.class);
-        System.out.println("ViewModel in CartFragment: " + mItemVM.toString());
+//        System.out.println("ViewModel in CartFragment: " + mItemVM.toString());
     }
 
     @Override

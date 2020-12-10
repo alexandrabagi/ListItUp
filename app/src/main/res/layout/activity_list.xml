@@ -6,26 +6,29 @@
     android:layout_height="match_parent"
     tools:context="com.bignerdranch.android.listitup.activities.ListActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <!-- <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/top_app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:elevation="0dp"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"> -->
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/top_tool_bar"
-            style="@style/MyMaterialAppBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:menu="@menu/top_app_bar"
-            app:title="ListItUp!" />
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/top_tool_bar"
+        style="@style/MyMaterialAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/top_app_bar"
+        app:title="ListItUp!"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
             <!--  -->
 
 
-    </com.google.android.material.appbar.AppBarLayout>
+    <!-- </com.google.android.material.appbar.AppBarLayout> -->
 
     <!-- <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
@@ -121,7 +124,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
-        app:layout_constraintTop_toBottomOf="@+id/top_app_bar" />
+        app:layout_constraintTop_toBottomOf="@+id/top_tool_bar" />
 
 
     <!-- <com.google.android.material.bottomappbar.BottomAppBar
